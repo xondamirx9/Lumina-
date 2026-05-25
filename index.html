@@ -1,591 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LUMINA VOYAGES — Luxury Travel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-/* ─── RESET & BASE ─────────────────────────────────────────────────────────── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #050505;
-  --bg2: #0a0a0a;
-  --white: #f5f0eb;
-  --white-dim: rgba(245,240,235,0.6);
-  --white-faint: rgba(245,240,235,0.15);
-  --gold: #c9a96e;
-  --gold-dim: rgba(201,169,110,0.4);
-  --gold-glow: rgba(201,169,110,0.15);
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.08);
-  --radius: 24px;
-  --radius-sm: 14px;
-  --font-display: 'Cormorant Garamond', serif;
-  --font-body: 'Outfit', sans-serif;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050505;--bg2:#0a0a0a;
+  --white:#f5f0eb;--white-dim:rgba(245,240,235,0.6);--white-faint:rgba(245,240,235,0.15);
+  --gold:#c9a96e;--gold-dim:rgba(201,169,110,0.4);--gold-glow:rgba(201,169,110,0.15);
+  --glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08);
+  --radius:24px;--font-display:'Cormorant Garamond',serif;--font-body:'Outfit',sans-serif;
 }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
-}
-img { display: block; width: 100%; object-fit: cover; }
-a { text-decoration: none; color: inherit; }
-button { cursor: none; border: none; background: none; font-family: var(--font-body); }
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--font-body);font-weight:300;overflow-x:hidden;cursor:none}
+img{display:block;width:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
+button{cursor:none;border:none;background:none;font-family:var(--font-body)}
 
-/* ─── CUSTOM CURSOR ────────────────────────────────────────────────────────── */
-#cursor-dot {
-  position: fixed; pointer-events: none; z-index: 9999;
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold);
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease, opacity 0.3s;
-  mix-blend-mode: screen;
-}
-#cursor-ring {
-  position: fixed; pointer-events: none; z-index: 9998;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid rgba(201,169,110,0.5);
-  transform: translate(-50%, -50%);
-  transition: all 0.18s cubic-bezier(0.23,1,0.32,1);
-  mix-blend-mode: screen;
-}
-body:hover #cursor-dot { opacity: 1; }
-.cursor-expand #cursor-ring { transform: translate(-50%,-50%) scale(2.2) !important; opacity: 0.4; }
+/* CURSOR */
+#cursor-dot{position:fixed;pointer-events:none;z-index:9999;width:8px;height:8px;border-radius:50%;background:var(--gold);transform:translate(-50%,-50%);mix-blend-mode:screen}
+#cursor-ring{position:fixed;pointer-events:none;z-index:9998;width:40px;height:40px;border-radius:50%;border:1px solid rgba(201,169,110,0.5);transform:translate(-50%,-50%);transition:all 0.18s cubic-bezier(0.23,1,0.32,1);mix-blend-mode:screen}
+.cursor-expand #cursor-ring{transform:translate(-50%,-50%) scale(2.2)!important;opacity:0.4}
 
-/* ─── LOADER ────────────────────────────────────────────────────────────────── */
-#loader {
-  position: fixed; inset: 0; z-index: 10000;
-  background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-#loader.hide { opacity: 0; visibility: hidden; }
-.loader-logo {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 5rem);
-  font-weight: 300;
-  letter-spacing: 0.3em;
-  color: var(--gold);
-  animation: loader-pulse 1.5s ease infinite;
-}
-.loader-bar-wrap {
-  width: 200px; height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin-top: 2rem; overflow: hidden; border-radius: 2px;
-}
-.loader-bar {
-  height: 100%;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  animation: loader-fill 2s ease forwards;
-}
-@keyframes loader-fill { from { width: 0%; } to { width: 100%; } }
-@keyframes loader-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease,visibility 0.8s ease}
+#loader.hide{opacity:0;visibility:hidden}
+.loader-logo{font-family:var(--font-display);font-size:clamp(2rem,6vw,5rem);font-weight:300;letter-spacing:0.3em;color:var(--gold);animation:loader-pulse 1.5s ease infinite}
+.loader-bar-wrap{width:200px;height:1px;background:rgba(255,255,255,0.1);margin-top:2rem;overflow:hidden;border-radius:2px}
+.loader-bar{height:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:loader-fill 2s ease forwards}
+@keyframes loader-fill{from{width:0%}to{width:100%}}
+@keyframes loader-pulse{0%,100%{opacity:0.6}50%{opacity:1}}
 
-/* ─── NOISE OVERLAY ─────────────────────────────────────────────────────────── */
-.noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
+/* NOISE */
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-/* ─── NAVBAR ─────────────────────────────────────────────────────────────────── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.5rem 4rem;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.5s ease, backdrop-filter 0.5s ease, padding 0.4s ease;
-}
-nav.scrolled {
-  background: rgba(5,5,5,0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  padding: 1rem 4rem;
-  border-bottom: 1px solid var(--glass-border);
-}
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.4rem; letter-spacing: 0.25em;
-  font-weight: 400; color: var(--gold);
-}
-.nav-links {
-  display: flex; gap: 2.5rem; list-style: none;
-}
-.nav-links a {
-  font-size: 0.75rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--white-dim);
-  transition: color 0.3s ease;
-}
-.nav-links a:hover { color: var(--white); }
-.nav-cta {
-  padding: 0.6rem 1.6rem;
-  border: 1px solid var(--gold-dim);
-  border-radius: 100px;
-  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gold);
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-  position: relative; overflow: hidden;
-}
-.nav-cta::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--gold); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.nav-cta:hover { color: var(--bg); }
-.nav-cta:hover::before { transform: scaleX(1); }
-.nav-cta span { position: relative; z-index: 1; }
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:background 0.5s,backdrop-filter 0.5s,padding 0.4s}
+nav.scrolled{background:rgba(5,5,5,0.75);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);padding:1rem 4rem;border-bottom:1px solid var(--glass-border)}
+.nav-logo{font-family:var(--font-display);font-size:1.4rem;letter-spacing:0.25em;font-weight:400;color:var(--gold)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--white-dim);transition:color 0.3s}
+.nav-links a:hover{color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
 
-/* ─── HERO ───────────────────────────────────────────────────────────────────── */
-#hero {
-  position: relative; height: 100vh; display: flex;
-  align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,169,110,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(100,80,200,0.06) 0%, transparent 60%),
-    linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,0.6) 60%, #050505 100%),
-    url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=90') center/cover no-repeat;
-  transform: scale(1.08);
-  animation: hero-zoom 16s ease-out forwards;
-}
-@keyframes hero-zoom { from { transform: scale(1.12); } to { transform: scale(1.0); } }
-.hero-content {
-  position: relative; z-index: 2;
-  text-align: center; max-width: 900px; padding: 0 2rem;
-}
-.hero-eyebrow {
-  font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--gold); opacity: 0;
-  animation: fade-up 1s 1.8s ease forwards;
-  margin-bottom: 1.5rem;
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 10vw, 9rem);
-  font-weight: 300; line-height: 0.92;
-  letter-spacing: -0.01em;
-  opacity: 0;
-  animation: fade-up 1.1s 2s ease forwards;
-}
-.hero-title em { font-style: italic; color: var(--gold); }
-.hero-sub {
-  margin-top: 1.5rem;
-  font-size: clamp(0.9rem, 1.5vw, 1.05rem); font-weight: 300;
-  color: var(--white-dim); line-height: 1.7; max-width: 480px; margin-inline: auto;
-  opacity: 0;
-  animation: fade-up 1s 2.3s ease forwards;
-}
-.hero-actions {
-  margin-top: 3rem; display: flex; gap: 1.2rem;
-  align-items: center; justify-content: center;
-  opacity: 0; animation: fade-up 1s 2.6s ease forwards;
-}
-.btn-primary {
-  padding: 1rem 2.6rem;
-  background: var(--gold);
-  color: var(--bg);
-  border-radius: 100px;
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-  box-shadow: 0 0 40px rgba(201,169,110,0.3);
-  position: relative; overflow: hidden;
-}
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 50px rgba(201,169,110,0.45);
-}
-.btn-ghost {
-  padding: 1rem 2.6rem; border-radius: 100px;
-  border: 1px solid var(--white-faint);
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 300;
-  color: var(--white-dim);
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: var(--white); transform: translateY(-2px); }
-.hero-scroll-hint {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-  z-index: 3; text-align: center;
-  opacity: 0; animation: fade-up 1s 3s ease forwards;
-}
-.scroll-line {
-  width: 1px; height: 60px; background: linear-gradient(180deg, transparent, var(--gold-dim));
-  margin: 0.8rem auto 0;
-  animation: scroll-pulse 2s ease infinite;
-}
-@keyframes scroll-pulse { 0%,100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); transform-origin: top; } }
-.scroll-hint-text { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white-faint); }
+/* LANG SWITCHER */
+.lang-switcher{display:flex;align-items:center;gap:4px;background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;padding:4px}
+.lang-btn{padding:0.3rem 0.75rem;border-radius:100px;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white-dim);transition:all 0.3s cubic-bezier(0.23,1,0.32,1);font-family:var(--font-body);font-weight:400}
+.lang-btn.active{background:var(--gold);color:var(--bg);font-weight:500}
+.lang-btn:hover:not(.active){color:var(--white)}
 
-/* ─── PARTICLES ─────────────────────────────────────────────────────────────── */
-#particles-canvas {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35;
-}
+.nav-cta{padding:0.6rem 1.6rem;border:1px solid var(--gold-dim);border-radius:100px;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);transition:all 0.35s cubic-bezier(0.23,1,0.32,1);position:relative;overflow:hidden}
+.nav-cta::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.23,1,0.32,1)}
+.nav-cta:hover{color:var(--bg)}
+.nav-cta:hover::before{transform:scaleX(1)}
+.nav-cta span{position:relative;z-index:1}
 
-/* ─── SECTIONS BASE ──────────────────────────────────────────────────────────── */
-section { position: relative; z-index: 2; }
-.section-pad { padding: clamp(5rem, 10vh, 9rem) clamp(1.5rem, 6vw, 6rem); }
-.section-label {
-  font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1rem;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 300; line-height: 1.05;
-}
-.section-title em { font-style: italic; color: var(--gold); }
+/* HERO */
+#hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(201,169,110,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 20% 80%,rgba(100,80,200,0.06) 0%,transparent 60%),linear-gradient(180deg,rgba(5,5,5,0) 0%,rgba(5,5,5,0.6) 60%,#050505 100%),url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=90') center/cover no-repeat;transform:scale(1.08);animation:hero-zoom 16s ease-out forwards}
+@keyframes hero-zoom{from{transform:scale(1.12)}to{transform:scale(1.0)}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:0 2rem}
+.hero-eyebrow{font-size:0.72rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fade-up 1s 1.8s ease forwards;margin-bottom:1.5rem}
+.hero-title{font-family:var(--font-display);font-size:clamp(3.5rem,10vw,9rem);font-weight:300;line-height:0.92;letter-spacing:-0.01em;opacity:0;animation:fade-up 1.1s 2s ease forwards}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{margin-top:1.5rem;font-size:clamp(0.9rem,1.5vw,1.05rem);font-weight:300;color:var(--white-dim);line-height:1.7;max-width:500px;margin-inline:auto;opacity:0;animation:fade-up 1s 2.3s ease forwards}
+.hero-actions{margin-top:3rem;display:flex;gap:1.2rem;align-items:center;justify-content:center;opacity:0;animation:fade-up 1s 2.6s ease forwards}
+.btn-primary{padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);box-shadow:0 0 40px rgba(201,169,110,0.3)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 50px rgba(201,169,110,0.45)}
+.btn-ghost{padding:1rem 2.6rem;border-radius:100px;border:1px solid var(--white-faint);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:300;color:var(--white-dim);transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--white);transform:translateY(-2px)}
+.hero-scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:3;text-align:center;opacity:0;animation:fade-up 1s 3s ease forwards}
+.scroll-line{width:1px;height:60px;background:linear-gradient(180deg,transparent,var(--gold-dim));margin:0.8rem auto 0;animation:scroll-pulse 2s ease infinite}
+@keyframes scroll-pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+.scroll-hint-text{font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--white-faint)}
 
-/* ─── FADE-UP ANIMATION ──────────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.reveal {
-  opacity: 0; transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.12s; }
-.reveal-delay-2 { transition-delay: 0.24s; }
-.reveal-delay-3 { transition-delay: 0.36s; }
-.reveal-delay-4 { transition-delay: 0.48s; }
+/* PARTICLES */
+#particles-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.35}
 
-/* ─── MARQUEE ─────────────────────────────────────────────────────────────────── */
-.marquee-wrap {
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 1.4rem 0; overflow: hidden; background: rgba(201,169,110,0.02);
-}
-.marquee-inner {
-  display: flex; gap: 4rem; white-space: nowrap;
-  animation: marquee 28s linear infinite;
-}
-.marquee-inner span {
-  font-family: var(--font-display); font-size: 1.1rem;
-  font-style: italic; font-weight: 300; color: var(--white-dim); letter-spacing: 0.06em;
-}
-.marquee-inner .dot { color: var(--gold); font-style: normal; }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* SECTIONS */
+section{position:relative;z-index:2}
+.section-pad{padding:clamp(5rem,10vh,9rem) clamp(1.5rem,6vw,6rem)}
+.section-label{font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.section-title{font-family:var(--font-display);font-size:clamp(2.4rem,5vw,4.5rem);font-weight:300;line-height:1.05}
+.section-title em{font-style:italic;color:var(--gold)}
 
-/* ─── BENTO GRID ─────────────────────────────────────────────────────────────── */
-#features { background: linear-gradient(180deg, #050505 0%, #080808 100%); }
-.bento-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto;
-  gap: 16px;
-}
-.bento-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 2.2rem;
-  position: relative; overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.4s, box-shadow 0.4s;
-  backdrop-filter: blur(8px);
-}
-.bento-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(201,169,110,0.06), transparent 60%);
-  opacity: 0; transition: opacity 0.4s;
-}
-.bento-card:hover::before { opacity: 1; }
-.bento-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,169,110,0.2);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,169,110,0.08) inset;
-}
-.bc-1 { grid-column: span 7; min-height: 340px; }
-.bc-2 { grid-column: span 5; min-height: 340px; }
-.bc-3 { grid-column: span 4; min-height: 260px; }
-.bc-4 { grid-column: span 4; min-height: 260px; }
-.bc-5 { grid-column: span 4; min-height: 260px; }
-.bc-6 { grid-column: span 6; min-height: 240px; }
-.bc-7 { grid-column: span 6; min-height: 240px; }
-.bento-card .bc-img {
-  position: absolute; inset: 0; z-index: 0;
-  transition: transform 0.7s cubic-bezier(0.23,1,0.32,1);
-}
-.bento-card:hover .bc-img { transform: scale(1.04); }
-.bento-card .bc-img img { height: 100%; }
-.bc-overlay {
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(135deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.3) 100%);
-}
-.bc-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-.bc-tag {
-  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.6rem;
-}
-.bc-title {
-  font-family: var(--font-display); font-size: clamp(1.3rem, 2.5vw, 2rem);
-  font-weight: 300; line-height: 1.15;
-}
-.bc-text { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; margin-top: 0.7rem; }
-.bc-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+/* FADE-UP */
+@keyframes fade-up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.23,1,0.32,1),transform 0.9s cubic-bezier(0.23,1,0.32,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.12s}
+.reveal-delay-2{transition-delay:0.24s}
+.reveal-delay-3{transition-delay:0.36s}
+.reveal-delay-4{transition-delay:0.48s}
 
-/* ─── DESTINATIONS ───────────────────────────────────────────────────────────── */
-#destinations { background: var(--bg); }
-.destinations-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.dest-card {
-  position: relative; border-radius: var(--radius); overflow: hidden;
-  aspect-ratio: 3/4; cursor: none;
-  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
-}
-.dest-card:first-child { aspect-ratio: 3/4.5; }
-.dest-card:hover { transform: scale(1.01) translateY(-6px); z-index: 2; }
-.dest-card img {
-  height: 100%; width: 100%; object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
-}
-.dest-card:hover img { transform: scale(1.06); }
-.dest-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.85) 100%);
-  transition: opacity 0.4s;
-}
-.dest-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 2rem 1.8rem;
-}
-.dest-country {
-  font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.4rem;
-}
-.dest-name {
-  font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  font-weight: 300; line-height: 1.1;
-}
-.dest-meta {
-  margin-top: 0.8rem; font-size: 0.78rem; color: var(--white-dim);
-  display: flex; gap: 1rem; align-items: center;
-}
-.dest-badge {
-  display: inline-block; padding: 0.25rem 0.8rem;
-  background: rgba(201,169,110,0.15); border: 1px solid var(--gold-dim);
-  border-radius: 100px; font-size: 0.65rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gold);
-}
-.dest-hover-cta {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--glass); border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transform: scale(0.8);
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-  font-size: 1.1rem;
-}
-.dest-card:hover .dest-hover-cta { opacity: 1; transform: scale(1); }
+/* LANG TRANSITION */
+[data-i18n]{transition:opacity 0.3s ease}
+.lang-fade{opacity:0!important}
 
-/* ─── HORIZONTAL SCROLL SECTION ──────────────────────────────────────────────── */
-#experiences { background: linear-gradient(180deg, #050505 0%, #070707 100%); }
-.hscroll-wrapper {
-  margin-top: 3rem;
-  overflow-x: auto; overflow-y: visible;
-  scrollbar-width: none; -ms-overflow-style: none;
-  padding-bottom: 1rem;
-}
-.hscroll-wrapper::-webkit-scrollbar { display: none; }
-.hscroll-track {
-  display: flex; gap: 20px; width: max-content; padding: 1rem 0.5rem 2rem;
-}
-.exp-card {
-  width: 340px; flex-shrink: 0;
-  border-radius: var(--radius); overflow: hidden;
-  position: relative; aspect-ratio: 3/4;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
-  cursor: none;
-}
-.exp-card:hover { transform: scale(1.02) translateY(-6px); }
-.exp-card img { height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.23,1,0.32,1); }
-.exp-card:hover img { transform: scale(1.05); }
-.exp-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 35%, rgba(5,5,5,0.9) 100%);
-}
-.exp-content {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem;
-}
-.exp-num {
-  font-family: var(--font-display); font-size: 0.8rem;
-  color: var(--gold); letter-spacing: 0.2em; margin-bottom: 0.5rem;
-}
-.exp-title {
-  font-family: var(--font-display); font-size: 1.6rem;
-  font-weight: 300; line-height: 1.15;
-}
-.exp-dur { font-size: 0.78rem; color: var(--white-dim); margin-top: 0.5rem; }
-.exp-price {
-  margin-top: 1rem;
-  font-size: 0.72rem; letter-spacing: 0.1em;
-  color: var(--gold);
-}
+/* MARQUEE */
+.marquee-wrap{border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);padding:1.4rem 0;overflow:hidden;background:rgba(201,169,110,0.02)}
+.marquee-inner{display:flex;gap:4rem;white-space:nowrap;animation:marquee 28s linear infinite}
+.marquee-inner span{font-family:var(--font-display);font-size:1.1rem;font-style:italic;font-weight:300;color:var(--white-dim);letter-spacing:0.06em}
+.marquee-inner .dot{color:var(--gold);font-style:normal}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ─── STATS ──────────────────────────────────────────────────────────────────── */
-#stats {
-  background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 60%);
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
-}
-.stats-inner {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 2rem; text-align: center;
-}
-.stat-item {}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300;
-  color: var(--gold); line-height: 1;
-  letter-spacing: -0.02em;
-}
-.stat-label {
-  margin-top: 0.5rem; font-size: 0.75rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--white-dim);
-}
+/* BENTO */
+#features{background:linear-gradient(180deg,#050505 0%,#080808 100%)}
+.bento-grid{margin-top:4rem;display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.bento-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:2.2rem;position:relative;overflow:hidden;transition:transform 0.5s cubic-bezier(0.23,1,0.32,1),border-color 0.4s,box-shadow 0.4s;backdrop-filter:blur(8px)}
+.bento-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(201,169,110,0.06),transparent 60%);opacity:0;transition:opacity 0.4s}
+.bento-card:hover::before{opacity:1}
+.bento-card:hover{transform:translateY(-4px);border-color:rgba(201,169,110,0.2);box-shadow:0 20px 60px rgba(0,0,0,0.4),0 0 0 1px rgba(201,169,110,0.08) inset}
+.bc-1{grid-column:span 7;min-height:340px}.bc-2{grid-column:span 5;min-height:340px}
+.bc-3{grid-column:span 4;min-height:260px}.bc-4{grid-column:span 4;min-height:260px}.bc-5{grid-column:span 4;min-height:260px}
+.bc-6{grid-column:span 6;min-height:240px}.bc-7{grid-column:span 6;min-height:240px}
+.bc-img{position:absolute;inset:0;z-index:0;transition:transform 0.7s cubic-bezier(0.23,1,0.32,1)}
+.bento-card:hover .bc-img{transform:scale(1.04)}
+.bc-img img{height:100%}
+.bc-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(5,5,5,0.7) 0%,rgba(5,5,5,0.3) 100%)}
+.bc-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end}
+.bc-tag{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem}
+.bc-title{font-family:var(--font-display);font-size:clamp(1.3rem,2.5vw,2rem);font-weight:300;line-height:1.15}
+.bc-text{font-size:0.85rem;color:var(--white-dim);line-height:1.6;margin-top:0.7rem}
+.bc-icon{font-size:2.5rem;margin-bottom:1rem}
 
-/* ─── TESTIMONIALS ───────────────────────────────────────────────────────────── */
-#testimonials { background: var(--bg); }
-.testi-track {
-  margin-top: 4rem;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-}
-.testi-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius); padding: 2.4rem 2rem;
-  backdrop-filter: blur(12px);
-  position: relative; overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.4s;
-}
-.testi-card:hover { transform: translateY(-6px); border-color: rgba(201,169,110,0.2); }
-.testi-card::before {
-  content: '"'; position: absolute; top: -0.5rem; left: 1.5rem;
-  font-family: var(--font-display); font-size: 8rem;
-  color: rgba(201,169,110,0.06); line-height: 1; pointer-events: none;
-}
-.testi-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 1.2rem; }
-.testi-text {
-  font-family: var(--font-display); font-size: 1.05rem; font-style: italic;
-  font-weight: 300; line-height: 1.7; color: var(--white-dim);
-}
-.testi-author {
-  margin-top: 2rem; display: flex; align-items: center; gap: 1rem;
-}
-.testi-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 1px solid var(--gold-dim); object-fit: cover; flex-shrink: 0;
-}
-.testi-name { font-size: 0.82rem; font-weight: 500; }
-.testi-from { font-size: 0.72rem; color: var(--white-dim); margin-top: 0.15rem; }
+/* DESTINATIONS */
+#destinations{background:var(--bg)}
+.destinations-grid{margin-top:3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.dest-card{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4;cursor:none;transition:transform 0.6s cubic-bezier(0.23,1,0.32,1)}
+.dest-card:hover{transform:scale(1.01) translateY(-6px);z-index:2}
+.dest-card img{height:100%;width:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.23,1,0.32,1)}
+.dest-card:hover img{transform:scale(1.06)}
+.dest-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(5,5,5,0.85) 100%)}
+.dest-info{position:absolute;bottom:0;left:0;right:0;padding:2rem 1.8rem}
+.dest-country{font-size:0.65rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.dest-name{font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:300;line-height:1.1}
+.dest-meta{margin-top:0.8rem;font-size:0.78rem;color:var(--white-dim);display:flex;gap:1rem;align-items:center}
+.dest-badge{display:inline-block;padding:0.25rem 0.8rem;background:rgba(201,169,110,0.15);border:1px solid var(--gold-dim);border-radius:100px;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold)}
+.dest-hover-cta{position:absolute;top:1.5rem;right:1.5rem;width:44px;height:44px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.8);transition:all 0.4s cubic-bezier(0.23,1,0.32,1);font-size:1.1rem}
+.dest-card:hover .dest-hover-cta{opacity:1;transform:scale(1)}
 
-/* ─── CTA BAND ───────────────────────────────────────────────────────────────── */
-#cta-band {
-  position: relative; overflow: hidden; text-align: center;
-  padding: clamp(5rem, 12vh, 10rem) 2rem;
-}
-.cta-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(201,169,110,0.12) 0%, transparent 70%),
-    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80') center/cover no-repeat;
-  opacity: 0.3; z-index: 0;
-}
-.cta-content { position: relative; z-index: 1; }
-.cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 6rem); font-weight: 300; line-height: 1;
-  margin-bottom: 1.5rem;
-}
-.cta-title em { font-style: italic; color: var(--gold); }
-.cta-sub { font-size: 1rem; color: var(--white-dim); max-width: 480px; margin: 0 auto 3rem; line-height: 1.7; }
+/* HORIZONTAL SCROLL */
+#experiences{background:linear-gradient(180deg,#050505 0%,#070707 100%)}
+.hscroll-wrapper{margin-top:3rem;overflow-x:auto;overflow-y:visible;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:1rem}
+.hscroll-wrapper::-webkit-scrollbar{display:none}
+.hscroll-track{display:flex;gap:20px;width:max-content;padding:1rem 0.5rem 2rem}
+.exp-card{width:340px;flex-shrink:0;border-radius:var(--radius);overflow:hidden;position:relative;aspect-ratio:3/4;transition:transform 0.5s cubic-bezier(0.23,1,0.32,1);cursor:none}
+.exp-card:hover{transform:scale(1.02) translateY(-6px)}
+.exp-card img{height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.23,1,0.32,1)}
+.exp-card:hover img{transform:scale(1.05)}
+.exp-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(5,5,5,0.9) 100%)}
+.exp-content{position:absolute;bottom:0;left:0;right:0;padding:2rem}
+.exp-num{font-family:var(--font-display);font-size:0.8rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:0.5rem}
+.exp-title{font-family:var(--font-display);font-size:1.6rem;font-weight:300;line-height:1.15}
+.exp-dur{font-size:0.78rem;color:var(--white-dim);margin-top:0.5rem}
+.exp-price{margin-top:1rem;font-size:0.72rem;letter-spacing:0.1em;color:var(--gold)}
 
-/* ─── FOOTER ─────────────────────────────────────────────────────────────────── */
-footer {
-  background: var(--bg2);
-  border-top: 1px solid var(--glass-border);
-  padding: 5rem clamp(1.5rem, 6vw, 6rem) 3rem;
-}
-.footer-top {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 4rem; margin-bottom: 4rem;
-}
-.footer-logo {
-  font-family: var(--font-display); font-size: 1.8rem;
-  font-weight: 300; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 1rem;
-}
-.footer-tagline { font-size: 0.85rem; color: var(--white-dim); line-height: 1.7; max-width: 260px; }
-.footer-col h4 {
-  font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1.4rem;
-}
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.footer-col ul li a {
-  font-size: 0.85rem; color: var(--white-dim);
-  transition: color 0.3s ease;
-}
-.footer-col ul li a:hover { color: var(--white); }
-.footer-bottom {
-  border-top: 1px solid var(--glass-border); padding-top: 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
-.social-links { display: flex; gap: 1.2rem; }
-.social-link {
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid var(--glass-border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; color: var(--white-dim);
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-}
-.social-link:hover {
-  border-color: var(--gold-dim); color: var(--gold);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(201,169,110,0.15);
-}
+/* STATS */
+#stats{background:linear-gradient(135deg,rgba(201,169,110,0.04) 0%,transparent 60%);border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border)}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
+.stat-num{font-family:var(--font-display);font-size:clamp(3rem,6vw,5.5rem);font-weight:300;color:var(--gold);line-height:1;letter-spacing:-0.02em}
+.stat-label{margin-top:0.5rem;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)}
 
-/* ─── DIVIDER ─────────────────────────────────────────────────────────────────── */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-  margin: 0 clamp(1.5rem, 6vw, 6rem);
-}
+/* TESTIMONIALS */
+#testimonials{background:var(--bg)}
+.testi-track{margin-top:4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:2.4rem 2rem;backdrop-filter:blur(12px);position:relative;overflow:hidden;transition:transform 0.5s cubic-bezier(0.23,1,0.32,1),border-color 0.4s}
+.testi-card:hover{transform:translateY(-6px);border-color:rgba(201,169,110,0.2)}
+.testi-card::before{content:'"';position:absolute;top:-0.5rem;left:1.5rem;font-family:var(--font-display);font-size:8rem;color:rgba(201,169,110,0.06);line-height:1;pointer-events:none}
+.testi-stars{color:var(--gold);font-size:0.75rem;letter-spacing:0.2em;margin-bottom:1.2rem}
+.testi-text{font-family:var(--font-display);font-size:1.05rem;font-style:italic;font-weight:300;line-height:1.7;color:var(--white-dim)}
+.testi-author{margin-top:2rem;display:flex;align-items:center;gap:1rem}
+.testi-avatar{width:44px;height:44px;border-radius:50%;border:1px solid var(--gold-dim);object-fit:cover;flex-shrink:0}
+.testi-name{font-size:0.82rem;font-weight:500}
+.testi-from{font-size:0.72rem;color:var(--white-dim);margin-top:0.15rem}
 
-/* ─── RESPONSIVE ─────────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .bento-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6,.bc-7 { grid-column: span 1; }
-  .bc-1 { grid-column: span 2; }
-  .destinations-grid { grid-template-columns: 1fr 1fr; }
-  .stats-inner { grid-template-columns: repeat(2, 1fr); }
-  .testi-track { grid-template-columns: 1fr 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
+/* CTA BAND */
+#cta-band{position:relative;overflow:hidden;text-align:center;padding:clamp(5rem,12vh,10rem) 2rem}
+.cta-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(201,169,110,0.12) 0%,transparent 70%),url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80') center/cover no-repeat;opacity:0.3;z-index:0}
+.cta-content{position:relative;z-index:1}
+.cta-title{font-family:var(--font-display);font-size:clamp(2.8rem,7vw,6rem);font-weight:300;line-height:1;margin-bottom:1.5rem}
+.cta-title em{font-style:italic;color:var(--gold)}
+.cta-sub{font-size:1rem;color:var(--white-dim);max-width:500px;margin:0 auto 3rem;line-height:1.7}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5rem clamp(1.5rem,6vw,6rem) 3rem}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.footer-logo{font-family:var(--font-display);font-size:1.8rem;font-weight:300;color:var(--gold);letter-spacing:0.15em;margin-bottom:1rem}
+.footer-tagline{font-size:0.85rem;color:var(--white-dim);line-height:1.7;max-width:260px}
+.footer-col h4{font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.7rem}
+.footer-col ul li a{font-size:0.85rem;color:var(--white-dim);transition:color 0.3s}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid var(--glass-border);padding-top:2rem;display:flex;align-items:center;justify-content:space-between}
+.footer-copy{font-size:0.75rem;color:rgba(255,255,255,0.25)}
+.social-links{display:flex;gap:1.2rem}
+.social-link{width:38px;height:38px;border-radius:50%;border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--white-dim);transition:all 0.35s cubic-bezier(0.23,1,0.32,1)}
+.social-link:hover{border-color:var(--gold-dim);color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px rgba(201,169,110,0.15)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent);margin:0 clamp(1.5rem,6vw,6rem)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .bento-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6,.bc-7{grid-column:span 1}
+  .bc-1{grid-column:span 2}
+  .destinations-grid{grid-template-columns:1fr 1fr}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .testi-track{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
 }
-@media (max-width: 768px) {
-  nav { padding: 1.2rem 1.5rem; }
-  nav.scrolled { padding: 0.9rem 1.5rem; }
-  .nav-links { display: none; }
-  .bento-grid { grid-template-columns: 1fr; }
-  .bc-1,.bc-2 { grid-column: span 1; }
-  .destinations-grid { grid-template-columns: 1fr; }
-  .testi-track { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
-  .stats-inner { grid-template-columns: 1fr 1fr; gap: 3rem; }
+@media(max-width:768px){
+  nav{padding:1.2rem 1.5rem}
+  nav.scrolled{padding:0.9rem 1.5rem}
+  .nav-links{display:none}
+  .bento-grid{grid-template-columns:1fr}
+  .bc-1,.bc-2{grid-column:span 1}
+  .destinations-grid{grid-template-columns:1fr}
+  .testi-track{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr;gap:2rem}
+  .footer-bottom{flex-direction:column;gap:1.5rem;text-align:center}
+  .stats-inner{grid-template-columns:1fr 1fr;gap:3rem}
 }
 </style>
 </head>
@@ -597,13 +236,8 @@ footer {
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
 </div>
 
-<!-- NOISE -->
 <div class="noise"></div>
-
-<!-- PARTICLES -->
 <canvas id="particles-canvas"></canvas>
-
-<!-- CURSOR -->
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 
@@ -611,28 +245,35 @@ footer {
 <nav id="navbar">
   <div class="nav-logo">LUMINA VOYAGES</div>
   <ul class="nav-links">
-    <li><a href="#destinations">Destinations</a></li>
-    <li><a href="#experiences">Experiences</a></li>
-    <li><a href="#features">About</a></li>
-    <li><a href="#testimonials">Stories</a></li>
+    <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
+    <li><a href="#experiences" data-i18n="nav.experiences">Experiences</a></li>
+    <li><a href="#features" data-i18n="nav.about">About</a></li>
+    <li><a href="#testimonials" data-i18n="nav.stories">Stories</a></li>
   </ul>
-  <a href="#cta-band" class="nav-cta"><span>Book Journey</span></a>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+      <button class="lang-btn" data-lang="uz">UZ</button>
+    </div>
+    <a href="#cta-band" class="nav-cta"><span data-i18n="nav.cta">Book Journey</span></a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">Est. 2019 · Luxury Travel Curation</div>
-    <h1 class="hero-title">Beyond <em>Ordinary</em><br>Horizons</h1>
-    <p class="hero-sub">Bespoke journeys crafted for those who seek the extraordinary. Every detail, every moment — curated with precision.</p>
+    <div class="hero-eyebrow" data-i18n="hero.eyebrow">Est. 2019 · Luxury Travel Curation</div>
+    <h1 class="hero-title" data-i18n="hero.title.html">Beyond <em>Ordinary</em><br>Horizons</h1>
+    <p class="hero-sub" data-i18n="hero.sub">Bespoke journeys crafted for those who seek the extraordinary. Every detail, every moment — curated with precision.</p>
     <div class="hero-actions">
-      <a href="#destinations" class="btn-primary">Explore Destinations</a>
-      <a href="#experiences" class="btn-ghost">View Experiences</a>
+      <a href="#destinations" class="btn-primary" data-i18n="hero.cta1">Explore Destinations</a>
+      <a href="#experiences" class="btn-ghost" data-i18n="hero.cta2">View Experiences</a>
     </div>
   </div>
   <div class="hero-scroll-hint">
-    <span class="scroll-hint-text">Scroll</span>
+    <span class="scroll-hint-text" data-i18n="hero.scroll">Scroll</span>
     <div class="scroll-line"></div>
   </div>
 </section>
@@ -642,58 +283,58 @@ footer {
   <div class="marquee-inner" id="marquee-inner"></div>
 </div>
 
-<!-- FEATURES / BENTO -->
+<!-- FEATURES -->
 <section id="features" class="section-pad">
-  <div class="reveal"><span class="section-label">The Lumina Difference</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Crafted for the<br><em>Discerning Traveler</em></h2>
+  <div class="reveal"><span class="section-label" data-i18n="features.label">The Lumina Difference</span></div>
+  <h2 class="section-title reveal reveal-delay-1" data-i18n="features.title.html">Crafted for the<br><em>Discerning Traveler</em></h2>
   <div class="bento-grid">
-    <div class="bento-card bc-1 reveal" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=900&q=80" alt="Maldives" style="height:100%;object-fit:cover;" /></div>
+    <div class="bento-card bc-1 reveal" style="padding:0">
+      <div class="bc-img"><img src="https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=900&q=80" alt=""/></div>
       <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2.2rem;">
-        <div class="bc-tag">Signature Experience</div>
-        <h3 class="bc-title">Private Island<br>Sanctuaries</h3>
-        <p class="bc-text">Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.</p>
+      <div class="bc-content" style="padding:2.2rem">
+        <div class="bc-tag" data-i18n="features.b1.tag">Signature Experience</div>
+        <h3 class="bc-title" data-i18n="features.b1.title.html">Private Island<br>Sanctuaries</h3>
+        <p class="bc-text" data-i18n="features.b1.text">Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.</p>
       </div>
     </div>
     <div class="bento-card bc-2 reveal reveal-delay-1">
       <div class="bc-icon">✦</div>
-      <div class="bc-tag">White Glove Service</div>
-      <h3 class="bc-title">24/7 Dedicated Concierge</h3>
-      <p class="bc-text">A personal travel curator available around the clock to anticipate your every need before you even voice it.</p>
+      <div class="bc-tag" data-i18n="features.b2.tag">White Glove Service</div>
+      <h3 class="bc-title" data-i18n="features.b2.title">24/7 Dedicated Concierge</h3>
+      <p class="bc-text" data-i18n="features.b2.text">A personal travel curator available around the clock to anticipate your every need before you even voice it.</p>
     </div>
     <div class="bento-card bc-3 reveal">
       <div class="bc-icon">◈</div>
-      <div class="bc-tag">Handpicked</div>
-      <h3 class="bc-title">Elite Properties</h3>
-      <p class="bc-text">Access to 2,400+ five-star properties and private villas across 80 countries.</p>
+      <div class="bc-tag" data-i18n="features.b3.tag">Handpicked</div>
+      <h3 class="bc-title" data-i18n="features.b3.title">Elite Properties</h3>
+      <p class="bc-text" data-i18n="features.b3.text">Access to 2,400+ five-star properties and private villas across 80 countries.</p>
     </div>
-    <div class="bento-card bc-4 reveal reveal-delay-1" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Japan" style="height:100%;object-fit:cover;" /></div>
+    <div class="bento-card bc-4 reveal reveal-delay-1" style="padding:0">
+      <div class="bc-img"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt=""/></div>
       <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2rem;">
-        <div class="bc-tag">Cultural</div>
-        <h3 class="bc-title">Deep Immersion</h3>
+      <div class="bc-content" style="padding:2rem">
+        <div class="bc-tag" data-i18n="features.b4.tag">Cultural</div>
+        <h3 class="bc-title" data-i18n="features.b4.title">Deep Immersion</h3>
       </div>
     </div>
     <div class="bento-card bc-5 reveal reveal-delay-2">
       <div class="bc-icon">⊹</div>
-      <div class="bc-tag">Sustainability</div>
-      <h3 class="bc-title">Mindful Luxury</h3>
-      <p class="bc-text">Carbon-neutral journeys that support local communities and ecosystems.</p>
+      <div class="bc-tag" data-i18n="features.b5.tag">Sustainability</div>
+      <h3 class="bc-title" data-i18n="features.b5.title">Mindful Luxury</h3>
+      <p class="bc-text" data-i18n="features.b5.text">Carbon-neutral journeys that support local communities and ecosystems.</p>
     </div>
     <div class="bento-card bc-6 reveal">
       <div class="bc-icon">◎</div>
-      <div class="bc-tag">Tailor-Made</div>
-      <h3 class="bc-title">Every Journey is Yours Alone</h3>
-      <p class="bc-text">No two Lumina itineraries are alike. We begin with your story and build an experience around it — with obsessive attention to detail.</p>
+      <div class="bc-tag" data-i18n="features.b6.tag">Tailor-Made</div>
+      <h3 class="bc-title" data-i18n="features.b6.title">Every Journey is Yours Alone</h3>
+      <p class="bc-text" data-i18n="features.b6.text">No two Lumina itineraries are alike. We begin with your story and build an experience around it — with obsessive attention to detail.</p>
     </div>
-    <div class="bento-card bc-7 reveal reveal-delay-1" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80" alt="Villa" style="height:100%;object-fit:cover;" /></div>
+    <div class="bento-card bc-7 reveal reveal-delay-1" style="padding:0">
+      <div class="bc-img"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80" alt=""/></div>
       <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2rem;">
-        <div class="bc-tag">Exclusive Access</div>
-        <h3 class="bc-title">Private Villas & Estates</h3>
+      <div class="bc-content" style="padding:2rem">
+        <div class="bc-tag" data-i18n="features.b7.tag">Exclusive Access</div>
+        <h3 class="bc-title" data-i18n="features.b7.title">Private Villas & Estates</h3>
       </div>
     </div>
   </div>
@@ -703,62 +344,48 @@ footer {
 
 <!-- DESTINATIONS -->
 <section id="destinations" class="section-pad">
-  <div class="reveal"><span class="section-label">Where to Next</span></div>
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0.5rem;">
-    <h2 class="section-title reveal reveal-delay-1">World's Most<br><em>Coveted</em> Destinations</h2>
-    <a href="#" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem;">View All →</a>
+  <div class="reveal"><span class="section-label" data-i18n="dest.label">Where to Next</span></div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0.5rem">
+    <h2 class="section-title reveal reveal-delay-1" data-i18n="dest.title.html">World's Most<br><em>Coveted</em> Destinations</h2>
+    <a href="#" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem" data-i18n="dest.viewall">View All →</a>
   </div>
-  <div class="destinations-grid" style="margin-top:3rem;">
+  <div class="destinations-grid">
     <div class="dest-card reveal">
-      <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=600&q=80" alt="Santorini" />
-      <div class="dest-overlay"></div>
-      <div class="dest-hover-cta">→</div>
+      <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=600&q=80" alt="Santorini"/>
+      <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
       <div class="dest-info">
-        <div class="dest-country">Greece</div>
+        <div class="dest-country" data-i18n="dest.1.country">Greece</div>
         <h3 class="dest-name">Santorini</h3>
-        <div class="dest-meta">
-          <span class="dest-badge">From $4,200</span>
-          <span>7–14 nights</span>
-        </div>
+        <div class="dest-meta"><span class="dest-badge" data-i18n="dest.1.from">From $4,200</span><span data-i18n="dest.1.nights">7–14 nights</span></div>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:20px;">
-      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1;">
-        <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Maldives" style="height:100%;" />
-        <div class="dest-overlay"></div>
-        <div class="dest-hover-cta">→</div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1">
+        <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Maldives" style="height:100%"/>
+        <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
         <div class="dest-info">
-          <div class="dest-country">Maldives</div>
-          <h3 class="dest-name">North Malé Atoll</h3>
-          <div class="dest-meta">
-            <span class="dest-badge">From $6,800</span>
-          </div>
+          <div class="dest-country" data-i18n="dest.2.country">Maldives</div>
+          <h3 class="dest-name" data-i18n="dest.2.name">North Malé Atoll</h3>
+          <div class="dest-meta"><span class="dest-badge" data-i18n="dest.2.from">From $6,800</span></div>
         </div>
       </div>
-      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1;">
-        <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=600&q=80" alt="Kyoto" style="height:100%;" />
-        <div class="dest-overlay"></div>
-        <div class="dest-hover-cta">→</div>
+      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1">
+        <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=600&q=80" alt="Kyoto" style="height:100%"/>
+        <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
         <div class="dest-info">
-          <div class="dest-country">Japan</div>
-          <h3 class="dest-name">Kyoto & Hakone</h3>
-          <div class="dest-meta">
-            <span class="dest-badge">From $5,500</span>
-          </div>
+          <div class="dest-country" data-i18n="dest.3.country">Japan</div>
+          <h3 class="dest-name" data-i18n="dest.3.name">Kyoto & Hakone</h3>
+          <div class="dest-meta"><span class="dest-badge" data-i18n="dest.3.from">From $5,500</span></div>
         </div>
       </div>
     </div>
     <div class="dest-card reveal reveal-delay-3">
-      <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Amalfi" style="height:100%;" />
-      <div class="dest-overlay"></div>
-      <div class="dest-hover-cta">→</div>
+      <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Amalfi" style="height:100%"/>
+      <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
       <div class="dest-info">
-        <div class="dest-country">Italy</div>
-        <h3 class="dest-name">Amalfi Coast</h3>
-        <div class="dest-meta">
-          <span class="dest-badge">From $3,900</span>
-          <span>5–10 nights</span>
-        </div>
+        <div class="dest-country" data-i18n="dest.4.country">Italy</div>
+        <h3 class="dest-name" data-i18n="dest.4.name">Amalfi Coast</h3>
+        <div class="dest-meta"><span class="dest-badge" data-i18n="dest.4.from">From $3,900</span><span data-i18n="dest.4.nights">5–10 nights</span></div>
       </div>
     </div>
   </div>
@@ -766,60 +393,60 @@ footer {
 
 <div class="divider"></div>
 
-<!-- EXPERIENCES HORIZONTAL SCROLL -->
+<!-- EXPERIENCES -->
 <section id="experiences" class="section-pad">
-  <div class="reveal"><span class="section-label">Signature Journeys</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Curated <em>Experiences</em><br>Unlike Any Other</h2>
-  <div class="hscroll-wrapper" style="margin-left: calc(-1 * clamp(1.5rem,6vw,6rem)); margin-right: calc(-1 * clamp(1.5rem,6vw,6rem)); padding-left: clamp(1.5rem,6vw,6rem);">
-    <div class="hscroll-track" id="hscroll-track">
+  <div class="reveal"><span class="section-label" data-i18n="exp.label">Signature Journeys</span></div>
+  <h2 class="section-title reveal reveal-delay-1" data-i18n="exp.title.html">Curated <em>Experiences</em><br>Unlike Any Other</h2>
+  <div class="hscroll-wrapper" style="margin-left:calc(-1 * clamp(1.5rem,6vw,6rem));margin-right:calc(-1 * clamp(1.5rem,6vw,6rem));padding-left:clamp(1.5rem,6vw,6rem)">
+    <div class="hscroll-track">
       <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&q=80" alt="Bali" />
+        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&q=80" alt="Bali"/>
         <div class="exp-overlay"></div>
         <div class="exp-content">
           <div class="exp-num">01</div>
-          <h3 class="exp-title">Sacred Bali<br>Retreat</h3>
-          <p class="exp-dur">10 Nights · Private Villa</p>
-          <p class="exp-price">From USD $7,200 per person</p>
+          <h3 class="exp-title" data-i18n="exp.1.title">Sacred Bali<br>Retreat</h3>
+          <p class="exp-dur" data-i18n="exp.1.dur">10 Nights · Private Villa</p>
+          <p class="exp-price" data-i18n="exp.1.price">From USD $7,200 per person</p>
         </div>
       </div>
       <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&q=80" alt="Safari" />
+        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&q=80" alt="Safari"/>
         <div class="exp-overlay"></div>
         <div class="exp-content">
           <div class="exp-num">02</div>
-          <h3 class="exp-title">Kenya Safari<br>Odyssey</h3>
-          <p class="exp-dur">8 Nights · Luxury Camp</p>
-          <p class="exp-price">From USD $9,500 per person</p>
+          <h3 class="exp-title" data-i18n="exp.2.title">Kenya Safari<br>Odyssey</h3>
+          <p class="exp-dur" data-i18n="exp.2.dur">8 Nights · Luxury Camp</p>
+          <p class="exp-price" data-i18n="exp.2.price">From USD $9,500 per person</p>
         </div>
       </div>
       <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=500&q=80" alt="Norway" />
+        <img src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=500&q=80" alt="Norway"/>
         <div class="exp-overlay"></div>
         <div class="exp-content">
           <div class="exp-num">03</div>
-          <h3 class="exp-title">Norwegian<br>Fjords</h3>
-          <p class="exp-dur">12 Nights · Private Yacht</p>
-          <p class="exp-price">From USD $14,800 per person</p>
+          <h3 class="exp-title" data-i18n="exp.3.title">Norwegian<br>Fjords</h3>
+          <p class="exp-dur" data-i18n="exp.3.dur">12 Nights · Private Yacht</p>
+          <p class="exp-price" data-i18n="exp.3.price">From USD $14,800 per person</p>
         </div>
       </div>
       <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=500&q=80" alt="Morocco" />
+        <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=500&q=80" alt="Morocco"/>
         <div class="exp-overlay"></div>
         <div class="exp-content">
           <div class="exp-num">04</div>
-          <h3 class="exp-title">Imperial<br>Morocco</h3>
-          <p class="exp-dur">9 Nights · Riad Collection</p>
-          <p class="exp-price">From USD $5,900 per person</p>
+          <h3 class="exp-title" data-i18n="exp.4.title">Imperial<br>Morocco</h3>
+          <p class="exp-dur" data-i18n="exp.4.dur">9 Nights · Riad Collection</p>
+          <p class="exp-price" data-i18n="exp.4.price">From USD $5,900 per person</p>
         </div>
       </div>
       <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1580654712603-eb43273aff33?w=500&q=80" alt="Iceland" />
+        <img src="https://images.unsplash.com/photo-1580654712603-eb43273aff33?w=500&q=80" alt="Iceland"/>
         <div class="exp-overlay"></div>
         <div class="exp-content">
           <div class="exp-num">05</div>
-          <h3 class="exp-title">Iceland<br>Aurora</h3>
-          <p class="exp-dur">7 Nights · Glass Cabin</p>
-          <p class="exp-price">From USD $8,400 per person</p>
+          <h3 class="exp-title" data-i18n="exp.5.title">Iceland<br>Aurora</h3>
+          <p class="exp-dur" data-i18n="exp.5.dur">7 Nights · Glass Cabin</p>
+          <p class="exp-price" data-i18n="exp.5.price">From USD $8,400 per person</p>
         </div>
       </div>
     </div>
@@ -829,61 +456,40 @@ footer {
 <!-- STATS -->
 <section id="stats" class="section-pad">
   <div class="stats-inner">
-    <div class="stat-item reveal">
-      <div class="stat-num" data-target="2400">0</div>
-      <div class="stat-label">Luxury Properties</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-1">
-      <div class="stat-num" data-target="80">0</div>
-      <div class="stat-label">Countries Covered</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-2">
-      <div class="stat-num" data-target="12000">0</div>
-      <div class="stat-label">Journeys Crafted</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-3">
-      <div class="stat-num" data-target="98">0</div>
-      <div class="stat-label">% Client Satisfaction</div>
-    </div>
+    <div class="stat-item reveal"><div class="stat-num" data-target="2400">0</div><div class="stat-label" data-i18n="stats.1">Luxury Properties</div></div>
+    <div class="stat-item reveal reveal-delay-1"><div class="stat-num" data-target="80">0</div><div class="stat-label" data-i18n="stats.2">Countries Covered</div></div>
+    <div class="stat-item reveal reveal-delay-2"><div class="stat-num" data-target="12000">0</div><div class="stat-label" data-i18n="stats.3">Journeys Crafted</div></div>
+    <div class="stat-item reveal reveal-delay-3"><div class="stat-num" data-target="98">0</div><div class="stat-label" data-i18n="stats.4">Client Satisfaction</div></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section id="testimonials" class="section-pad">
-  <div class="reveal"><span class="section-label">Traveler Stories</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Words From Our<br><em>Guests</em></h2>
+  <div class="reveal"><span class="section-label" data-i18n="testi.label">Traveler Stories</span></div>
+  <h2 class="section-title reveal reveal-delay-1" data-i18n="testi.title.html">Words From Our<br><em>Guests</em></h2>
   <div class="testi-track">
     <div class="testi-card reveal">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.</p>
+      <p class="testi-text" data-i18n="testi.1.text">Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.</p>
       <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b9e63290?w=100&q=80" alt="Sarah" />
-        <div>
-          <div class="testi-name">Sarah Chen</div>
-          <div class="testi-from">Kyoto & Tokyo Journey</div>
-        </div>
+        <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b9e63290?w=100&q=80" alt="Sarah"/>
+        <div><div class="testi-name">Sarah Chen</div><div class="testi-from" data-i18n="testi.1.from">Kyoto & Tokyo Journey</div></div>
       </div>
     </div>
     <div class="testi-card reveal reveal-delay-1">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise — this is what luxury travel truly means.</p>
+      <p class="testi-text" data-i18n="testi.2.text">The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise — this is what luxury travel truly means.</p>
       <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James" />
-        <div>
-          <div class="testi-name">James Whitmore</div>
-          <div class="testi-from">Kenya Safari Odyssey</div>
-        </div>
+        <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James"/>
+        <div><div class="testi-name">James Whitmore</div><div class="testi-from" data-i18n="testi.2.from">Kenya Safari Odyssey</div></div>
       </div>
     </div>
     <div class="testi-card reveal reveal-delay-2">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.</p>
+      <p class="testi-text" data-i18n="testi.3.text">Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.</p>
       <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&q=80" alt="Elena" />
-        <div>
-          <div class="testi-name">Elena & Marco Rossi</div>
-          <div class="testi-from">Maldives Private Isle</div>
-        </div>
+        <img class="testi-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&q=80" alt="Elena"/>
+        <div><div class="testi-name">Elena & Marco Rossi</div><div class="testi-from" data-i18n="testi.3.from">Maldives Private Isle</div></div>
       </div>
     </div>
   </div>
@@ -893,11 +499,11 @@ footer {
 <section id="cta-band">
   <div class="cta-bg"></div>
   <div class="cta-content reveal">
-    <h2 class="cta-title">Begin Your<br><em>Extraordinary</em><br>Journey</h2>
-    <p class="cta-sub">Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.</p>
-    <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
-      <a href="#" class="btn-primary">Start Planning</a>
-      <a href="#" class="btn-ghost">Schedule a Call</a>
+    <h2 class="cta-title" data-i18n="cta.title.html">Begin Your<br><em>Extraordinary</em><br>Journey</h2>
+    <p class="cta-sub" data-i18n="cta.sub">Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.</p>
+    <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
+      <a href="#" class="btn-primary" data-i18n="cta.btn1">Start Planning</a>
+      <a href="#" class="btn-ghost" data-i18n="cta.btn2">Schedule a Call</a>
     </div>
   </div>
 </section>
@@ -907,71 +513,336 @@ footer {
   <div class="footer-top">
     <div>
       <div class="footer-logo">LUMINA</div>
-      <p class="footer-tagline">Crafting extraordinary journeys for those who refuse to settle for the ordinary. The world is your canvas.</p>
-      <div class="social-links" style="margin-top:2rem;">
-        <a href="#" class="social-link">IG</a>
-        <a href="#" class="social-link">TW</a>
-        <a href="#" class="social-link">LI</a>
-        <a href="#" class="social-link">YT</a>
+      <p class="footer-tagline" data-i18n="footer.tagline">Crafting extraordinary journeys for those who refuse to settle for the ordinary. The world is your canvas.</p>
+      <div class="social-links" style="margin-top:2rem">
+        <a href="#" class="social-link">IG</a><a href="#" class="social-link">TW</a>
+        <a href="#" class="social-link">LI</a><a href="#" class="social-link">YT</a>
       </div>
     </div>
     <div class="footer-col">
-      <h4>Destinations</h4>
+      <h4 data-i18n="footer.col1.title">Destinations</h4>
       <ul>
-        <li><a href="#">Europe</a></li>
-        <li><a href="#">Asia Pacific</a></li>
-        <li><a href="#">Middle East</a></li>
-        <li><a href="#">Africa & Safari</a></li>
-        <li><a href="#">The Americas</a></li>
+        <li><a href="#" data-i18n="footer.col1.1">Europe</a></li>
+        <li><a href="#" data-i18n="footer.col1.2">Asia Pacific</a></li>
+        <li><a href="#" data-i18n="footer.col1.3">Middle East</a></li>
+        <li><a href="#" data-i18n="footer.col1.4">Africa & Safari</a></li>
+        <li><a href="#" data-i18n="footer.col1.5">The Americas</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Experiences</h4>
+      <h4 data-i18n="footer.col2.title">Experiences</h4>
       <ul>
-        <li><a href="#">Private Yachts</a></li>
-        <li><a href="#">Wellness Retreats</a></li>
-        <li><a href="#">Cultural Immersion</a></li>
-        <li><a href="#">Adventure Luxury</a></li>
-        <li><a href="#">Honeymoon</a></li>
+        <li><a href="#" data-i18n="footer.col2.1">Private Yachts</a></li>
+        <li><a href="#" data-i18n="footer.col2.2">Wellness Retreats</a></li>
+        <li><a href="#" data-i18n="footer.col2.3">Cultural Immersion</a></li>
+        <li><a href="#" data-i18n="footer.col2.4">Adventure Luxury</a></li>
+        <li><a href="#" data-i18n="footer.col2.5">Honeymoon</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Company</h4>
+      <h4 data-i18n="footer.col3.title">Company</h4>
       <ul>
-        <li><a href="#">About Lumina</a></li>
-        <li><a href="#">Our Team</a></li>
-        <li><a href="#">Sustainability</a></li>
-        <li><a href="#">Press</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" data-i18n="footer.col3.1">About Lumina</a></li>
+        <li><a href="#" data-i18n="footer.col3.2">Our Team</a></li>
+        <li><a href="#" data-i18n="footer.col3.3">Sustainability</a></li>
+        <li><a href="#" data-i18n="footer.col3.4">Press</a></li>
+        <li><a href="#" data-i18n="footer.col3.5">Contact</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2026 Lumina Voyages. All rights reserved. Luxury curated, never replicated.</p>
-    <div style="display:flex;gap:2rem;">
-      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Privacy Policy</a>
-      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Terms of Service</a>
+    <p class="footer-copy" data-i18n="footer.copy">© 2026 Lumina Voyages. All rights reserved. Luxury curated, never replicated.</p>
+    <div style="display:flex;gap:2rem">
+      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25)" data-i18n="footer.privacy">Privacy Policy</a>
+      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25)" data-i18n="footer.terms">Terms of Service</a>
     </div>
   </div>
 </footer>
 
 <script>
-/* ─── LOADER ─── */
-window.addEventListener('load', () => {
+/* ════════════════════════════════════════════
+   TRANSLATIONS
+════════════════════════════════════════════ */
+const i18n = {
+  en: {
+    "nav.destinations": "Destinations",
+    "nav.experiences": "Experiences",
+    "nav.about": "About",
+    "nav.stories": "Stories",
+    "nav.cta": "Book Journey",
+    "hero.eyebrow": "Est. 2019 · Luxury Travel Curation",
+    "hero.title.html": "Beyond <em>Ordinary</em><br>Horizons",
+    "hero.sub": "Bespoke journeys crafted for those who seek the extraordinary. Every detail, every moment — curated with precision.",
+    "hero.cta1": "Explore Destinations",
+    "hero.cta2": "View Experiences",
+    "hero.scroll": "Scroll",
+    "features.label": "The Lumina Difference",
+    "features.title.html": "Crafted for the<br><em>Discerning Traveler</em>",
+    "features.b1.tag": "Signature Experience",
+    "features.b1.title.html": "Private Island<br>Sanctuaries",
+    "features.b1.text": "Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.",
+    "features.b2.tag": "White Glove Service",
+    "features.b2.title": "24/7 Dedicated Concierge",
+    "features.b2.text": "A personal travel curator available around the clock to anticipate your every need before you even voice it.",
+    "features.b3.tag": "Handpicked",
+    "features.b3.title": "Elite Properties",
+    "features.b3.text": "Access to 2,400+ five-star properties and private villas across 80 countries.",
+    "features.b4.tag": "Cultural",
+    "features.b4.title": "Deep Immersion",
+    "features.b5.tag": "Sustainability",
+    "features.b5.title": "Mindful Luxury",
+    "features.b5.text": "Carbon-neutral journeys that support local communities and ecosystems.",
+    "features.b6.tag": "Tailor-Made",
+    "features.b6.title": "Every Journey is Yours Alone",
+    "features.b6.text": "No two Lumina itineraries are alike. We begin with your story and build an experience around it — with obsessive attention to detail.",
+    "features.b7.tag": "Exclusive Access",
+    "features.b7.title": "Private Villas & Estates",
+    "dest.label": "Where to Next",
+    "dest.title.html": "World's Most<br><em>Coveted</em> Destinations",
+    "dest.viewall": "View All →",
+    "dest.1.country": "Greece", "dest.1.from": "From $4,200", "dest.1.nights": "7–14 nights",
+    "dest.2.country": "Maldives", "dest.2.name": "North Malé Atoll", "dest.2.from": "From $6,800",
+    "dest.3.country": "Japan", "dest.3.name": "Kyoto & Hakone", "dest.3.from": "From $5,500",
+    "dest.4.country": "Italy", "dest.4.name": "Amalfi Coast", "dest.4.from": "From $3,900", "dest.4.nights": "5–10 nights",
+    "exp.label": "Signature Journeys",
+    "exp.title.html": "Curated <em>Experiences</em><br>Unlike Any Other",
+    "exp.1.title": "Sacred Bali<br>Retreat", "exp.1.dur": "10 Nights · Private Villa", "exp.1.price": "From USD $7,200 per person",
+    "exp.2.title": "Kenya Safari<br>Odyssey", "exp.2.dur": "8 Nights · Luxury Camp", "exp.2.price": "From USD $9,500 per person",
+    "exp.3.title": "Norwegian<br>Fjords", "exp.3.dur": "12 Nights · Private Yacht", "exp.3.price": "From USD $14,800 per person",
+    "exp.4.title": "Imperial<br>Morocco", "exp.4.dur": "9 Nights · Riad Collection", "exp.4.price": "From USD $5,900 per person",
+    "exp.5.title": "Iceland<br>Aurora", "exp.5.dur": "7 Nights · Glass Cabin", "exp.5.price": "From USD $8,400 per person",
+    "stats.1": "Luxury Properties", "stats.2": "Countries Covered", "stats.3": "Journeys Crafted", "stats.4": "Client Satisfaction",
+    "testi.label": "Traveler Stories",
+    "testi.title.html": "Words From Our<br><em>Guests</em>",
+    "testi.1.text": "Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.",
+    "testi.1.from": "Kyoto & Tokyo Journey",
+    "testi.2.text": "The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise — this is what luxury travel truly means.",
+    "testi.2.from": "Kenya Safari Odyssey",
+    "testi.3.text": "Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.",
+    "testi.3.from": "Maldives Private Isle",
+    "cta.title.html": "Begin Your<br><em>Extraordinary</em><br>Journey",
+    "cta.sub": "Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.",
+    "cta.btn1": "Start Planning", "cta.btn2": "Schedule a Call",
+    "footer.tagline": "Crafting extraordinary journeys for those who refuse to settle for the ordinary. The world is your canvas.",
+    "footer.col1.title": "Destinations", "footer.col1.1": "Europe", "footer.col1.2": "Asia Pacific", "footer.col1.3": "Middle East", "footer.col1.4": "Africa & Safari", "footer.col1.5": "The Americas",
+    "footer.col2.title": "Experiences", "footer.col2.1": "Private Yachts", "footer.col2.2": "Wellness Retreats", "footer.col2.3": "Cultural Immersion", "footer.col2.4": "Adventure Luxury", "footer.col2.5": "Honeymoon",
+    "footer.col3.title": "Company", "footer.col3.1": "About Lumina", "footer.col3.2": "Our Team", "footer.col3.3": "Sustainability", "footer.col3.4": "Press", "footer.col3.5": "Contact",
+    "footer.copy": "© 2026 Lumina Voyages. All rights reserved. Luxury curated, never replicated.",
+    "footer.privacy": "Privacy Policy", "footer.terms": "Terms of Service",
+    "marquee": ["Santorini","·","Maldives","·","Kyoto","·","Amalfi Coast","·","Norwegian Fjords","·","Bali","·","Morocco","·","Kenya Safari","·","Iceland Auroras","·","Swiss Alps","·"]
+  },
+
+  ru: {
+    "nav.destinations": "Направления",
+    "nav.experiences": "Путешествия",
+    "nav.about": "О нас",
+    "nav.stories": "Отзывы",
+    "nav.cta": "Забронировать",
+    "hero.eyebrow": "Осн. 2019 · Люксовые путешествия",
+    "hero.title.html": "За пределами<br><em>Обычного</em>",
+    "hero.sub": "Эксклюзивные маршруты для тех, кто ищет нечто исключительное. Каждая деталь, каждый момент — выверены до совершенства.",
+    "hero.cta1": "Направления",
+    "hero.cta2": "Путешествия",
+    "hero.scroll": "Листать",
+    "features.label": "Отличие Lumina",
+    "features.title.html": "Создано для<br><em>Истинного Путешественника</em>",
+    "features.b1.tag": "Знаковый опыт",
+    "features.b1.title.html": "Частные<br>Островные Виллы",
+    "features.b1.text": "Эксклюзивный доступ к самым уединённым курортам мира, созданным для абсолютного уединения и роскоши.",
+    "features.b2.tag": "Сервис высшего класса",
+    "features.b2.title": "Консьерж 24/7",
+    "features.b2.text": "Персональный куратор путешествий, который предугадает каждое ваше желание прежде, чем вы его выскажете.",
+    "features.b3.tag": "Отборные объекты",
+    "features.b3.title": "Элитная Недвижимость",
+    "features.b3.text": "Более 2 400 пятизвёздочных отелей и частных вилл в 80 странах мира.",
+    "features.b4.tag": "Культурное погружение",
+    "features.b4.title": "Глубокое Единение",
+    "features.b5.tag": "Устойчивость",
+    "features.b5.title": "Осознанная Роскошь",
+    "features.b5.text": "Углерод-нейтральные маршруты, поддерживающие местные сообщества и экосистемы.",
+    "features.b6.tag": "Индивидуальный подход",
+    "features.b6.title": "Каждое Путешествие — Только Ваше",
+    "features.b6.text": "Никакие два маршрута Lumina не повторяются. Мы начинаем с вашей истории и создаём вокруг неё уникальный опыт — с маниакальным вниманием к деталям.",
+    "features.b7.tag": "Эксклюзивный доступ",
+    "features.b7.title": "Частные Виллы и Поместья",
+    "dest.label": "Куда дальше",
+    "dest.title.html": "Самые<br><em>Желанные</em> Направления Мира",
+    "dest.viewall": "Все направления →",
+    "dest.1.country": "Греция", "dest.1.from": "От $4 200", "dest.1.nights": "7–14 ночей",
+    "dest.2.country": "Мальдивы", "dest.2.name": "Атолл Северный Мале", "dest.2.from": "От $6 800",
+    "dest.3.country": "Япония", "dest.3.name": "Киото и Хаконэ", "dest.3.from": "От $5 500",
+    "dest.4.country": "Италия", "dest.4.name": "Амальфитанское побережье", "dest.4.from": "От $3 900", "dest.4.nights": "5–10 ночей",
+    "exp.label": "Авторские Маршруты",
+    "exp.title.html": "Уникальные <em>Впечатления</em><br>Ни на что не похожие",
+    "exp.1.title": "Священный Бали<br>Ретрит", "exp.1.dur": "10 ночей · Частная вилла", "exp.1.price": "От $7 200 с человека",
+    "exp.2.title": "Сафари в Кении<br>Одиссея", "exp.2.dur": "8 ночей · Люкс-кемп", "exp.2.price": "От $9 500 с человека",
+    "exp.3.title": "Норвежские<br>Фьорды", "exp.3.dur": "12 ночей · Частная яхта", "exp.3.price": "От $14 800 с человека",
+    "exp.4.title": "Императорское<br>Марокко", "exp.4.dur": "9 ночей · Коллекция риадов", "exp.4.price": "От $5 900 с человека",
+    "exp.5.title": "Исландское<br>Северное Сияние", "exp.5.dur": "7 ночей · Стеклянный домик", "exp.5.price": "От $8 400 с человека",
+    "stats.1": "Люксовых Объектов", "stats.2": "Стран", "stats.3": "Маршрутов Создано", "stats.4": "Удовлетворённость",
+    "testi.label": "Истории Путешественников",
+    "testi.title.html": "Слова Наших<br><em>Гостей</em>",
+    "testi.1.text": "Lumina превратила то, что могло стать обычным отпуском, в опыт, который переопределил для нас смысл путешествий. Каждый момент был наполнен смыслом, каждая деталь — безупречна.",
+    "testi.1.from": "Путешествие в Киото и Токио",
+    "testi.2.text": "Частный сафари-лагерь, который они организовали, превзошёл все мои ожидания. Просыпаться от рыка львов у палатки, шампанское на рассвете — вот что такое настоящая роскошь.",
+    "testi.2.from": "Сафари-одиссея в Кении",
+    "testi.3.text": "Наша годовщина на Мальдивах была спланирована с такой личной теплотой, что казалось, они знают нас лучше нас самих. С тех пор мы возвращаемся каждый год.",
+    "testi.3.from": "Частный остров на Мальдивах",
+    "cta.title.html": "Начните Своё<br><em>Исключительное</em><br>Путешествие",
+    "cta.sub": "Поговорите с куратором Lumina и позвольте нам создать опыт, который будет полностью и неповторимо вашим.",
+    "cta.btn1": "Начать планирование", "cta.btn2": "Записаться на звонок",
+    "footer.tagline": "Создаём исключительные путешествия для тех, кто не готов мириться с обычным. Мир — это ваш холст.",
+    "footer.col1.title": "Направления", "footer.col1.1": "Европа", "footer.col1.2": "Азиатско-Тихоокеанский регион", "footer.col1.3": "Ближний Восток", "footer.col1.4": "Африка и Сафари", "footer.col1.5": "Америка",
+    "footer.col2.title": "Путешествия", "footer.col2.1": "Частные яхты", "footer.col2.2": "Велнес-ретриты", "footer.col2.3": "Культурное погружение", "footer.col2.4": "Приключенческая роскошь", "footer.col2.5": "Медовый месяц",
+    "footer.col3.title": "Компания", "footer.col3.1": "О Lumina", "footer.col3.2": "Наша команда", "footer.col3.3": "Устойчивость", "footer.col3.4": "Пресса", "footer.col3.5": "Контакты",
+    "footer.copy": "© 2026 Lumina Voyages. Все права защищены. Роскошь — персонально.",
+    "footer.privacy": "Конфиденциальность", "footer.terms": "Условия использования",
+    "marquee": ["Санторини","·","Мальдивы","·","Киото","·","Амальфи","·","Норвежские фьорды","·","Бали","·","Марокко","·","Сафари в Кении","·","Северное сияние","·","Швейцарские Альпы","·"]
+  },
+
+  uz: {
+    "nav.destinations": "Yo'nalishlar",
+    "nav.experiences": "Sayohatlar",
+    "nav.about": "Biz haqimizda",
+    "nav.stories": "Hikoyalar",
+    "nav.cta": "Bron qilish",
+    "hero.eyebrow": "Tash. 2019 · Hashamatli Sayohat",
+    "hero.title.html": "<em>Oddiy</em> Chegaralardan<br>Uzoqda",
+    "hero.sub": "Noodatiylikni izlaganlar uchun maxsus tayyorlangan sayohatlar. Har bir tafsilot, har bir lahza — mukammal tarzda tanlangan.",
+    "hero.cta1": "Yo'nalishlarni Ko'rish",
+    "hero.cta2": "Sayohatlarni Ko'rish",
+    "hero.scroll": "Pastga",
+    "features.label": "Lumina Farqi",
+    "features.title.html": "Haqiqiy <em>Sayohatchiga</em><br>Yaratilgan",
+    "features.b1.tag": "Alohida Tajriba",
+    "features.b1.title.html": "Xususiy Orol<br>Villalari",
+    "features.b1.text": "Dunyoning eng yashirin kurortlariga eksklyuziv kirish imkoni — mutlaq maxfiylik va hashamat uchun.",
+    "features.b2.tag": "Yuqori Darajali Xizmat",
+    "features.b2.title": "24/7 Shaxsiy Konsyerj",
+    "features.b2.text": "Har bir ehtiyojingizni siz aytishdan oldin sezadigan shaxsiy sayohat kuratoringiz doimo yoningizda.",
+    "features.b3.tag": "Tanlab Olingan",
+    "features.b3.title": "Elite Mulklar",
+    "features.b3.text": "80 mamlakatdagi 2 400+ besh yulduzli mehmonxonalar va xususiy villaлarga kirish.",
+    "features.b4.tag": "Madaniy",
+    "features.b4.title": "Chuqur Singib Ketish",
+    "features.b5.tag": "Barqarorlik",
+    "features.b5.title": "Ongli Hashamat",
+    "features.b5.text": "Mahalliy jamoalar va ekotizimlarni qo'llab-quvvatlaydigan karbon-neytral sayohatlar.",
+    "features.b6.tag": "Individual Yondashuv",
+    "features.b6.title": "Har Sayohat Faqat Sizniki",
+    "features.b6.text": "Hech qanday ikki Lumina marshrutlari bir xil emas. Biz sizning hikoyangizdan boshlaymiz va atrofida tajriba yaratamiz — mayda-chuydalarga ega e'tibor bilan.",
+    "features.b7.tag": "Eksklyuziv Kirish",
+    "features.b7.title": "Xususiy Villalar va Mulklar",
+    "dest.label": "Keyingi Manzil",
+    "dest.title.html": "Dunyoning Eng<br><em>Istakli</em> Yo'nalishlari",
+    "dest.viewall": "Barchasini Ko'rish →",
+    "dest.1.country": "Gretsiya", "dest.1.from": "$4 200 dan", "dest.1.nights": "7–14 kecha",
+    "dest.2.country": "Maldiv orollari", "dest.2.name": "Shimoliy Male Atoll", "dest.2.from": "$6 800 dan",
+    "dest.3.country": "Yaponiya", "dest.3.name": "Kioto va Xakone", "dest.3.from": "$5 500 dan",
+    "dest.4.country": "Italiya", "dest.4.name": "Amalfi qirg'og'i", "dest.4.from": "$3 900 dan", "dest.4.nights": "5–10 kecha",
+    "exp.label": "Maxsus Marshrutlar",
+    "exp.title.html": "Boshqacha <em>Tajribalar</em><br>Noyob va Unutilmas",
+    "exp.1.title": "Muqaddas Bali<br>Retreti", "exp.1.dur": "10 kecha · Xususiy villa", "exp.1.price": "Kishi boshiga $7 200 dan",
+    "exp.2.title": "Keniya Safari<br>Odisseyasi", "exp.2.dur": "8 kecha · Hashamatli lager", "exp.2.price": "Kishi boshiga $9 500 dan",
+    "exp.3.title": "Norvegiya<br>Fyordlari", "exp.3.dur": "12 kecha · Xususiy yaxta", "exp.3.price": "Kishi boshiga $14 800 dan",
+    "exp.4.title": "Imperator<br>Marokash", "exp.4.dur": "9 kecha · Riad koleksiyasi", "exp.4.price": "Kishi boshiga $5 900 dan",
+    "exp.5.title": "Islandiya<br>Shimoliy Nuri", "exp.5.dur": "7 kecha · Shisha kabina", "exp.5.price": "Kishi boshiga $8 400 dan",
+    "stats.1": "Hashamatli Mulklar", "stats.2": "Davlat", "stats.3": "Yaratilgan Marshrutlar", "stats.4": "Mijoz Mamnuniyati",
+    "testi.label": "Sayohatchilar Hikoyalari",
+    "testi.title.html": "Mehmonlarimizning<br><em>So'zlari</em>",
+    "testi.1.text": "Lumina oddiy ta'tilni sayohatning ma'nosini qaytadan belgilab bergan tajribaga aylantirdi. Har bir lahza maqsadli, har bir tafsilot mukammal edi.",
+    "testi.1.from": "Kioto va Tokio Sayohati",
+    "testi.2.text": "Ular tashkil etgan xususiy safari lager xayolimga ham kelmagan narsa edi. Chodirdan tashqarida sherlar ovozi bilan uyg'onish, tong shafag'ida shampan — haqiqiy hashamat shu.",
+    "testi.2.from": "Keniya Safari Odisseyasi",
+    "testi.3.text": "Maldivlardagi yillik sayohatimiz shunchalik shaxsiy tarzda tashkil etildiki, ular bizni o'zimizdan yaxshiroq bilishadi degan his tug'ildi. Endi har yili qaytib kelamiz.",
+    "testi.3.from": "Maldiv Xususiy Oroli",
+    "cta.title.html": "O'zingizning<br><em>Noyob</em><br>Sayohatingizni Boshlang",
+    "cta.sub": "Lumina kuratori bilan gaplashing va butunlay sizniki bo'lgan tajribani birga loyihalaylik.",
+    "cta.btn1": "Rejalashtirish", "cta.btn2": "Qo'ng'iroq Belgilash",
+    "footer.tagline": "Oddiy narsalar bilan qanoatlanmaydigan odamlar uchun ajoyib sayohatlar. Dunyo — sizning kanvasingiz.",
+    "footer.col1.title": "Yo'nalishlar", "footer.col1.1": "Yevropa", "footer.col1.2": "Osiyo-Tinch Okeani", "footer.col1.3": "Yaqin Sharq", "footer.col1.4": "Afrika va Safari", "footer.col1.5": "Amerika",
+    "footer.col2.title": "Sayohatlar", "footer.col2.1": "Xususiy Yaxtalar", "footer.col2.2": "Wellness Retretar", "footer.col2.3": "Madaniy Sayohat", "footer.col2.4": "Sarguzasht Hashamati", "footer.col2.5": "Asal Oyi",
+    "footer.col3.title": "Kompaniya", "footer.col3.1": "Lumina Haqida", "footer.col3.2": "Jamoamiz", "footer.col3.3": "Barqarorlik", "footer.col3.4": "Matbuot", "footer.col3.5": "Aloqa",
+    "footer.copy": "© 2026 Lumina Voyages. Barcha huquqlar himoyalangan.",
+    "footer.privacy": "Maxfiylik Siyosati", "footer.terms": "Foydalanish Shartlari",
+    "marquee": ["Santorini","·","Maldiv","·","Kioto","·","Amalfi","·","Norvegiya Fyordlari","·","Bali","·","Marokash","·","Keniya Safarisi","·","Shimoliy Nur","·","Shveytsariya Alplar","·"]
+  }
+};
+
+/* ════════════════════════════════════════════
+   LANGUAGE SWITCHER
+════════════════════════════════════════════ */
+let currentLang = 'en';
+
+function applyLang(lang) {
+  const t = i18n[lang];
+  const elements = document.querySelectorAll('[data-i18n]');
+
+  // Fade out
+  elements.forEach(el => el.classList.add('lang-fade'));
+
   setTimeout(() => {
-    document.getElementById('loader').classList.add('hide');
-  }, 2200);
+    elements.forEach(el => {
+      const key = el.dataset.i18n;
+      if (!t[key]) return;
+      if (key.endsWith('.html')) {
+        el.innerHTML = t[key];
+      } else {
+        el.textContent = t[key];
+      }
+    });
+
+    // Update marquee
+    updateMarquee(lang);
+
+    // Fade in
+    setTimeout(() => {
+      elements.forEach(el => el.classList.remove('lang-fade'));
+    }, 30);
+  }, 280);
+
+  // Update lang buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  document.documentElement.lang = lang;
+  currentLang = lang;
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.lang !== currentLang) applyLang(btn.dataset.lang);
+  });
 });
 
-/* ─── CUSTOM CURSOR ─── */
+function updateMarquee(lang) {
+  const items = i18n[lang].marquee;
+  const inner = document.getElementById('marquee-inner');
+  inner.innerHTML = [...items, ...items].map(t =>
+    `<span${t === '·' ? ' class="dot"' : ''}>${t}</span>`
+  ).join('');
+}
+
+/* ════════════════════════════════════════════
+   LOADER
+════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  updateMarquee('en');
+  setTimeout(() => document.getElementById('loader').classList.add('hide'), 2200);
+});
+
+/* ════════════════════════════════════════════
+   CUSTOM CURSOR
+════════════════════════════════════════════ */
 const dot = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 function animCursor() {
-  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  dot.style.left = mx+'px'; dot.style.top = my+'px';
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animCursor);
 }
 animCursor();
@@ -980,2328 +851,112 @@ document.querySelectorAll('a,button,.dest-card,.exp-card,.bento-card,.testi-card
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-expand'));
 });
 
-/* ─── NAVBAR SCROLL ─── */
+/* ════════════════════════════════════════════
+   NAVBAR SCROLL
+════════════════════════════════════════════ */
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-});
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
 
-/* ─── MARQUEE CONTENT ─── */
-const items = ['Santorini','·','Maldives','·','Kyoto','·','Amalfi Coast','·','Norwegian Fjords','·','Bali','·','Morocco','·','Kenya Safari','·','Iceland Auroras','·','Swiss Alps','·'];
-const inner = document.getElementById('marquee-inner');
-const full = [...items,...items].map(t => `<span${t==='·'?' class="dot"':''}>${t}</span>`).join('');
-inner.innerHTML = full;
-
-/* ─── SCROLL REVEAL ─── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+/* ════════════════════════════════════════════
+   SCROLL REVEAL
+════════════════════════════════════════════ */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-/* ─── ANIMATED COUNTERS ─── */
-function animateCount(el, target, duration = 1800) {
+/* ════════════════════════════════════════════
+   ANIMATED COUNTERS
+════════════════════════════════════════════ */
+function animateCount(el, target, duration=1800) {
   let start = null;
-  const step = (ts) => {
+  const step = ts => {
     if (!start) start = ts;
-    const progress = Math.min((ts - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
+    const p = Math.min((ts-start)/duration, 1);
+    const eased = 1 - Math.pow(1-p, 3);
     el.textContent = Math.floor(eased * target).toLocaleString();
-    if (progress < 1) requestAnimationFrame(step);
+    if (p < 1) requestAnimationFrame(step);
     else el.textContent = target.toLocaleString() + (el.dataset.target === '98' ? '%' : '+');
   };
   requestAnimationFrame(step);
 }
-const statsObserver = new IntersectionObserver((entries) => {
+const statsObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      const target = parseInt(e.target.dataset.target);
-      animateCount(e.target, target);
-      statsObserver.unobserve(e.target);
+      animateCount(e.target, parseInt(e.target.dataset.target));
+      statsObs.unobserve(e.target);
     }
   });
 }, { threshold: 0.5 });
-document.querySelectorAll('.stat-num').forEach(el => statsObserver.observe(el));
+document.querySelectorAll('.stat-num').forEach(el => statsObs.observe(el));
 
-/* ─── BENTO CARD MOUSE GLOW ─── */
+/* ════════════════════════════════════════════
+   BENTO MOUSE GLOW
+════════════════════════════════════════════ */
 document.querySelectorAll('.bento-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
-    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
-    card.style.setProperty('--mx', x + '%');
-    card.style.setProperty('--my', y + '%');
+    card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
   });
 });
 
-/* ─── PARTICLES ─── */
+/* ════════════════════════════════════════════
+   PARTICLES
+════════════════════════════════════════════ */
 const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
-let particles = [], W, H;
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-for (let i = 0; i < 65; i++) {
-  particles.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.2 + 0.2,
-    vx: (Math.random() - 0.5) * 0.18,
-    vy: (Math.random() - 0.5) * 0.18,
-    alpha: Math.random() * 0.4 + 0.05,
-    gold: Math.random() > 0.75,
-  });
+let particles=[], W, H;
+function resize() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for (let i=0; i<65; i++) {
+  particles.push({ x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
+    r:Math.random()*1.2+0.2, vx:(Math.random()-0.5)*0.18, vy:(Math.random()-0.5)*0.18,
+    alpha:Math.random()*0.4+0.05, gold:Math.random()>0.75 });
 }
 function drawParticles() {
-  ctx.clearRect(0, 0, W, H);
+  ctx.clearRect(0,0,W,H);
   particles.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
     ctx.fillStyle = p.gold ? `rgba(201,169,110,${p.alpha})` : `rgba(245,240,235,${p.alpha})`;
     ctx.fill();
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
   });
   requestAnimationFrame(drawParticles);
 }
 drawParticles();
 
-/* ─── PARALLAX HERO ─── */
+/* ════════════════════════════════════════════
+   PARALLAX HERO
+════════════════════════════════════════════ */
 window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
   const heroBg = document.querySelector('.hero-bg');
-  if (heroBg) heroBg.style.transform = `scale(1.0) translateY(${scrollY * 0.3}px)`;
+  if (heroBg) heroBg.style.transform = `scale(1.0) translateY(${window.scrollY*0.3}px)`;
 });
 
-/* ─── HORIZONTAL SCROLL DRAG ─── */
+/* ════════════════════════════════════════════
+   HORIZONTAL SCROLL DRAG
+════════════════════════════════════════════ */
 const track = document.querySelector('.hscroll-wrapper');
 if (track) {
-  let isDown = false, startX, scrollLeft;
-  track.addEventListener('mousedown', e => { isDown = true; track.style.cursor = 'grabbing'; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-  track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = ''; });
-  track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = ''; });
+  let isDown=false, startX, scrollLeft;
+  track.addEventListener('mousedown', e => { isDown=true; track.style.cursor='grabbing'; startX=e.pageX-track.offsetLeft; scrollLeft=track.scrollLeft; });
+  track.addEventListener('mouseleave', () => { isDown=false; track.style.cursor=''; });
+  track.addEventListener('mouseup', () => { isDown=false; track.style.cursor=''; });
   track.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - track.offsetLeft;
-    track.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    if (!isDown) return; e.preventDefault();
+    track.scrollLeft = scrollLeft - (e.pageX-track.offsetLeft-startX)*1.4;
   });
 }
 
-/* ─── SMOOTH SCROLL ─── */
+/* ════════════════════════════════════════════
+   SMOOTH SCROLL
+════════════════════════════════════════════ */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
-  });
-});
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LUMINA VOYAGES — Luxury Travel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-
-<style>
-/* ─── RESET & BASE ─────────────────────────────────────────────────────────── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #050505;
-  --bg2: #0a0a0a;
-  --white: #f5f0eb;
-  --white-dim: rgba(245,240,235,0.6);
-  --white-faint: rgba(245,240,235,0.15);
-  --gold: #c9a96e;
-  --gold-dim: rgba(201,169,110,0.4);
-  --gold-glow: rgba(201,169,110,0.15);
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.08);
-  --radius: 24px;
-  --radius-sm: 14px;
-  --font-display: 'Cormorant Garamond', serif;
-  --font-body: 'Outfit', sans-serif;
-}
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
-}
-img { display: block; width: 100%; object-fit: cover; }
-a { text-decoration: none; color: inherit; }
-button { cursor: none; border: none; background: none; font-family: var(--font-body); }
-
-/* ─── CUSTOM CURSOR ────────────────────────────────────────────────────────── */
-#cursor-dot {
-  position: fixed; pointer-events: none; z-index: 9999;
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold);
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease, opacity 0.3s;
-  mix-blend-mode: screen;
-}
-#cursor-ring {
-  position: fixed; pointer-events: none; z-index: 9998;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid rgba(201,169,110,0.5);
-  transform: translate(-50%, -50%);
-  transition: all 0.18s cubic-bezier(0.23,1,0.32,1);
-  mix-blend-mode: screen;
-}
-body:hover #cursor-dot { opacity: 1; }
-.cursor-expand #cursor-ring { transform: translate(-50%,-50%) scale(2.2) !important; opacity: 0.4; }
-
-/* ─── LOADER ────────────────────────────────────────────────────────────────── */
-#loader {
-  position: fixed; inset: 0; z-index: 10000;
-  background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-#loader.hide { opacity: 0; visibility: hidden; }
-.loader-logo {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 5rem);
-  font-weight: 300;
-  letter-spacing: 0.3em;
-  color: var(--gold);
-  animation: loader-pulse 1.5s ease infinite;
-}
-.loader-bar-wrap {
-  width: 200px; height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin-top: 2rem; overflow: hidden; border-radius: 2px;
-}
-.loader-bar {
-  height: 100%;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  animation: loader-fill 2s ease forwards;
-}
-@keyframes loader-fill { from { width: 0%; } to { width: 100%; } }
-@keyframes loader-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
-
-/* ─── NOISE OVERLAY ─────────────────────────────────────────────────────────── */
-.noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ─── NAVBAR ─────────────────────────────────────────────────────────────────── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.5rem 4rem;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.5s ease, backdrop-filter 0.5s ease, padding 0.4s ease;
-}
-nav.scrolled {
-  background: rgba(5,5,5,0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  padding: 1rem 4rem;
-  border-bottom: 1px solid var(--glass-border);
-}
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.4rem; letter-spacing: 0.25em;
-  font-weight: 400; color: var(--gold);
-}
-.nav-links {
-  display: flex; gap: 2.5rem; list-style: none;
-}
-.nav-links a {
-  font-size: 0.75rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--white-dim);
-  transition: color 0.3s ease;
-}
-.nav-links a:hover { color: var(--white); }
-.nav-cta {
-  padding: 0.6rem 1.6rem;
-  border: 1px solid var(--gold-dim);
-  border-radius: 100px;
-  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gold);
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-  position: relative; overflow: hidden;
-}
-.nav-cta::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--gold); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.nav-cta:hover { color: var(--bg); }
-.nav-cta:hover::before { transform: scaleX(1); }
-.nav-cta span { position: relative; z-index: 1; }
-
-/* ─── HERO ───────────────────────────────────────────────────────────────────── */
-#hero {
-  position: relative; height: 100vh; display: flex;
-  align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,169,110,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(100,80,200,0.06) 0%, transparent 60%),
-    linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,0.6) 60%, #050505 100%),
-    url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=90') center/cover no-repeat;
-  transform: scale(1.08);
-  animation: hero-zoom 16s ease-out forwards;
-}
-@keyframes hero-zoom { from { transform: scale(1.12); } to { transform: scale(1.0); } }
-.hero-content {
-  position: relative; z-index: 2;
-  text-align: center; max-width: 900px; padding: 0 2rem;
-}
-.hero-eyebrow {
-  font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--gold); opacity: 0;
-  animation: fade-up 1s 1.8s ease forwards;
-  margin-bottom: 1.5rem;
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 10vw, 9rem);
-  font-weight: 300; line-height: 0.92;
-  letter-spacing: -0.01em;
-  opacity: 0;
-  animation: fade-up 1.1s 2s ease forwards;
-}
-.hero-title em { font-style: italic; color: var(--gold); }
-.hero-sub {
-  margin-top: 1.5rem;
-  font-size: clamp(0.9rem, 1.5vw, 1.05rem); font-weight: 300;
-  color: var(--white-dim); line-height: 1.7; max-width: 480px; margin-inline: auto;
-  opacity: 0;
-  animation: fade-up 1s 2.3s ease forwards;
-}
-.hero-actions {
-  margin-top: 3rem; display: flex; gap: 1.2rem;
-  align-items: center; justify-content: center;
-  opacity: 0; animation: fade-up 1s 2.6s ease forwards;
-}
-.btn-primary {
-  padding: 1rem 2.6rem;
-  background: var(--gold);
-  color: var(--bg);
-  border-radius: 100px;
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-  box-shadow: 0 0 40px rgba(201,169,110,0.3);
-  position: relative; overflow: hidden;
-}
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 50px rgba(201,169,110,0.45);
-}
-.btn-ghost {
-  padding: 1rem 2.6rem; border-radius: 100px;
-  border: 1px solid var(--white-faint);
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 300;
-  color: var(--white-dim);
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: var(--white); transform: translateY(-2px); }
-.hero-scroll-hint {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-  z-index: 3; text-align: center;
-  opacity: 0; animation: fade-up 1s 3s ease forwards;
-}
-.scroll-line {
-  width: 1px; height: 60px; background: linear-gradient(180deg, transparent, var(--gold-dim));
-  margin: 0.8rem auto 0;
-  animation: scroll-pulse 2s ease infinite;
-}
-@keyframes scroll-pulse { 0%,100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); transform-origin: top; } }
-.scroll-hint-text { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white-faint); }
-
-/* ─── PARTICLES ─────────────────────────────────────────────────────────────── */
-#particles-canvas {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35;
-}
-
-/* ─── SECTIONS BASE ──────────────────────────────────────────────────────────── */
-section { position: relative; z-index: 2; }
-.section-pad { padding: clamp(5rem, 10vh, 9rem) clamp(1.5rem, 6vw, 6rem); }
-.section-label {
-  font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1rem;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 300; line-height: 1.05;
-}
-.section-title em { font-style: italic; color: var(--gold); }
-
-/* ─── FADE-UP ANIMATION ──────────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.reveal {
-  opacity: 0; transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.12s; }
-.reveal-delay-2 { transition-delay: 0.24s; }
-.reveal-delay-3 { transition-delay: 0.36s; }
-.reveal-delay-4 { transition-delay: 0.48s; }
-
-/* ─── MARQUEE ─────────────────────────────────────────────────────────────────── */
-.marquee-wrap {
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 1.4rem 0; overflow: hidden; background: rgba(201,169,110,0.02);
-}
-.marquee-inner {
-  display: flex; gap: 4rem; white-space: nowrap;
-  animation: marquee 28s linear infinite;
-}
-.marquee-inner span {
-  font-family: var(--font-display); font-size: 1.1rem;
-  font-style: italic; font-weight: 300; color: var(--white-dim); letter-spacing: 0.06em;
-}
-.marquee-inner .dot { color: var(--gold); font-style: normal; }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ─── BENTO GRID ─────────────────────────────────────────────────────────────── */
-#features { background: linear-gradient(180deg, #050505 0%, #080808 100%); }
-.bento-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto;
-  gap: 16px;
-}
-.bento-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 2.2rem;
-  position: relative; overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.4s, box-shadow 0.4s;
-  backdrop-filter: blur(8px);
-}
-.bento-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(201,169,110,0.06), transparent 60%);
-  opacity: 0; transition: opacity 0.4s;
-}
-.bento-card:hover::before { opacity: 1; }
-.bento-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,169,110,0.2);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,169,110,0.08) inset;
-}
-.bc-1 { grid-column: span 7; min-height: 340px; }
-.bc-2 { grid-column: span 5; min-height: 340px; }
-.bc-3 { grid-column: span 4; min-height: 260px; }
-.bc-4 { grid-column: span 4; min-height: 260px; }
-.bc-5 { grid-column: span 4; min-height: 260px; }
-.bc-6 { grid-column: span 6; min-height: 240px; }
-.bc-7 { grid-column: span 6; min-height: 240px; }
-.bento-card .bc-img {
-  position: absolute; inset: 0; z-index: 0;
-  transition: transform 0.7s cubic-bezier(0.23,1,0.32,1);
-}
-.bento-card:hover .bc-img { transform: scale(1.04); }
-.bento-card .bc-img img { height: 100%; }
-.bc-overlay {
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(135deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.3) 100%);
-}
-.bc-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-.bc-tag {
-  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.6rem;
-}
-.bc-title {
-  font-family: var(--font-display); font-size: clamp(1.3rem, 2.5vw, 2rem);
-  font-weight: 300; line-height: 1.15;
-}
-.bc-text { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; margin-top: 0.7rem; }
-.bc-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-
-/* ─── DESTINATIONS ───────────────────────────────────────────────────────────── */
-#destinations { background: var(--bg); }
-.destinations-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.dest-card {
-  position: relative; border-radius: var(--radius); overflow: hidden;
-  aspect-ratio: 3/4; cursor: none;
-  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
-}
-.dest-card:first-child { aspect-ratio: 3/4.5; }
-.dest-card:hover { transform: scale(1.01) translateY(-6px); z-index: 2; }
-.dest-card img {
-  height: 100%; width: 100%; object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
-}
-.dest-card:hover img { transform: scale(1.06); }
-.dest-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.85) 100%);
-  transition: opacity 0.4s;
-}
-.dest-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 2rem 1.8rem;
-}
-.dest-country {
-  font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.4rem;
-}
-.dest-name {
-  font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  font-weight: 300; line-height: 1.1;
-}
-.dest-meta {
-  margin-top: 0.8rem; font-size: 0.78rem; color: var(--white-dim);
-  display: flex; gap: 1rem; align-items: center;
-}
-.dest-badge {
-  display: inline-block; padding: 0.25rem 0.8rem;
-  background: rgba(201,169,110,0.15); border: 1px solid var(--gold-dim);
-  border-radius: 100px; font-size: 0.65rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gold);
-}
-.dest-hover-cta {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--glass); border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transform: scale(0.8);
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-  font-size: 1.1rem;
-}
-.dest-card:hover .dest-hover-cta { opacity: 1; transform: scale(1); }
-
-/* ─── HORIZONTAL SCROLL SECTION ──────────────────────────────────────────────── */
-#experiences { background: linear-gradient(180deg, #050505 0%, #070707 100%); }
-.hscroll-wrapper {
-  margin-top: 3rem;
-  overflow-x: auto; overflow-y: visible;
-  scrollbar-width: none; -ms-overflow-style: none;
-  padding-bottom: 1rem;
-}
-.hscroll-wrapper::-webkit-scrollbar { display: none; }
-.hscroll-track {
-  display: flex; gap: 20px; width: max-content; padding: 1rem 0.5rem 2rem;
-}
-.exp-card {
-  width: 340px; flex-shrink: 0;
-  border-radius: var(--radius); overflow: hidden;
-  position: relative; aspect-ratio: 3/4;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
-  cursor: none;
-}
-.exp-card:hover { transform: scale(1.02) translateY(-6px); }
-.exp-card img { height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.23,1,0.32,1); }
-.exp-card:hover img { transform: scale(1.05); }
-.exp-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 35%, rgba(5,5,5,0.9) 100%);
-}
-.exp-content {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem;
-}
-.exp-num {
-  font-family: var(--font-display); font-size: 0.8rem;
-  color: var(--gold); letter-spacing: 0.2em; margin-bottom: 0.5rem;
-}
-.exp-title {
-  font-family: var(--font-display); font-size: 1.6rem;
-  font-weight: 300; line-height: 1.15;
-}
-.exp-dur { font-size: 0.78rem; color: var(--white-dim); margin-top: 0.5rem; }
-.exp-price {
-  margin-top: 1rem;
-  font-size: 0.72rem; letter-spacing: 0.1em;
-  color: var(--gold);
-}
-
-/* ─── STATS ──────────────────────────────────────────────────────────────────── */
-#stats {
-  background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 60%);
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
-}
-.stats-inner {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 2rem; text-align: center;
-}
-.stat-item {}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300;
-  color: var(--gold); line-height: 1;
-  letter-spacing: -0.02em;
-}
-.stat-label {
-  margin-top: 0.5rem; font-size: 0.75rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--white-dim);
-}
-
-/* ─── TESTIMONIALS ───────────────────────────────────────────────────────────── */
-#testimonials { background: var(--bg); }
-.testi-track {
-  margin-top: 4rem;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-}
-.testi-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius); padding: 2.4rem 2rem;
-  backdrop-filter: blur(12px);
-  position: relative; overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.4s;
-}
-.testi-card:hover { transform: translateY(-6px); border-color: rgba(201,169,110,0.2); }
-.testi-card::before {
-  content: '"'; position: absolute; top: -0.5rem; left: 1.5rem;
-  font-family: var(--font-display); font-size: 8rem;
-  color: rgba(201,169,110,0.06); line-height: 1; pointer-events: none;
-}
-.testi-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 1.2rem; }
-.testi-text {
-  font-family: var(--font-display); font-size: 1.05rem; font-style: italic;
-  font-weight: 300; line-height: 1.7; color: var(--white-dim);
-}
-.testi-author {
-  margin-top: 2rem; display: flex; align-items: center; gap: 1rem;
-}
-.testi-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 1px solid var(--gold-dim); object-fit: cover; flex-shrink: 0;
-}
-.testi-name { font-size: 0.82rem; font-weight: 500; }
-.testi-from { font-size: 0.72rem; color: var(--white-dim); margin-top: 0.15rem; }
-
-/* ─── CTA BAND ───────────────────────────────────────────────────────────────── */
-#cta-band {
-  position: relative; overflow: hidden; text-align: center;
-  padding: clamp(5rem, 12vh, 10rem) 2rem;
-}
-.cta-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(201,169,110,0.12) 0%, transparent 70%),
-    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80') center/cover no-repeat;
-  opacity: 0.3; z-index: 0;
-}
-.cta-content { position: relative; z-index: 1; }
-.cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 6rem); font-weight: 300; line-height: 1;
-  margin-bottom: 1.5rem;
-}
-.cta-title em { font-style: italic; color: var(--gold); }
-.cta-sub { font-size: 1rem; color: var(--white-dim); max-width: 480px; margin: 0 auto 3rem; line-height: 1.7; }
-
-/* ─── FOOTER ─────────────────────────────────────────────────────────────────── */
-footer {
-  background: var(--bg2);
-  border-top: 1px solid var(--glass-border);
-  padding: 5rem clamp(1.5rem, 6vw, 6rem) 3rem;
-}
-.footer-top {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 4rem; margin-bottom: 4rem;
-}
-.footer-logo {
-  font-family: var(--font-display); font-size: 1.8rem;
-  font-weight: 300; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 1rem;
-}
-.footer-tagline { font-size: 0.85rem; color: var(--white-dim); line-height: 1.7; max-width: 260px; }
-.footer-col h4 {
-  font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1.4rem;
-}
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.footer-col ul li a {
-  font-size: 0.85rem; color: var(--white-dim);
-  transition: color 0.3s ease;
-}
-.footer-col ul li a:hover { color: var(--white); }
-.footer-bottom {
-  border-top: 1px solid var(--glass-border); padding-top: 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
-.social-links { display: flex; gap: 1.2rem; }
-.social-link {
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid var(--glass-border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; color: var(--white-dim);
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-}
-.social-link:hover {
-  border-color: var(--gold-dim); color: var(--gold);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(201,169,110,0.15);
-}
-
-/* ─── DIVIDER ─────────────────────────────────────────────────────────────────── */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-  margin: 0 clamp(1.5rem, 6vw, 6rem);
-}
-
-/* ─── RESPONSIVE ─────────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .bento-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6,.bc-7 { grid-column: span 1; }
-  .bc-1 { grid-column: span 2; }
-  .destinations-grid { grid-template-columns: 1fr 1fr; }
-  .stats-inner { grid-template-columns: repeat(2, 1fr); }
-  .testi-track { grid-template-columns: 1fr 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 768px) {
-  nav { padding: 1.2rem 1.5rem; }
-  nav.scrolled { padding: 0.9rem 1.5rem; }
-  .nav-links { display: none; }
-  .bento-grid { grid-template-columns: 1fr; }
-  .bc-1,.bc-2 { grid-column: span 1; }
-  .destinations-grid { grid-template-columns: 1fr; }
-  .testi-track { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
-  .stats-inner { grid-template-columns: 1fr 1fr; gap: 3rem; }
-}
-</style>
-</head>
-<body>
-
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-logo">LUMINA</div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-</div>
-
-<!-- NOISE -->
-<div class="noise"></div>
-
-<!-- PARTICLES -->
-<canvas id="particles-canvas"></canvas>
-
-<!-- CURSOR -->
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-
-<!-- NAV -->
-<nav id="navbar">
-  <div class="nav-logo">LUMINA VOYAGES</div>
-  <ul class="nav-links">
-    <li><a href="#destinations">Destinations</a></li>
-    <li><a href="#experiences">Experiences</a></li>
-    <li><a href="#features">About</a></li>
-    <li><a href="#testimonials">Stories</a></li>
-  </ul>
-  <a href="#cta-band" class="nav-cta"><span>Book Journey</span></a>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Est. 2019 · Luxury Travel Curation</div>
-    <h1 class="hero-title">Beyond <em>Ordinary</em><br>Horizons</h1>
-    <p class="hero-sub">Bespoke journeys crafted for those who seek the extraordinary. Every detail, every moment — curated with precision.</p>
-    <div class="hero-actions">
-      <a href="#destinations" class="btn-primary">Explore Destinations</a>
-      <a href="#experiences" class="btn-ghost">View Experiences</a>
-    </div>
-  </div>
-  <div class="hero-scroll-hint">
-    <span class="scroll-hint-text">Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-inner" id="marquee-inner"></div>
-</div>
-
-<!-- FEATURES / BENTO -->
-<section id="features" class="section-pad">
-  <div class="reveal"><span class="section-label">The Lumina Difference</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Crafted for the<br><em>Discerning Traveler</em></h2>
-  <div class="bento-grid">
-    <div class="bento-card bc-1 reveal" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=900&q=80" alt="Maldives" style="height:100%;object-fit:cover;" /></div>
-      <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2.2rem;">
-        <div class="bc-tag">Signature Experience</div>
-        <h3 class="bc-title">Private Island<br>Sanctuaries</h3>
-        <p class="bc-text">Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.</p>
-      </div>
-    </div>
-    <div class="bento-card bc-2 reveal reveal-delay-1">
-      <div class="bc-icon">✦</div>
-      <div class="bc-tag">White Glove Service</div>
-      <h3 class="bc-title">24/7 Dedicated Concierge</h3>
-      <p class="bc-text">A personal travel curator available around the clock to anticipate your every need before you even voice it.</p>
-    </div>
-    <div class="bento-card bc-3 reveal">
-      <div class="bc-icon">◈</div>
-      <div class="bc-tag">Handpicked</div>
-      <h3 class="bc-title">Elite Properties</h3>
-      <p class="bc-text">Access to 2,400+ five-star properties and private villas across 80 countries.</p>
-    </div>
-    <div class="bento-card bc-4 reveal reveal-delay-1" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Japan" style="height:100%;object-fit:cover;" /></div>
-      <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2rem;">
-        <div class="bc-tag">Cultural</div>
-        <h3 class="bc-title">Deep Immersion</h3>
-      </div>
-    </div>
-    <div class="bento-card bc-5 reveal reveal-delay-2">
-      <div class="bc-icon">⊹</div>
-      <div class="bc-tag">Sustainability</div>
-      <h3 class="bc-title">Mindful Luxury</h3>
-      <p class="bc-text">Carbon-neutral journeys that support local communities and ecosystems.</p>
-    </div>
-    <div class="bento-card bc-6 reveal">
-      <div class="bc-icon">◎</div>
-      <div class="bc-tag">Tailor-Made</div>
-      <h3 class="bc-title">Every Journey is Yours Alone</h3>
-      <p class="bc-text">No two Lumina itineraries are alike. We begin with your story and build an experience around it — with obsessive attention to detail.</p>
-    </div>
-    <div class="bento-card bc-7 reveal reveal-delay-1" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80" alt="Villa" style="height:100%;object-fit:cover;" /></div>
-      <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2rem;">
-        <div class="bc-tag">Exclusive Access</div>
-        <h3 class="bc-title">Private Villas & Estates</h3>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- DESTINATIONS -->
-<section id="destinations" class="section-pad">
-  <div class="reveal"><span class="section-label">Where to Next</span></div>
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0.5rem;">
-    <h2 class="section-title reveal reveal-delay-1">World's Most<br><em>Coveted</em> Destinations</h2>
-    <a href="#" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem;">View All →</a>
-  </div>
-  <div class="destinations-grid" style="margin-top:3rem;">
-    <div class="dest-card reveal">
-      <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=600&q=80" alt="Santorini" />
-      <div class="dest-overlay"></div>
-      <div class="dest-hover-cta">→</div>
-      <div class="dest-info">
-        <div class="dest-country">Greece</div>
-        <h3 class="dest-name">Santorini</h3>
-        <div class="dest-meta">
-          <span class="dest-badge">From $4,200</span>
-          <span>7–14 nights</span>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:20px;">
-      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1;">
-        <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Maldives" style="height:100%;" />
-        <div class="dest-overlay"></div>
-        <div class="dest-hover-cta">→</div>
-        <div class="dest-info">
-          <div class="dest-country">Maldives</div>
-          <h3 class="dest-name">North Malé Atoll</h3>
-          <div class="dest-meta">
-            <span class="dest-badge">From $6,800</span>
-          </div>
-        </div>
-      </div>
-      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1;">
-        <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=600&q=80" alt="Kyoto" style="height:100%;" />
-        <div class="dest-overlay"></div>
-        <div class="dest-hover-cta">→</div>
-        <div class="dest-info">
-          <div class="dest-country">Japan</div>
-          <h3 class="dest-name">Kyoto & Hakone</h3>
-          <div class="dest-meta">
-            <span class="dest-badge">From $5,500</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dest-card reveal reveal-delay-3">
-      <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Amalfi" style="height:100%;" />
-      <div class="dest-overlay"></div>
-      <div class="dest-hover-cta">→</div>
-      <div class="dest-info">
-        <div class="dest-country">Italy</div>
-        <h3 class="dest-name">Amalfi Coast</h3>
-        <div class="dest-meta">
-          <span class="dest-badge">From $3,900</span>
-          <span>5–10 nights</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- EXPERIENCES HORIZONTAL SCROLL -->
-<section id="experiences" class="section-pad">
-  <div class="reveal"><span class="section-label">Signature Journeys</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Curated <em>Experiences</em><br>Unlike Any Other</h2>
-  <div class="hscroll-wrapper" style="margin-left: calc(-1 * clamp(1.5rem,6vw,6rem)); margin-right: calc(-1 * clamp(1.5rem,6vw,6rem)); padding-left: clamp(1.5rem,6vw,6rem);">
-    <div class="hscroll-track" id="hscroll-track">
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&q=80" alt="Bali" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">01</div>
-          <h3 class="exp-title">Sacred Bali<br>Retreat</h3>
-          <p class="exp-dur">10 Nights · Private Villa</p>
-          <p class="exp-price">From USD $7,200 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&q=80" alt="Safari" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">02</div>
-          <h3 class="exp-title">Kenya Safari<br>Odyssey</h3>
-          <p class="exp-dur">8 Nights · Luxury Camp</p>
-          <p class="exp-price">From USD $9,500 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=500&q=80" alt="Norway" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">03</div>
-          <h3 class="exp-title">Norwegian<br>Fjords</h3>
-          <p class="exp-dur">12 Nights · Private Yacht</p>
-          <p class="exp-price">From USD $14,800 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=500&q=80" alt="Morocco" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">04</div>
-          <h3 class="exp-title">Imperial<br>Morocco</h3>
-          <p class="exp-dur">9 Nights · Riad Collection</p>
-          <p class="exp-price">From USD $5,900 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1580654712603-eb43273aff33?w=500&q=80" alt="Iceland" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">05</div>
-          <h3 class="exp-title">Iceland<br>Aurora</h3>
-          <p class="exp-dur">7 Nights · Glass Cabin</p>
-          <p class="exp-price">From USD $8,400 per person</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section id="stats" class="section-pad">
-  <div class="stats-inner">
-    <div class="stat-item reveal">
-      <div class="stat-num" data-target="2400">0</div>
-      <div class="stat-label">Luxury Properties</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-1">
-      <div class="stat-num" data-target="80">0</div>
-      <div class="stat-label">Countries Covered</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-2">
-      <div class="stat-num" data-target="12000">0</div>
-      <div class="stat-label">Journeys Crafted</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-3">
-      <div class="stat-num" data-target="98">0</div>
-      <div class="stat-label">% Client Satisfaction</div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section id="testimonials" class="section-pad">
-  <div class="reveal"><span class="section-label">Traveler Stories</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Words From Our<br><em>Guests</em></h2>
-  <div class="testi-track">
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.</p>
-      <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b9e63290?w=100&q=80" alt="Sarah" />
-        <div>
-          <div class="testi-name">Sarah Chen</div>
-          <div class="testi-from">Kyoto & Tokyo Journey</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-1">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise — this is what luxury travel truly means.</p>
-      <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James" />
-        <div>
-          <div class="testi-name">James Whitmore</div>
-          <div class="testi-from">Kenya Safari Odyssey</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-2">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.</p>
-      <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&q=80" alt="Elena" />
-        <div>
-          <div class="testi-name">Elena & Marco Rossi</div>
-          <div class="testi-from">Maldives Private Isle</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA BAND -->
-<section id="cta-band">
-  <div class="cta-bg"></div>
-  <div class="cta-content reveal">
-    <h2 class="cta-title">Begin Your<br><em>Extraordinary</em><br>Journey</h2>
-    <p class="cta-sub">Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.</p>
-    <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
-      <a href="#" class="btn-primary">Start Planning</a>
-      <a href="#" class="btn-ghost">Schedule a Call</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-top">
-    <div>
-      <div class="footer-logo">LUMINA</div>
-      <p class="footer-tagline">Crafting extraordinary journeys for those who refuse to settle for the ordinary. The world is your canvas.</p>
-      <div class="social-links" style="margin-top:2rem;">
-        <a href="#" class="social-link">IG</a>
-        <a href="#" class="social-link">TW</a>
-        <a href="#" class="social-link">LI</a>
-        <a href="#" class="social-link">YT</a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Destinations</h4>
-      <ul>
-        <li><a href="#">Europe</a></li>
-        <li><a href="#">Asia Pacific</a></li>
-        <li><a href="#">Middle East</a></li>
-        <li><a href="#">Africa & Safari</a></li>
-        <li><a href="#">The Americas</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Experiences</h4>
-      <ul>
-        <li><a href="#">Private Yachts</a></li>
-        <li><a href="#">Wellness Retreats</a></li>
-        <li><a href="#">Cultural Immersion</a></li>
-        <li><a href="#">Adventure Luxury</a></li>
-        <li><a href="#">Honeymoon</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">About Lumina</a></li>
-        <li><a href="#">Our Team</a></li>
-        <li><a href="#">Sustainability</a></li>
-        <li><a href="#">Press</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">© 2026 Lumina Voyages. All rights reserved. Luxury curated, never replicated.</p>
-    <div style="display:flex;gap:2rem;">
-      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Privacy Policy</a>
-      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Terms of Service</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-/* ─── LOADER ─── */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hide');
-  }, 2200);
-});
-
-/* ─── CUSTOM CURSOR ─── */
-const dot = document.getElementById('cursor-dot');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-function animCursor() {
-  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animCursor);
-}
-animCursor();
-document.querySelectorAll('a,button,.dest-card,.exp-card,.bento-card,.testi-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-expand'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-expand'));
-});
-
-/* ─── NAVBAR SCROLL ─── */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-/* ─── MARQUEE CONTENT ─── */
-const items = ['Santorini','·','Maldives','·','Kyoto','·','Amalfi Coast','·','Norwegian Fjords','·','Bali','·','Morocco','·','Kenya Safari','·','Iceland Auroras','·','Swiss Alps','·'];
-const inner = document.getElementById('marquee-inner');
-const full = [...items,...items].map(t => `<span${t==='·'?' class="dot"':''}>${t}</span>`).join('');
-inner.innerHTML = full;
-
-/* ─── SCROLL REVEAL ─── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ─── ANIMATED COUNTERS ─── */
-function animateCount(el, target, duration = 1800) {
-  let start = null;
-  const step = (ts) => {
-    if (!start) start = ts;
-    const progress = Math.min((ts - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(eased * target).toLocaleString();
-    if (progress < 1) requestAnimationFrame(step);
-    else el.textContent = target.toLocaleString() + (el.dataset.target === '98' ? '%' : '+');
-  };
-  requestAnimationFrame(step);
-}
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const target = parseInt(e.target.dataset.target);
-      animateCount(e.target, target);
-      statsObserver.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-num').forEach(el => statsObserver.observe(el));
-
-/* ─── BENTO CARD MOUSE GLOW ─── */
-document.querySelectorAll('.bento-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
-    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
-    card.style.setProperty('--mx', x + '%');
-    card.style.setProperty('--my', y + '%');
-  });
-});
-
-/* ─── PARTICLES ─── */
-const canvas = document.getElementById('particles-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [], W, H;
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-for (let i = 0; i < 65; i++) {
-  particles.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.2 + 0.2,
-    vx: (Math.random() - 0.5) * 0.18,
-    vy: (Math.random() - 0.5) * 0.18,
-    alpha: Math.random() * 0.4 + 0.05,
-    gold: Math.random() > 0.75,
-  });
-}
-function drawParticles() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = p.gold ? `rgba(201,169,110,${p.alpha})` : `rgba(245,240,235,${p.alpha})`;
-    ctx.fill();
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-  });
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-/* ─── PARALLAX HERO ─── */
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const heroBg = document.querySelector('.hero-bg');
-  if (heroBg) heroBg.style.transform = `scale(1.0) translateY(${scrollY * 0.3}px)`;
-});
-
-/* ─── HORIZONTAL SCROLL DRAG ─── */
-const track = document.querySelector('.hscroll-wrapper');
-if (track) {
-  let isDown = false, startX, scrollLeft;
-  track.addEventListener('mousedown', e => { isDown = true; track.style.cursor = 'grabbing'; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-  track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = ''; });
-  track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = ''; });
-  track.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - track.offsetLeft;
-    track.scrollLeft = scrollLeft - (x - startX) * 1.4;
-  });
-}
-
-/* ─── SMOOTH SCROLL ─── */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
-  });
-});
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LUMINA VOYAGES — Luxury Travel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-
-<style>
-/* ─── RESET & BASE ─────────────────────────────────────────────────────────── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #050505;
-  --bg2: #0a0a0a;
-  --white: #f5f0eb;
-  --white-dim: rgba(245,240,235,0.6);
-  --white-faint: rgba(245,240,235,0.15);
-  --gold: #c9a96e;
-  --gold-dim: rgba(201,169,110,0.4);
-  --gold-glow: rgba(201,169,110,0.15);
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.08);
-  --radius: 24px;
-  --radius-sm: 14px;
-  --font-display: 'Cormorant Garamond', serif;
-  --font-body: 'Outfit', sans-serif;
-}
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
-}
-img { display: block; width: 100%; object-fit: cover; }
-a { text-decoration: none; color: inherit; }
-button { cursor: none; border: none; background: none; font-family: var(--font-body); }
-
-/* ─── CUSTOM CURSOR ────────────────────────────────────────────────────────── */
-#cursor-dot {
-  position: fixed; pointer-events: none; z-index: 9999;
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold);
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease, opacity 0.3s;
-  mix-blend-mode: screen;
-}
-#cursor-ring {
-  position: fixed; pointer-events: none; z-index: 9998;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid rgba(201,169,110,0.5);
-  transform: translate(-50%, -50%);
-  transition: all 0.18s cubic-bezier(0.23,1,0.32,1);
-  mix-blend-mode: screen;
-}
-body:hover #cursor-dot { opacity: 1; }
-.cursor-expand #cursor-ring { transform: translate(-50%,-50%) scale(2.2) !important; opacity: 0.4; }
-
-/* ─── LOADER ────────────────────────────────────────────────────────────────── */
-#loader {
-  position: fixed; inset: 0; z-index: 10000;
-  background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-#loader.hide { opacity: 0; visibility: hidden; }
-.loader-logo {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 5rem);
-  font-weight: 300;
-  letter-spacing: 0.3em;
-  color: var(--gold);
-  animation: loader-pulse 1.5s ease infinite;
-}
-.loader-bar-wrap {
-  width: 200px; height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin-top: 2rem; overflow: hidden; border-radius: 2px;
-}
-.loader-bar {
-  height: 100%;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  animation: loader-fill 2s ease forwards;
-}
-@keyframes loader-fill { from { width: 0%; } to { width: 100%; } }
-@keyframes loader-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
-
-/* ─── NOISE OVERLAY ─────────────────────────────────────────────────────────── */
-.noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ─── NAVBAR ─────────────────────────────────────────────────────────────────── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.5rem 4rem;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.5s ease, backdrop-filter 0.5s ease, padding 0.4s ease;
-}
-nav.scrolled {
-  background: rgba(5,5,5,0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  padding: 1rem 4rem;
-  border-bottom: 1px solid var(--glass-border);
-}
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.4rem; letter-spacing: 0.25em;
-  font-weight: 400; color: var(--gold);
-}
-.nav-links {
-  display: flex; gap: 2.5rem; list-style: none;
-}
-.nav-links a {
-  font-size: 0.75rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--white-dim);
-  transition: color 0.3s ease;
-}
-.nav-links a:hover { color: var(--white); }
-.nav-cta {
-  padding: 0.6rem 1.6rem;
-  border: 1px solid var(--gold-dim);
-  border-radius: 100px;
-  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gold);
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-  position: relative; overflow: hidden;
-}
-.nav-cta::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--gold); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.nav-cta:hover { color: var(--bg); }
-.nav-cta:hover::before { transform: scaleX(1); }
-.nav-cta span { position: relative; z-index: 1; }
-
-/* ─── HERO ───────────────────────────────────────────────────────────────────── */
-#hero {
-  position: relative; height: 100vh; display: flex;
-  align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,169,110,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(100,80,200,0.06) 0%, transparent 60%),
-    linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,0.6) 60%, #050505 100%),
-    url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=90') center/cover no-repeat;
-  transform: scale(1.08);
-  animation: hero-zoom 16s ease-out forwards;
-}
-@keyframes hero-zoom { from { transform: scale(1.12); } to { transform: scale(1.0); } }
-.hero-content {
-  position: relative; z-index: 2;
-  text-align: center; max-width: 900px; padding: 0 2rem;
-}
-.hero-eyebrow {
-  font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--gold); opacity: 0;
-  animation: fade-up 1s 1.8s ease forwards;
-  margin-bottom: 1.5rem;
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 10vw, 9rem);
-  font-weight: 300; line-height: 0.92;
-  letter-spacing: -0.01em;
-  opacity: 0;
-  animation: fade-up 1.1s 2s ease forwards;
-}
-.hero-title em { font-style: italic; color: var(--gold); }
-.hero-sub {
-  margin-top: 1.5rem;
-  font-size: clamp(0.9rem, 1.5vw, 1.05rem); font-weight: 300;
-  color: var(--white-dim); line-height: 1.7; max-width: 480px; margin-inline: auto;
-  opacity: 0;
-  animation: fade-up 1s 2.3s ease forwards;
-}
-.hero-actions {
-  margin-top: 3rem; display: flex; gap: 1.2rem;
-  align-items: center; justify-content: center;
-  opacity: 0; animation: fade-up 1s 2.6s ease forwards;
-}
-.btn-primary {
-  padding: 1rem 2.6rem;
-  background: var(--gold);
-  color: var(--bg);
-  border-radius: 100px;
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-  box-shadow: 0 0 40px rgba(201,169,110,0.3);
-  position: relative; overflow: hidden;
-}
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 50px rgba(201,169,110,0.45);
-}
-.btn-ghost {
-  padding: 1rem 2.6rem; border-radius: 100px;
-  border: 1px solid var(--white-faint);
-  font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 300;
-  color: var(--white-dim);
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: var(--white); transform: translateY(-2px); }
-.hero-scroll-hint {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-  z-index: 3; text-align: center;
-  opacity: 0; animation: fade-up 1s 3s ease forwards;
-}
-.scroll-line {
-  width: 1px; height: 60px; background: linear-gradient(180deg, transparent, var(--gold-dim));
-  margin: 0.8rem auto 0;
-  animation: scroll-pulse 2s ease infinite;
-}
-@keyframes scroll-pulse { 0%,100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); transform-origin: top; } }
-.scroll-hint-text { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--white-faint); }
-
-/* ─── PARTICLES ─────────────────────────────────────────────────────────────── */
-#particles-canvas {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35;
-}
-
-/* ─── SECTIONS BASE ──────────────────────────────────────────────────────────── */
-section { position: relative; z-index: 2; }
-.section-pad { padding: clamp(5rem, 10vh, 9rem) clamp(1.5rem, 6vw, 6rem); }
-.section-label {
-  font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1rem;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 300; line-height: 1.05;
-}
-.section-title em { font-style: italic; color: var(--gold); }
-
-/* ─── FADE-UP ANIMATION ──────────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.reveal {
-  opacity: 0; transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.12s; }
-.reveal-delay-2 { transition-delay: 0.24s; }
-.reveal-delay-3 { transition-delay: 0.36s; }
-.reveal-delay-4 { transition-delay: 0.48s; }
-
-/* ─── MARQUEE ─────────────────────────────────────────────────────────────────── */
-.marquee-wrap {
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 1.4rem 0; overflow: hidden; background: rgba(201,169,110,0.02);
-}
-.marquee-inner {
-  display: flex; gap: 4rem; white-space: nowrap;
-  animation: marquee 28s linear infinite;
-}
-.marquee-inner span {
-  font-family: var(--font-display); font-size: 1.1rem;
-  font-style: italic; font-weight: 300; color: var(--white-dim); letter-spacing: 0.06em;
-}
-.marquee-inner .dot { color: var(--gold); font-style: normal; }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ─── BENTO GRID ─────────────────────────────────────────────────────────────── */
-#features { background: linear-gradient(180deg, #050505 0%, #080808 100%); }
-.bento-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto;
-  gap: 16px;
-}
-.bento-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 2.2rem;
-  position: relative; overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.4s, box-shadow 0.4s;
-  backdrop-filter: blur(8px);
-}
-.bento-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(201,169,110,0.06), transparent 60%);
-  opacity: 0; transition: opacity 0.4s;
-}
-.bento-card:hover::before { opacity: 1; }
-.bento-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,169,110,0.2);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,169,110,0.08) inset;
-}
-.bc-1 { grid-column: span 7; min-height: 340px; }
-.bc-2 { grid-column: span 5; min-height: 340px; }
-.bc-3 { grid-column: span 4; min-height: 260px; }
-.bc-4 { grid-column: span 4; min-height: 260px; }
-.bc-5 { grid-column: span 4; min-height: 260px; }
-.bc-6 { grid-column: span 6; min-height: 240px; }
-.bc-7 { grid-column: span 6; min-height: 240px; }
-.bento-card .bc-img {
-  position: absolute; inset: 0; z-index: 0;
-  transition: transform 0.7s cubic-bezier(0.23,1,0.32,1);
-}
-.bento-card:hover .bc-img { transform: scale(1.04); }
-.bento-card .bc-img img { height: 100%; }
-.bc-overlay {
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(135deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.3) 100%);
-}
-.bc-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-.bc-tag {
-  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.6rem;
-}
-.bc-title {
-  font-family: var(--font-display); font-size: clamp(1.3rem, 2.5vw, 2rem);
-  font-weight: 300; line-height: 1.15;
-}
-.bc-text { font-size: 0.85rem; color: var(--white-dim); line-height: 1.6; margin-top: 0.7rem; }
-.bc-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-
-/* ─── DESTINATIONS ───────────────────────────────────────────────────────────── */
-#destinations { background: var(--bg); }
-.destinations-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.dest-card {
-  position: relative; border-radius: var(--radius); overflow: hidden;
-  aspect-ratio: 3/4; cursor: none;
-  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
-}
-.dest-card:first-child { aspect-ratio: 3/4.5; }
-.dest-card:hover { transform: scale(1.01) translateY(-6px); z-index: 2; }
-.dest-card img {
-  height: 100%; width: 100%; object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
-}
-.dest-card:hover img { transform: scale(1.06); }
-.dest-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.85) 100%);
-  transition: opacity 0.4s;
-}
-.dest-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 2rem 1.8rem;
-}
-.dest-country {
-  font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.4rem;
-}
-.dest-name {
-  font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  font-weight: 300; line-height: 1.1;
-}
-.dest-meta {
-  margin-top: 0.8rem; font-size: 0.78rem; color: var(--white-dim);
-  display: flex; gap: 1rem; align-items: center;
-}
-.dest-badge {
-  display: inline-block; padding: 0.25rem 0.8rem;
-  background: rgba(201,169,110,0.15); border: 1px solid var(--gold-dim);
-  border-radius: 100px; font-size: 0.65rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gold);
-}
-.dest-hover-cta {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--glass); border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transform: scale(0.8);
-  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-  font-size: 1.1rem;
-}
-.dest-card:hover .dest-hover-cta { opacity: 1; transform: scale(1); }
-
-/* ─── HORIZONTAL SCROLL SECTION ──────────────────────────────────────────────── */
-#experiences { background: linear-gradient(180deg, #050505 0%, #070707 100%); }
-.hscroll-wrapper {
-  margin-top: 3rem;
-  overflow-x: auto; overflow-y: visible;
-  scrollbar-width: none; -ms-overflow-style: none;
-  padding-bottom: 1rem;
-}
-.hscroll-wrapper::-webkit-scrollbar { display: none; }
-.hscroll-track {
-  display: flex; gap: 20px; width: max-content; padding: 1rem 0.5rem 2rem;
-}
-.exp-card {
-  width: 340px; flex-shrink: 0;
-  border-radius: var(--radius); overflow: hidden;
-  position: relative; aspect-ratio: 3/4;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
-  cursor: none;
-}
-.exp-card:hover { transform: scale(1.02) translateY(-6px); }
-.exp-card img { height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.23,1,0.32,1); }
-.exp-card:hover img { transform: scale(1.05); }
-.exp-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 35%, rgba(5,5,5,0.9) 100%);
-}
-.exp-content {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem;
-}
-.exp-num {
-  font-family: var(--font-display); font-size: 0.8rem;
-  color: var(--gold); letter-spacing: 0.2em; margin-bottom: 0.5rem;
-}
-.exp-title {
-  font-family: var(--font-display); font-size: 1.6rem;
-  font-weight: 300; line-height: 1.15;
-}
-.exp-dur { font-size: 0.78rem; color: var(--white-dim); margin-top: 0.5rem; }
-.exp-price {
-  margin-top: 1rem;
-  font-size: 0.72rem; letter-spacing: 0.1em;
-  color: var(--gold);
-}
-
-/* ─── STATS ──────────────────────────────────────────────────────────────────── */
-#stats {
-  background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 60%);
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
-}
-.stats-inner {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 2rem; text-align: center;
-}
-.stat-item {}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300;
-  color: var(--gold); line-height: 1;
-  letter-spacing: -0.02em;
-}
-.stat-label {
-  margin-top: 0.5rem; font-size: 0.75rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--white-dim);
-}
-
-/* ─── TESTIMONIALS ───────────────────────────────────────────────────────────── */
-#testimonials { background: var(--bg); }
-.testi-track {
-  margin-top: 4rem;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-}
-.testi-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius); padding: 2.4rem 2rem;
-  backdrop-filter: blur(12px);
-  position: relative; overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), border-color 0.4s;
-}
-.testi-card:hover { transform: translateY(-6px); border-color: rgba(201,169,110,0.2); }
-.testi-card::before {
-  content: '"'; position: absolute; top: -0.5rem; left: 1.5rem;
-  font-family: var(--font-display); font-size: 8rem;
-  color: rgba(201,169,110,0.06); line-height: 1; pointer-events: none;
-}
-.testi-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 1.2rem; }
-.testi-text {
-  font-family: var(--font-display); font-size: 1.05rem; font-style: italic;
-  font-weight: 300; line-height: 1.7; color: var(--white-dim);
-}
-.testi-author {
-  margin-top: 2rem; display: flex; align-items: center; gap: 1rem;
-}
-.testi-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 1px solid var(--gold-dim); object-fit: cover; flex-shrink: 0;
-}
-.testi-name { font-size: 0.82rem; font-weight: 500; }
-.testi-from { font-size: 0.72rem; color: var(--white-dim); margin-top: 0.15rem; }
-
-/* ─── CTA BAND ───────────────────────────────────────────────────────────────── */
-#cta-band {
-  position: relative; overflow: hidden; text-align: center;
-  padding: clamp(5rem, 12vh, 10rem) 2rem;
-}
-.cta-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(201,169,110,0.12) 0%, transparent 70%),
-    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80') center/cover no-repeat;
-  opacity: 0.3; z-index: 0;
-}
-.cta-content { position: relative; z-index: 1; }
-.cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 6rem); font-weight: 300; line-height: 1;
-  margin-bottom: 1.5rem;
-}
-.cta-title em { font-style: italic; color: var(--gold); }
-.cta-sub { font-size: 1rem; color: var(--white-dim); max-width: 480px; margin: 0 auto 3rem; line-height: 1.7; }
-
-/* ─── FOOTER ─────────────────────────────────────────────────────────────────── */
-footer {
-  background: var(--bg2);
-  border-top: 1px solid var(--glass-border);
-  padding: 5rem clamp(1.5rem, 6vw, 6rem) 3rem;
-}
-.footer-top {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 4rem; margin-bottom: 4rem;
-}
-.footer-logo {
-  font-family: var(--font-display); font-size: 1.8rem;
-  font-weight: 300; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 1rem;
-}
-.footer-tagline { font-size: 0.85rem; color: var(--white-dim); line-height: 1.7; max-width: 260px; }
-.footer-col h4 {
-  font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 1.4rem;
-}
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.footer-col ul li a {
-  font-size: 0.85rem; color: var(--white-dim);
-  transition: color 0.3s ease;
-}
-.footer-col ul li a:hover { color: var(--white); }
-.footer-bottom {
-  border-top: 1px solid var(--glass-border); padding-top: 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
-.social-links { display: flex; gap: 1.2rem; }
-.social-link {
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid var(--glass-border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; color: var(--white-dim);
-  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-}
-.social-link:hover {
-  border-color: var(--gold-dim); color: var(--gold);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(201,169,110,0.15);
-}
-
-/* ─── DIVIDER ─────────────────────────────────────────────────────────────────── */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-  margin: 0 clamp(1.5rem, 6vw, 6rem);
-}
-
-/* ─── RESPONSIVE ─────────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .bento-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .bc-1,.bc-2,.bc-3,.bc-4,.bc-5,.bc-6,.bc-7 { grid-column: span 1; }
-  .bc-1 { grid-column: span 2; }
-  .destinations-grid { grid-template-columns: 1fr 1fr; }
-  .stats-inner { grid-template-columns: repeat(2, 1fr); }
-  .testi-track { grid-template-columns: 1fr 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 768px) {
-  nav { padding: 1.2rem 1.5rem; }
-  nav.scrolled { padding: 0.9rem 1.5rem; }
-  .nav-links { display: none; }
-  .bento-grid { grid-template-columns: 1fr; }
-  .bc-1,.bc-2 { grid-column: span 1; }
-  .destinations-grid { grid-template-columns: 1fr; }
-  .testi-track { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
-  .stats-inner { grid-template-columns: 1fr 1fr; gap: 3rem; }
-}
-</style>
-</head>
-<body>
-
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-logo">LUMINA</div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-</div>
-
-<!-- NOISE -->
-<div class="noise"></div>
-
-<!-- PARTICLES -->
-<canvas id="particles-canvas"></canvas>
-
-<!-- CURSOR -->
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-
-<!-- NAV -->
-<nav id="navbar">
-  <div class="nav-logo">LUMINA VOYAGES</div>
-  <ul class="nav-links">
-    <li><a href="#destinations">Destinations</a></li>
-    <li><a href="#experiences">Experiences</a></li>
-    <li><a href="#features">About</a></li>
-    <li><a href="#testimonials">Stories</a></li>
-  </ul>
-  <a href="#cta-band" class="nav-cta"><span>Book Journey</span></a>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Est. 2019 · Luxury Travel Curation</div>
-    <h1 class="hero-title">Beyond <em>Ordinary</em><br>Horizons</h1>
-    <p class="hero-sub">Bespoke journeys crafted for those who seek the extraordinary. Every detail, every moment — curated with precision.</p>
-    <div class="hero-actions">
-      <a href="#destinations" class="btn-primary">Explore Destinations</a>
-      <a href="#experiences" class="btn-ghost">View Experiences</a>
-    </div>
-  </div>
-  <div class="hero-scroll-hint">
-    <span class="scroll-hint-text">Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-inner" id="marquee-inner"></div>
-</div>
-
-<!-- FEATURES / BENTO -->
-<section id="features" class="section-pad">
-  <div class="reveal"><span class="section-label">The Lumina Difference</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Crafted for the<br><em>Discerning Traveler</em></h2>
-  <div class="bento-grid">
-    <div class="bento-card bc-1 reveal" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=900&q=80" alt="Maldives" style="height:100%;object-fit:cover;" /></div>
-      <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2.2rem;">
-        <div class="bc-tag">Signature Experience</div>
-        <h3 class="bc-title">Private Island<br>Sanctuaries</h3>
-        <p class="bc-text">Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.</p>
-      </div>
-    </div>
-    <div class="bento-card bc-2 reveal reveal-delay-1">
-      <div class="bc-icon">✦</div>
-      <div class="bc-tag">White Glove Service</div>
-      <h3 class="bc-title">24/7 Dedicated Concierge</h3>
-      <p class="bc-text">A personal travel curator available around the clock to anticipate your every need before you even voice it.</p>
-    </div>
-    <div class="bento-card bc-3 reveal">
-      <div class="bc-icon">◈</div>
-      <div class="bc-tag">Handpicked</div>
-      <h3 class="bc-title">Elite Properties</h3>
-      <p class="bc-text">Access to 2,400+ five-star properties and private villas across 80 countries.</p>
-    </div>
-    <div class="bento-card bc-4 reveal reveal-delay-1" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Japan" style="height:100%;object-fit:cover;" /></div>
-      <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2rem;">
-        <div class="bc-tag">Cultural</div>
-        <h3 class="bc-title">Deep Immersion</h3>
-      </div>
-    </div>
-    <div class="bento-card bc-5 reveal reveal-delay-2">
-      <div class="bc-icon">⊹</div>
-      <div class="bc-tag">Sustainability</div>
-      <h3 class="bc-title">Mindful Luxury</h3>
-      <p class="bc-text">Carbon-neutral journeys that support local communities and ecosystems.</p>
-    </div>
-    <div class="bento-card bc-6 reveal">
-      <div class="bc-icon">◎</div>
-      <div class="bc-tag">Tailor-Made</div>
-      <h3 class="bc-title">Every Journey is Yours Alone</h3>
-      <p class="bc-text">No two Lumina itineraries are alike. We begin with your story and build an experience around it — with obsessive attention to detail.</p>
-    </div>
-    <div class="bento-card bc-7 reveal reveal-delay-1" style="padding:0;">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80" alt="Villa" style="height:100%;object-fit:cover;" /></div>
-      <div class="bc-overlay"></div>
-      <div class="bc-content" style="padding:2rem;">
-        <div class="bc-tag">Exclusive Access</div>
-        <h3 class="bc-title">Private Villas & Estates</h3>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- DESTINATIONS -->
-<section id="destinations" class="section-pad">
-  <div class="reveal"><span class="section-label">Where to Next</span></div>
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0.5rem;">
-    <h2 class="section-title reveal reveal-delay-1">World's Most<br><em>Coveted</em> Destinations</h2>
-    <a href="#" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem;">View All →</a>
-  </div>
-  <div class="destinations-grid" style="margin-top:3rem;">
-    <div class="dest-card reveal">
-      <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=600&q=80" alt="Santorini" />
-      <div class="dest-overlay"></div>
-      <div class="dest-hover-cta">→</div>
-      <div class="dest-info">
-        <div class="dest-country">Greece</div>
-        <h3 class="dest-name">Santorini</h3>
-        <div class="dest-meta">
-          <span class="dest-badge">From $4,200</span>
-          <span>7–14 nights</span>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:20px;">
-      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1;">
-        <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Maldives" style="height:100%;" />
-        <div class="dest-overlay"></div>
-        <div class="dest-hover-cta">→</div>
-        <div class="dest-info">
-          <div class="dest-country">Maldives</div>
-          <h3 class="dest-name">North Malé Atoll</h3>
-          <div class="dest-meta">
-            <span class="dest-badge">From $6,800</span>
-          </div>
-        </div>
-      </div>
-      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1;">
-        <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=600&q=80" alt="Kyoto" style="height:100%;" />
-        <div class="dest-overlay"></div>
-        <div class="dest-hover-cta">→</div>
-        <div class="dest-info">
-          <div class="dest-country">Japan</div>
-          <h3 class="dest-name">Kyoto & Hakone</h3>
-          <div class="dest-meta">
-            <span class="dest-badge">From $5,500</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dest-card reveal reveal-delay-3">
-      <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Amalfi" style="height:100%;" />
-      <div class="dest-overlay"></div>
-      <div class="dest-hover-cta">→</div>
-      <div class="dest-info">
-        <div class="dest-country">Italy</div>
-        <h3 class="dest-name">Amalfi Coast</h3>
-        <div class="dest-meta">
-          <span class="dest-badge">From $3,900</span>
-          <span>5–10 nights</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- EXPERIENCES HORIZONTAL SCROLL -->
-<section id="experiences" class="section-pad">
-  <div class="reveal"><span class="section-label">Signature Journeys</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Curated <em>Experiences</em><br>Unlike Any Other</h2>
-  <div class="hscroll-wrapper" style="margin-left: calc(-1 * clamp(1.5rem,6vw,6rem)); margin-right: calc(-1 * clamp(1.5rem,6vw,6rem)); padding-left: clamp(1.5rem,6vw,6rem);">
-    <div class="hscroll-track" id="hscroll-track">
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&q=80" alt="Bali" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">01</div>
-          <h3 class="exp-title">Sacred Bali<br>Retreat</h3>
-          <p class="exp-dur">10 Nights · Private Villa</p>
-          <p class="exp-price">From USD $7,200 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&q=80" alt="Safari" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">02</div>
-          <h3 class="exp-title">Kenya Safari<br>Odyssey</h3>
-          <p class="exp-dur">8 Nights · Luxury Camp</p>
-          <p class="exp-price">From USD $9,500 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=500&q=80" alt="Norway" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">03</div>
-          <h3 class="exp-title">Norwegian<br>Fjords</h3>
-          <p class="exp-dur">12 Nights · Private Yacht</p>
-          <p class="exp-price">From USD $14,800 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=500&q=80" alt="Morocco" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">04</div>
-          <h3 class="exp-title">Imperial<br>Morocco</h3>
-          <p class="exp-dur">9 Nights · Riad Collection</p>
-          <p class="exp-price">From USD $5,900 per person</p>
-        </div>
-      </div>
-      <div class="exp-card">
-        <img src="https://images.unsplash.com/photo-1580654712603-eb43273aff33?w=500&q=80" alt="Iceland" />
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <div class="exp-num">05</div>
-          <h3 class="exp-title">Iceland<br>Aurora</h3>
-          <p class="exp-dur">7 Nights · Glass Cabin</p>
-          <p class="exp-price">From USD $8,400 per person</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section id="stats" class="section-pad">
-  <div class="stats-inner">
-    <div class="stat-item reveal">
-      <div class="stat-num" data-target="2400">0</div>
-      <div class="stat-label">Luxury Properties</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-1">
-      <div class="stat-num" data-target="80">0</div>
-      <div class="stat-label">Countries Covered</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-2">
-      <div class="stat-num" data-target="12000">0</div>
-      <div class="stat-label">Journeys Crafted</div>
-    </div>
-    <div class="stat-item reveal reveal-delay-3">
-      <div class="stat-num" data-target="98">0</div>
-      <div class="stat-label">% Client Satisfaction</div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section id="testimonials" class="section-pad">
-  <div class="reveal"><span class="section-label">Traveler Stories</span></div>
-  <h2 class="section-title reveal reveal-delay-1">Words From Our<br><em>Guests</em></h2>
-  <div class="testi-track">
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.</p>
-      <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b9e63290?w=100&q=80" alt="Sarah" />
-        <div>
-          <div class="testi-name">Sarah Chen</div>
-          <div class="testi-from">Kyoto & Tokyo Journey</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-1">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise — this is what luxury travel truly means.</p>
-      <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James" />
-        <div>
-          <div class="testi-name">James Whitmore</div>
-          <div class="testi-from">Kenya Safari Odyssey</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-2">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.</p>
-      <div class="testi-author">
-        <img class="testi-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&q=80" alt="Elena" />
-        <div>
-          <div class="testi-name">Elena & Marco Rossi</div>
-          <div class="testi-from">Maldives Private Isle</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA BAND -->
-<section id="cta-band">
-  <div class="cta-bg"></div>
-  <div class="cta-content reveal">
-    <h2 class="cta-title">Begin Your<br><em>Extraordinary</em><br>Journey</h2>
-    <p class="cta-sub">Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.</p>
-    <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
-      <a href="#" class="btn-primary">Start Planning</a>
-      <a href="#" class="btn-ghost">Schedule a Call</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-top">
-    <div>
-      <div class="footer-logo">LUMINA</div>
-      <p class="footer-tagline">Crafting extraordinary journeys for those who refuse to settle for the ordinary. The world is your canvas.</p>
-      <div class="social-links" style="margin-top:2rem;">
-        <a href="#" class="social-link">IG</a>
-        <a href="#" class="social-link">TW</a>
-        <a href="#" class="social-link">LI</a>
-        <a href="#" class="social-link">YT</a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Destinations</h4>
-      <ul>
-        <li><a href="#">Europe</a></li>
-        <li><a href="#">Asia Pacific</a></li>
-        <li><a href="#">Middle East</a></li>
-        <li><a href="#">Africa & Safari</a></li>
-        <li><a href="#">The Americas</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Experiences</h4>
-      <ul>
-        <li><a href="#">Private Yachts</a></li>
-        <li><a href="#">Wellness Retreats</a></li>
-        <li><a href="#">Cultural Immersion</a></li>
-        <li><a href="#">Adventure Luxury</a></li>
-        <li><a href="#">Honeymoon</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">About Lumina</a></li>
-        <li><a href="#">Our Team</a></li>
-        <li><a href="#">Sustainability</a></li>
-        <li><a href="#">Press</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">© 2026 Lumina Voyages. All rights reserved. Luxury curated, never replicated.</p>
-    <div style="display:flex;gap:2rem;">
-      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Privacy Policy</a>
-      <a href="#" style="font-size:0.72rem;color:rgba(255,255,255,0.25);">Terms of Service</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-/* ─── LOADER ─── */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hide');
-  }, 2200);
-});
-
-/* ─── CUSTOM CURSOR ─── */
-const dot = document.getElementById('cursor-dot');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-function animCursor() {
-  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animCursor);
-}
-animCursor();
-document.querySelectorAll('a,button,.dest-card,.exp-card,.bento-card,.testi-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-expand'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-expand'));
-});
-
-/* ─── NAVBAR SCROLL ─── */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-/* ─── MARQUEE CONTENT ─── */
-const items = ['Santorini','·','Maldives','·','Kyoto','·','Amalfi Coast','·','Norwegian Fjords','·','Bali','·','Morocco','·','Kenya Safari','·','Iceland Auroras','·','Swiss Alps','·'];
-const inner = document.getElementById('marquee-inner');
-const full = [...items,...items].map(t => `<span${t==='·'?' class="dot"':''}>${t}</span>`).join('');
-inner.innerHTML = full;
-
-/* ─── SCROLL REVEAL ─── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ─── ANIMATED COUNTERS ─── */
-function animateCount(el, target, duration = 1800) {
-  let start = null;
-  const step = (ts) => {
-    if (!start) start = ts;
-    const progress = Math.min((ts - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(eased * target).toLocaleString();
-    if (progress < 1) requestAnimationFrame(step);
-    else el.textContent = target.toLocaleString() + (el.dataset.target === '98' ? '%' : '+');
-  };
-  requestAnimationFrame(step);
-}
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const target = parseInt(e.target.dataset.target);
-      animateCount(e.target, target);
-      statsObserver.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-num').forEach(el => statsObserver.observe(el));
-
-/* ─── BENTO CARD MOUSE GLOW ─── */
-document.querySelectorAll('.bento-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
-    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
-    card.style.setProperty('--mx', x + '%');
-    card.style.setProperty('--my', y + '%');
-  });
-});
-
-/* ─── PARTICLES ─── */
-const canvas = document.getElementById('particles-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [], W, H;
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-for (let i = 0; i < 65; i++) {
-  particles.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.2 + 0.2,
-    vx: (Math.random() - 0.5) * 0.18,
-    vy: (Math.random() - 0.5) * 0.18,
-    alpha: Math.random() * 0.4 + 0.05,
-    gold: Math.random() > 0.75,
-  });
-}
-function drawParticles() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = p.gold ? `rgba(201,169,110,${p.alpha})` : `rgba(245,240,235,${p.alpha})`;
-    ctx.fill();
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-  });
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-/* ─── PARALLAX HERO ─── */
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const heroBg = document.querySelector('.hero-bg');
-  if (heroBg) heroBg.style.transform = `scale(1.0) translateY(${scrollY * 0.3}px)`;
-});
-
-/* ─── HORIZONTAL SCROLL DRAG ─── */
-const track = document.querySelector('.hscroll-wrapper');
-if (track) {
-  let isDown = false, startX, scrollLeft;
-  track.addEventListener('mousedown', e => { isDown = true; track.style.cursor = 'grabbing'; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-  track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = ''; });
-  track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = ''; });
-  track.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - track.offsetLeft;
-    track.scrollLeft = scrollLeft - (x - startX) * 1.4;
-  });
-}
-
-/* ─── SMOOTH SCROLL ─── */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
   });
 });
 </script>
