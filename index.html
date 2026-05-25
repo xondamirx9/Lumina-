@@ -6,7 +6,8 @@
 <title>LUMINA VOYAGES — Luxury Travel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet"/></noscript>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -827,10 +828,26 @@ function updateMarquee(lang) {
 /* ════════════════════════════════════════════
    LOADER
 ════════════════════════════════════════════ */
-window.addEventListener('load', () => {
+// Fix: don't wait for slow fonts/images — hide loader on DOMContentLoaded with a short delay
+// Fallback: force hide after 3s no matter what
+function hideLoader() {
   updateMarquee('en');
-  setTimeout(() => document.getElementById('loader').classList.add('hide'), 2200);
-});
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if (loader) loader.classList.add('hide');
+  }, 800);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', hideLoader);
+} else {
+  hideLoader();
+}
+// Absolute fallback — force hide after 3s even if fonts/images are still loading
+setTimeout(() => {
+  const loader = document.getElementById('loader');
+  if (loader) loader.classList.add('hide');
+}, 3000);
 
 /* ════════════════════════════════════════════
    CUSTOM CURSOR
