@@ -7,7 +7,6 @@ const { body, validationResult } = require('express-validator');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ── DB setup ─────────────────────────────────────────────────────────────────
 const db = new Database(path.join(__dirname, 'lumina.db'));
 
 db.exec(`
@@ -89,12 +88,10 @@ if (!expSeeded) {
   ].forEach(r => ins.run(...r));
 }
 
-// ── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// ── API: GET /api/destinations ────────────────────────────────────────────────
 app.get('/api/destinations', (req, res) => {
   const { region, popular } = req.query;
   let q = 'SELECT * FROM destinations';
@@ -107,12 +104,10 @@ app.get('/api/destinations', (req, res) => {
   res.json(db.prepare(q).all(...args));
 });
 
-// ── API: GET /api/experiences ─────────────────────────────────────────────────
 app.get('/api/experiences', (req, res) => {
   res.json(db.prepare('SELECT * FROM experiences ORDER BY id').all());
 });
 
-// ── API: POST /api/inquiries ──────────────────────────────────────────────────
 app.post('/api/inquiries',
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('email').isEmail().normalizeEmail().withMessage('Valid email required'),
@@ -127,7 +122,6 @@ app.post('/api/inquiries',
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
     const { name, email, phone, dest, guests = 1, date_from, date_to, budget, message, lang = 'en' } = req.body;
     const stmt = db.prepare(`INSERT INTO inquiries (name,email,phone,dest,guests,date_from,date_to,budget,message,lang)
       VALUES (?,?,?,?,?,?,?,?,?,?)`);
@@ -136,33 +130,27 @@ app.post('/api/inquiries',
   }
 );
 
-// ── API: POST /api/newsletter ─────────────────────────────────────────────────
 app.post('/api/newsletter',
   body('email').isEmail().normalizeEmail().withMessage('Valid email required'),
   body('lang').optional().isIn(['en', 'ru', 'uz']),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
     const { email, lang = 'en' } = req.body;
     try {
       db.prepare('INSERT INTO newsletter (email, lang) VALUES (?, ?)').run(email, lang);
       res.status(201).json({ message: 'Subscribed' });
     } catch (e) {
-      if (e.message.includes('UNIQUE')) {
-        return res.status(409).json({ message: 'Already subscribed' });
-      }
+      if (e.message.includes('UNIQUE')) return res.status(409).json({ message: 'Already subscribed' });
       throw e;
     }
   }
 );
 
-// ── API: GET /api/stats ───────────────────────────────────────────────────────
 app.get('/api/stats', (req, res) => {
   res.json({ properties: 2400, countries: 80, journeys: 12000, satisfaction: 98 });
 });
 
-// ── Admin endpoints ───────────────────────────────────────────────────────────
 app.get('/api/admin/inquiries', (req, res) => {
   res.json(db.prepare('SELECT * FROM inquiries ORDER BY created DESC').all());
 });
@@ -171,7 +159,6 @@ app.get('/api/admin/newsletter', (req, res) => {
   res.json(db.prepare('SELECT * FROM newsletter ORDER BY created DESC').all());
 });
 
-// ── Fallback ──────────────────────────────────────────────────────────────────
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
