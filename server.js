@@ -7,7 +7,8 @@ const { body, validationResult } = require('express-validator');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const db = new Database(path.join(__dirname, 'lumina.db'));
+const dbPath = process.env.DB_PATH || path.join(process.env.RENDER ? '/data' : __dirname, 'lumina.db');
+const db = new Database(dbPath);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS inquiries (
@@ -157,6 +158,10 @@ app.get('/api/admin/inquiries', (req, res) => {
 
 app.get('/api/admin/newsletter', (req, res) => {
   res.json(db.prepare('SELECT * FROM newsletter ORDER BY created DESC').all());
+});
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
 app.get('*', (req, res) => {

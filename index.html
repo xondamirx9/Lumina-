@@ -71,7 +71,7 @@ nav.scrolled{background:rgba(5,5,5,0.75);backdrop-filter:blur(20px) saturate(180
 .hero-title em{font-style:italic;color:var(--gold)}
 .hero-sub{margin-top:1.5rem;font-size:clamp(0.9rem,1.5vw,1.05rem);font-weight:300;color:var(--white-dim);line-height:1.7;max-width:500px;margin-inline:auto;opacity:0;animation:fade-up 1s 2.3s ease forwards}
 .hero-actions{margin-top:3rem;display:flex;gap:1.2rem;align-items:center;justify-content:center;opacity:0;animation:fade-up 1s 2.6s ease forwards}
-.btn-primary{padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);box-shadow:0 0 40px rgba(201,169,110,0.3)}
+.btn-primary{padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);box-shadow:0 0 40px rgba(201,169,110,0.3);font-family:var(--font-body)}
 .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 50px rgba(201,169,110,0.45)}
 .btn-ghost{padding:1rem 2.6rem;border-radius:100px;border:1px solid var(--white-faint);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:300;color:var(--white-dim);transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--white);transform:translateY(-2px)}
@@ -173,7 +173,7 @@ section{position:relative;z-index:2}
 .testi-track{margin-top:4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .testi-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:2.4rem 2rem;backdrop-filter:blur(12px);position:relative;overflow:hidden;transition:transform 0.5s cubic-bezier(0.23,1,0.32,1),border-color 0.4s}
 .testi-card:hover{transform:translateY(-6px);border-color:rgba(201,169,110,0.2)}
-.testi-card::before{content:'"';position:absolute;top:-0.5rem;left:1.5rem;font-family:var(--font-display);font-size:8rem;color:rgba(201,169,110,0.06);line-height:1;pointer-events:none}
+.testi-card::before{content:'“';position:absolute;top:-0.5rem;left:1.5rem;font-family:var(--font-display);font-size:8rem;color:rgba(201,169,110,0.06);line-height:1;pointer-events:none}
 .testi-stars{color:var(--gold);font-size:0.75rem;letter-spacing:0.2em;margin-bottom:1.2rem}
 .testi-text{font-family:var(--font-display);font-size:1.05rem;font-style:italic;font-weight:300;line-height:1.7;color:var(--white-dim)}
 .testi-author{margin-top:2rem;display:flex;align-items:center;gap:1rem}
@@ -257,7 +257,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       <button class="lang-btn" data-lang="ru">RU</button>
       <button class="lang-btn" data-lang="uz">UZ</button>
     </div>
-    <a href="#cta-band" class="nav-cta"><span data-i18n="nav.cta">Book Journey</span></a>
+    <button class="nav-cta" onclick="openModal()"><span data-i18n="nav.cta">Book Journey</span></button>
   </div>
 </nav>
 
@@ -335,7 +335,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       <div class="bc-overlay"></div>
       <div class="bc-content" style="padding:2rem">
         <div class="bc-tag" data-i18n="features.b7.tag">Exclusive Access</div>
-        <h3 class="bc-title" data-i18n="features.b7.title">Private Villas & Estates</h3>
+        <h3 class="bc-title" data-i18n="features.b7.title">Private Villas &amp; Estates</h3>
       </div>
     </div>
   </div>
@@ -348,10 +348,10 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
   <div class="reveal"><span class="section-label" data-i18n="dest.label">Where to Next</span></div>
   <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0.5rem">
     <h2 class="section-title reveal reveal-delay-1" data-i18n="dest.title.html">World's Most<br><em>Coveted</em> Destinations</h2>
-    <a href="#" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem" data-i18n="dest.viewall">View All →</a>
+    <a href="#destinations" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem" data-i18n="dest.viewall">View All →</a>
   </div>
   <div class="destinations-grid">
-    <div class="dest-card reveal">
+    <div class="dest-card reveal" onclick="openModal('Santorini')" style="cursor:pointer">
       <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=600&q=80" alt="Santorini"/>
       <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
       <div class="dest-info">
@@ -361,7 +361,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:20px">
-      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1">
+      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1;cursor:pointer" onclick="openModal('Maldives')">
         <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Maldives" style="height:100%"/>
         <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
         <div class="dest-info">
@@ -370,17 +370,17 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
           <div class="dest-meta"><span class="dest-badge" data-i18n="dest.2.from">From $6,800</span></div>
         </div>
       </div>
-      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1">
+      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1;cursor:pointer" onclick="openModal('Kyoto')">
         <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=600&q=80" alt="Kyoto" style="height:100%"/>
         <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
         <div class="dest-info">
           <div class="dest-country" data-i18n="dest.3.country">Japan</div>
-          <h3 class="dest-name" data-i18n="dest.3.name">Kyoto & Hakone</h3>
+          <h3 class="dest-name" data-i18n="dest.3.name">Kyoto &amp; Hakone</h3>
           <div class="dest-meta"><span class="dest-badge" data-i18n="dest.3.from">From $5,500</span></div>
         </div>
       </div>
     </div>
-    <div class="dest-card reveal reveal-delay-3">
+    <div class="dest-card reveal reveal-delay-3" onclick="openModal('Amalfi')" style="cursor:pointer">
       <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Amalfi" style="height:100%"/>
       <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
       <div class="dest-info">
@@ -474,7 +474,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       <p class="testi-text" data-i18n="testi.1.text">Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.</p>
       <div class="testi-author">
         <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b9e63290?w=100&q=80" alt="Sarah"/>
-        <div><div class="testi-name">Sarah Chen</div><div class="testi-from" data-i18n="testi.1.from">Kyoto & Tokyo Journey</div></div>
+        <div><div class="testi-name">Sarah Chen</div><div class="testi-from" data-i18n="testi.1.from">Kyoto &amp; Tokyo Journey</div></div>
       </div>
     </div>
     <div class="testi-card reveal reveal-delay-1">
@@ -490,9 +490,23 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       <p class="testi-text" data-i18n="testi.3.text">Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.</p>
       <div class="testi-author">
         <img class="testi-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&q=80" alt="Elena"/>
-        <div><div class="testi-name">Elena & Marco Rossi</div><div class="testi-from" data-i18n="testi.3.from">Maldives Private Isle</div></div>
+        <div><div class="testi-name">Elena &amp; Marco Rossi</div><div class="testi-from" data-i18n="testi.3.from">Maldives Private Isle</div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter" style="background:#0e0e0e;border-top:1px solid rgba(255,255,255,0.08);padding:clamp(5rem,10vh,9rem) clamp(1.5rem,6vw,6rem)">
+  <div style="max-width:600px;margin:0 auto;text-align:center" class="reveal">
+    <span class="section-label" data-i18n="news.label">Stay Inspired</span>
+    <h2 class="section-title" style="margin-top:0.5rem" data-i18n="news.title.html">Rare <em>Destinations</em>,<br>Delivered to You</h2>
+    <p style="margin-top:1rem;color:var(--white-dim);font-size:0.9rem;line-height:1.7" data-i18n="news.sub">Subscribe for curated travel inspiration, exclusive offers, and first access to new journeys.</p>
+    <form id="newsletter-form" onsubmit="submitNewsletter(event)" style="margin-top:2.5rem;display:flex;gap:0.8rem;max-width:480px;margin-inline:auto;flex-wrap:wrap">
+      <input type="email" id="nl-email" required placeholder="your@email.com" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:0.85rem 1.6rem;font-size:0.85rem;color:var(--white);outline:none;font-family:var(--font-body);min-width:200px"/>
+      <button type="submit" id="nl-btn" style="padding:0.85rem 1.8rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap" data-i18n="news.btn">Subscribe</button>
+    </form>
+    <div id="nl-msg" style="margin-top:1rem;font-size:0.8rem;min-height:1.2em"></div>
   </div>
 </section>
 
@@ -503,8 +517,8 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
     <h2 class="cta-title" data-i18n="cta.title.html">Begin Your<br><em>Extraordinary</em><br>Journey</h2>
     <p class="cta-sub" data-i18n="cta.sub">Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.</p>
     <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
-      <a href="#" class="btn-primary" data-i18n="cta.btn1">Start Planning</a>
-      <a href="#" class="btn-ghost" data-i18n="cta.btn2">Schedule a Call</a>
+      <button onclick="openModal()" class="btn-primary" data-i18n="cta.btn1">Start Planning</button>
+      <button onclick="openModal()" class="btn-ghost" data-i18n="cta.btn2">Schedule a Call</button>
     </div>
   </div>
 </section>
@@ -526,7 +540,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
         <li><a href="#" data-i18n="footer.col1.1">Europe</a></li>
         <li><a href="#" data-i18n="footer.col1.2">Asia Pacific</a></li>
         <li><a href="#" data-i18n="footer.col1.3">Middle East</a></li>
-        <li><a href="#" data-i18n="footer.col1.4">Africa & Safari</a></li>
+        <li><a href="#" data-i18n="footer.col1.4">Africa &amp; Safari</a></li>
         <li><a href="#" data-i18n="footer.col1.5">The Americas</a></li>
       </ul>
     </div>
@@ -547,7 +561,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
         <li><a href="#" data-i18n="footer.col3.2">Our Team</a></li>
         <li><a href="#" data-i18n="footer.col3.3">Sustainability</a></li>
         <li><a href="#" data-i18n="footer.col3.4">Press</a></li>
-        <li><a href="#" data-i18n="footer.col3.5">Contact</a></li>
+        <li><a href="#" onclick="openModal();return false;" data-i18n="footer.col3.5">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -560,261 +574,254 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
   </div>
 </footer>
 
+<!-- BOOKING MODAL -->
+<div id="modal-overlay" onclick="handleOverlayClick(event)" style="position:fixed;inset:0;z-index:1000;background:rgba(5,5,5,0.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:opacity 0.4s,visibility 0.4s">
+  <div id="modal" style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);border-radius:24px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;position:relative">
+    <div style="padding:2.5rem 2.5rem 0;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+      <h2 style="font-family:var(--font-display);font-size:2rem;font-weight:300">Begin Your <em style="font-style:italic;color:var(--gold)">Journey</em></h2>
+      <button onclick="closeModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;color:var(--white-dim);font-size:1.1rem;cursor:pointer;flex-shrink:0;background:none">✕</button>
+    </div>
+    <div style="padding:1.5rem 2.5rem 2.5rem">
+      <div id="step-indicator" style="display:flex;align-items:center;margin-bottom:2rem">
+        <div id="sdot-0" style="width:8px;height:8px;border-radius:50%;background:var(--gold);transition:all 0.4s"></div>
+        <div id="sline-0" style="flex:1;height:1px;background:rgba(255,255,255,0.08);margin:0 8px"></div>
+        <div id="sdot-1" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all 0.4s"></div>
+        <div id="sline-1" style="flex:1;height:1px;background:rgba(255,255,255,0.08);margin:0 8px"></div>
+        <div id="sdot-2" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all 0.4s"></div>
+      </div>
+      <div id="step-0" style="display:block">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Full Name</label>
+            <input id="f-name" type="text" placeholder="Alexandra Voss" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%"/>
+            <span id="err-name" style="font-size:0.72rem;color:#f87171;min-height:1em"></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Email Address</label>
+            <input id="f-email" type="email" placeholder="you@example.com" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%"/>
+            <span id="err-email" style="font-size:0.72rem;color:#f87171;min-height:1em"></span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+          <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Phone (optional)</label>
+          <input id="f-phone" type="tel" placeholder="+1 555 000 0000" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%"/>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+          <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Destination</label>
+          <select id="f-dest" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;appearance:none">
+            <option value="">— Select a destination —</option>
+            <option>Santorini, Greece</option><option>North Malé Atoll, Maldives</option>
+            <option>Kyoto &amp; Hakone, Japan</option><option>Amalfi Coast, Italy</option>
+            <option>Sacred Bali Retreat</option><option>Kenya Safari Odyssey</option>
+            <option>Norwegian Fjords</option><option>Imperial Morocco</option>
+            <option>Iceland Aurora</option><option>Custom / Other</option>
+          </select>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem">
+          <span style="font-size:0.72rem;color:rgba(245,240,235,0.15)">Step 1 of 3</span>
+          <button onclick="goStep(1)" style="padding:0.75rem 2rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer">Continue →</button>
+        </div>
+      </div>
+      <div id="step-1" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Arrival Date</label>
+            <input id="f-date-from" type="date" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;color-scheme:dark"/>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Departure Date</label>
+            <input id="f-date-to" type="date" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;color-scheme:dark"/>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Guests</label>
+            <select id="f-guests" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;appearance:none">
+              <option value="1">1 Guest</option><option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option><option value="4">4 Guests</option><option value="5">5+ Guests</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Budget</label>
+            <select id="f-budget" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;appearance:none">
+              <option value="">— Select budget —</option>
+              <option value="$5k–$10k">$5,000 – $10,000</option><option value="$10k–$20k">$10,000 – $20,000</option>
+              <option value="$20k–$50k">$20,000 – $50,000</option><option value="$50k+">$50,000+</option>
+              <option value="No limit">No limit</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem">
+          <button onclick="goStep(0)" style="padding:0.75rem 1.6rem;border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white-dim);cursor:pointer;background:none">← Back</button>
+          <button onclick="goStep(2)" style="padding:0.75rem 2rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer">Continue →</button>
+        </div>
+      </div>
+      <div id="step-2" style="display:none">
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+          <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Tell Us Your Dream Journey</label>
+          <textarea id="f-message" rows="5" placeholder="Describe your ideal experience..." style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;resize:vertical;min-height:120px"></textarea>
+        </div>
+        <p style="font-size:0.75rem;color:rgba(245,240,235,0.2);line-height:1.6;margin-bottom:1rem">Your details are kept strictly confidential.</p>
+        <div id="modal-form-msg" style="font-size:0.8rem;min-height:1.2em;margin-bottom:0.5rem"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem">
+          <button onclick="goStep(1)" style="padding:0.75rem 1.6rem;border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white-dim);cursor:pointer;background:none">← Back</button>
+          <button id="modal-submit-btn" onclick="submitInquiry()" style="padding:0.75rem 2rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer">Send Inquiry ✦</button>
+        </div>
+      </div>
+      <div id="step-success" style="display:none;text-align:center;padding:3rem 1rem">
+        <div style="font-size:3rem;margin-bottom:1.5rem">✦</div>
+        <h3 style="font-family:var(--font-display);font-size:2rem;font-weight:300;margin-bottom:1rem">Thank <em style="font-style:italic;color:var(--gold)">You</em></h3>
+        <p style="color:var(--white-dim);line-height:1.7;font-size:0.9rem">Your inquiry has been received. A Lumina curator will be in touch within 24 hours.</p>
+        <button onclick="closeModal()" style="margin-top:2rem;padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ════════════════════════════════════════════
-   TRANSLATIONS
-════════════════════════════════════════════ */
 const i18n = {
   en: {
-    "nav.destinations": "Destinations",
-    "nav.experiences": "Experiences",
-    "nav.about": "About",
-    "nav.stories": "Stories",
-    "nav.cta": "Book Journey",
-    "hero.eyebrow": "Est. 2019 · Luxury Travel Curation",
-    "hero.title.html": "Beyond <em>Ordinary</em><br>Horizons",
+    "nav.destinations": "Destinations","nav.experiences": "Experiences","nav.about": "About","nav.stories": "Stories","nav.cta": "Book Journey",
+    "hero.eyebrow": "Est. 2019 · Luxury Travel Curation","hero.title.html": "Beyond <em>Ordinary</em><br>Horizons",
     "hero.sub": "Bespoke journeys crafted for those who seek the extraordinary. Every detail, every moment — curated with precision.",
-    "hero.cta1": "Explore Destinations",
-    "hero.cta2": "View Experiences",
-    "hero.scroll": "Scroll",
-    "features.label": "The Lumina Difference",
-    "features.title.html": "Crafted for the<br><em>Discerning Traveler</em>",
-    "features.b1.tag": "Signature Experience",
-    "features.b1.title.html": "Private Island<br>Sanctuaries",
-    "features.b1.text": "Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.",
-    "features.b2.tag": "White Glove Service",
-    "features.b2.title": "24/7 Dedicated Concierge",
-    "features.b2.text": "A personal travel curator available around the clock to anticipate your every need before you even voice it.",
-    "features.b3.tag": "Handpicked",
-    "features.b3.title": "Elite Properties",
-    "features.b3.text": "Access to 2,400+ five-star properties and private villas across 80 countries.",
-    "features.b4.tag": "Cultural",
-    "features.b4.title": "Deep Immersion",
-    "features.b5.tag": "Sustainability",
-    "features.b5.title": "Mindful Luxury",
-    "features.b5.text": "Carbon-neutral journeys that support local communities and ecosystems.",
-    "features.b6.tag": "Tailor-Made",
-    "features.b6.title": "Every Journey is Yours Alone",
-    "features.b6.text": "No two Lumina itineraries are alike. We begin with your story and build an experience around it — with obsessive attention to detail.",
-    "features.b7.tag": "Exclusive Access",
-    "features.b7.title": "Private Villas & Estates",
-    "dest.label": "Where to Next",
-    "dest.title.html": "World's Most<br><em>Coveted</em> Destinations",
-    "dest.viewall": "View All →",
-    "dest.1.country": "Greece", "dest.1.from": "From $4,200", "dest.1.nights": "7–14 nights",
-    "dest.2.country": "Maldives", "dest.2.name": "North Malé Atoll", "dest.2.from": "From $6,800",
-    "dest.3.country": "Japan", "dest.3.name": "Kyoto & Hakone", "dest.3.from": "From $5,500",
-    "dest.4.country": "Italy", "dest.4.name": "Amalfi Coast", "dest.4.from": "From $3,900", "dest.4.nights": "5–10 nights",
-    "exp.label": "Signature Journeys",
-    "exp.title.html": "Curated <em>Experiences</em><br>Unlike Any Other",
-    "exp.1.title": "Sacred Bali<br>Retreat", "exp.1.dur": "10 Nights · Private Villa", "exp.1.price": "From USD $7,200 per person",
-    "exp.2.title": "Kenya Safari<br>Odyssey", "exp.2.dur": "8 Nights · Luxury Camp", "exp.2.price": "From USD $9,500 per person",
-    "exp.3.title": "Norwegian<br>Fjords", "exp.3.dur": "12 Nights · Private Yacht", "exp.3.price": "From USD $14,800 per person",
-    "exp.4.title": "Imperial<br>Morocco", "exp.4.dur": "9 Nights · Riad Collection", "exp.4.price": "From USD $5,900 per person",
-    "exp.5.title": "Iceland<br>Aurora", "exp.5.dur": "7 Nights · Glass Cabin", "exp.5.price": "From USD $8,400 per person",
-    "stats.1": "Luxury Properties", "stats.2": "Countries Covered", "stats.3": "Journeys Crafted", "stats.4": "Client Satisfaction",
-    "testi.label": "Traveler Stories",
-    "testi.title.html": "Words From Our<br><em>Guests</em>",
-    "testi.1.text": "Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us. Every moment felt intentional, every detail impossibly perfect.",
-    "testi.1.from": "Kyoto & Tokyo Journey",
-    "testi.2.text": "The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise — this is what luxury travel truly means.",
-    "testi.2.from": "Kenya Safari Odyssey",
-    "testi.3.text": "Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves. We return every year now.",
-    "testi.3.from": "Maldives Private Isle",
+    "hero.cta1": "Explore Destinations","hero.cta2": "View Experiences","hero.scroll": "Scroll",
+    "features.label": "The Lumina Difference","features.title.html": "Crafted for the<br><em>Discerning Traveler</em>",
+    "features.b1.tag": "Signature Experience","features.b1.title.html": "Private Island<br>Sanctuaries","features.b1.text": "Exclusive access to the world's most secluded retreats, curated for absolute privacy and luxury.",
+    "features.b2.tag": "White Glove Service","features.b2.title": "24/7 Dedicated Concierge","features.b2.text": "A personal travel curator available around the clock to anticipate your every need before you even voice it.",
+    "features.b3.tag": "Handpicked","features.b3.title": "Elite Properties","features.b3.text": "Access to 2,400+ five-star properties and private villas across 80 countries.",
+    "features.b4.tag": "Cultural","features.b4.title": "Deep Immersion",
+    "features.b5.tag": "Sustainability","features.b5.title": "Mindful Luxury","features.b5.text": "Carbon-neutral journeys that support local communities and ecosystems.",
+    "features.b6.tag": "Tailor-Made","features.b6.title": "Every Journey is Yours Alone","features.b6.text": "No two Lumina itineraries are alike. We begin with your story and build an experience around it.",
+    "features.b7.tag": "Exclusive Access","features.b7.title": "Private Villas & Estates",
+    "dest.label": "Where to Next","dest.title.html": "World's Most<br><em>Coveted</em> Destinations","dest.viewall": "View All →",
+    "dest.1.country": "Greece","dest.1.from": "From $4,200","dest.1.nights": "7–14 nights",
+    "dest.2.country": "Maldives","dest.2.name": "North Malé Atoll","dest.2.from": "From $6,800",
+    "dest.3.country": "Japan","dest.3.name": "Kyoto & Hakone","dest.3.from": "From $5,500",
+    "dest.4.country": "Italy","dest.4.name": "Amalfi Coast","dest.4.from": "From $3,900","dest.4.nights": "5–10 nights",
+    "exp.label": "Signature Journeys","exp.title.html": "Curated <em>Experiences</em><br>Unlike Any Other",
+    "exp.1.title": "Sacred Bali<br>Retreat","exp.1.dur": "10 Nights · Private Villa","exp.1.price": "From USD $7,200 per person",
+    "exp.2.title": "Kenya Safari<br>Odyssey","exp.2.dur": "8 Nights · Luxury Camp","exp.2.price": "From USD $9,500 per person",
+    "exp.3.title": "Norwegian<br>Fjords","exp.3.dur": "12 Nights · Private Yacht","exp.3.price": "From USD $14,800 per person",
+    "exp.4.title": "Imperial<br>Morocco","exp.4.dur": "9 Nights · Riad Collection","exp.4.price": "From USD $5,900 per person",
+    "exp.5.title": "Iceland<br>Aurora","exp.5.dur": "7 Nights · Glass Cabin","exp.5.price": "From USD $8,400 per person",
+    "stats.1": "Luxury Properties","stats.2": "Countries Covered","stats.3": "Journeys Crafted","stats.4": "Client Satisfaction",
+    "testi.label": "Traveler Stories","testi.title.html": "Words From Our<br><em>Guests</em>",
+    "testi.1.text": "Lumina transformed what could have been a simple holiday into an experience that redefined what travel means to us.","testi.1.from": "Kyoto & Tokyo Journey",
+    "testi.2.text": "The private safari camp they arranged was beyond anything I'd imagined. Waking to lions outside the tent, champagne at sunrise.","testi.2.from": "Kenya Safari Odyssey",
+    "testi.3.text": "Our anniversary trip to the Maldives was curated with such personal touch, it felt like they knew us better than we know ourselves.","testi.3.from": "Maldives Private Isle",
     "cta.title.html": "Begin Your<br><em>Extraordinary</em><br>Journey",
     "cta.sub": "Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.",
-    "cta.btn1": "Start Planning", "cta.btn2": "Schedule a Call",
+    "cta.btn1": "Start Planning","cta.btn2": "Schedule a Call",
     "footer.tagline": "Crafting extraordinary journeys for those who refuse to settle for the ordinary. The world is your canvas.",
-    "footer.col1.title": "Destinations", "footer.col1.1": "Europe", "footer.col1.2": "Asia Pacific", "footer.col1.3": "Middle East", "footer.col1.4": "Africa & Safari", "footer.col1.5": "The Americas",
-    "footer.col2.title": "Experiences", "footer.col2.1": "Private Yachts", "footer.col2.2": "Wellness Retreats", "footer.col2.3": "Cultural Immersion", "footer.col2.4": "Adventure Luxury", "footer.col2.5": "Honeymoon",
-    "footer.col3.title": "Company", "footer.col3.1": "About Lumina", "footer.col3.2": "Our Team", "footer.col3.3": "Sustainability", "footer.col3.4": "Press", "footer.col3.5": "Contact",
-    "footer.copy": "© 2026 Lumina Voyages. All rights reserved. Luxury curated, never replicated.",
-    "footer.privacy": "Privacy Policy", "footer.terms": "Terms of Service",
+    "footer.col1.title": "Destinations","footer.col1.1": "Europe","footer.col1.2": "Asia Pacific","footer.col1.3": "Middle East","footer.col1.4": "Africa & Safari","footer.col1.5": "The Americas",
+    "footer.col2.title": "Experiences","footer.col2.1": "Private Yachts","footer.col2.2": "Wellness Retreats","footer.col2.3": "Cultural Immersion","footer.col2.4": "Adventure Luxury","footer.col2.5": "Honeymoon",
+    "footer.col3.title": "Company","footer.col3.1": "About Lumina","footer.col3.2": "Our Team","footer.col3.3": "Sustainability","footer.col3.4": "Press","footer.col3.5": "Contact",
+    "footer.copy": "© 2026 Lumina Voyages. All rights reserved.","footer.privacy": "Privacy Policy","footer.terms": "Terms of Service",
     "marquee": ["Santorini","·","Maldives","·","Kyoto","·","Amalfi Coast","·","Norwegian Fjords","·","Bali","·","Morocco","·","Kenya Safari","·","Iceland Auroras","·","Swiss Alps","·"]
   },
-
   ru: {
-    "nav.destinations": "Направления",
-    "nav.experiences": "Путешествия",
-    "nav.about": "О нас",
-    "nav.stories": "Отзывы",
-    "nav.cta": "Забронировать",
-    "hero.eyebrow": "Осн. 2019 · Люксовые путешествия",
-    "hero.title.html": "За пределами<br><em>Обычного</em>",
-    "hero.sub": "Эксклюзивные маршруты для тех, кто ищет нечто исключительное. Каждая деталь, каждый момент — выверены до совершенства.",
-    "hero.cta1": "Направления",
-    "hero.cta2": "Путешествия",
-    "hero.scroll": "Листать",
-    "features.label": "Отличие Lumina",
-    "features.title.html": "Создано для<br><em>Истинного Путешественника</em>",
-    "features.b1.tag": "Знаковый опыт",
-    "features.b1.title.html": "Частные<br>Островные Виллы",
-    "features.b1.text": "Эксклюзивный доступ к самым уединённым курортам мира, созданным для абсолютного уединения и роскоши.",
-    "features.b2.tag": "Сервис высшего класса",
-    "features.b2.title": "Консьерж 24/7",
-    "features.b2.text": "Персональный куратор путешествий, который предугадает каждое ваше желание прежде, чем вы его выскажете.",
-    "features.b3.tag": "Отборные объекты",
-    "features.b3.title": "Элитная Недвижимость",
-    "features.b3.text": "Более 2 400 пятизвёздочных отелей и частных вилл в 80 странах мира.",
-    "features.b4.tag": "Культурное погружение",
-    "features.b4.title": "Глубокое Единение",
-    "features.b5.tag": "Устойчивость",
-    "features.b5.title": "Осознанная Роскошь",
-    "features.b5.text": "Углерод-нейтральные маршруты, поддерживающие местные сообщества и экосистемы.",
-    "features.b6.tag": "Индивидуальный подход",
-    "features.b6.title": "Каждое Путешествие — Только Ваше",
-    "features.b6.text": "Никакие два маршрута Lumina не повторяются. Мы начинаем с вашей истории и создаём вокруг неё уникальный опыт — с маниакальным вниманием к деталям.",
-    "features.b7.tag": "Эксклюзивный доступ",
-    "features.b7.title": "Частные Виллы и Поместья",
-    "dest.label": "Куда дальше",
-    "dest.title.html": "Самые<br><em>Желанные</em> Направления Мира",
-    "dest.viewall": "Все направления →",
-    "dest.1.country": "Греция", "dest.1.from": "От $4 200", "dest.1.nights": "7–14 ночей",
-    "dest.2.country": "Мальдивы", "dest.2.name": "Атолл Северный Мале", "dest.2.from": "От $6 800",
-    "dest.3.country": "Япония", "dest.3.name": "Киото и Хаконэ", "dest.3.from": "От $5 500",
-    "dest.4.country": "Италия", "dest.4.name": "Амальфитанское побережье", "dest.4.from": "От $3 900", "dest.4.nights": "5–10 ночей",
-    "exp.label": "Авторские Маршруты",
-    "exp.title.html": "Уникальные <em>Впечатления</em><br>Ни на что не похожие",
-    "exp.1.title": "Священный Бали<br>Ретрит", "exp.1.dur": "10 ночей · Частная вилла", "exp.1.price": "От $7 200 с человека",
-    "exp.2.title": "Сафари в Кении<br>Одиссея", "exp.2.dur": "8 ночей · Люкс-кемп", "exp.2.price": "От $9 500 с человека",
-    "exp.3.title": "Норвежские<br>Фьорды", "exp.3.dur": "12 ночей · Частная яхта", "exp.3.price": "От $14 800 с человека",
-    "exp.4.title": "Императорское<br>Марокко", "exp.4.dur": "9 ночей · Коллекция риадов", "exp.4.price": "От $5 900 с человека",
-    "exp.5.title": "Исландское<br>Северное Сияние", "exp.5.dur": "7 ночей · Стеклянный домик", "exp.5.price": "От $8 400 с человека",
-    "stats.1": "Люксовых Объектов", "stats.2": "Стран", "stats.3": "Маршрутов Создано", "stats.4": "Удовлетворённость",
-    "testi.label": "Истории Путешественников",
-    "testi.title.html": "Слова Наших<br><em>Гостей</em>",
-    "testi.1.text": "Lumina превратила то, что могло стать обычным отпуском, в опыт, который переопределил для нас смысл путешествий. Каждый момент был наполнен смыслом, каждая деталь — безупречна.",
-    "testi.1.from": "Путешествие в Киото и Токио",
-    "testi.2.text": "Частный сафари-лагерь, который они организовали, превзошёл все мои ожидания. Просыпаться от рыка львов у палатки, шампанское на рассвете — вот что такое настоящая роскошь.",
-    "testi.2.from": "Сафари-одиссея в Кении",
-    "testi.3.text": "Наша годовщина на Мальдивах была спланирована с такой личной теплотой, что казалось, они знают нас лучше нас самих. С тех пор мы возвращаемся каждый год.",
-    "testi.3.from": "Частный остров на Мальдивах",
+    "nav.destinations": "Направления","nav.experiences": "Путешествия","nav.about": "О нас","nav.stories": "Отзывы","nav.cta": "Забронировать",
+    "hero.eyebrow": "Осн. 2019 · Люксовые путешествия","hero.title.html": "За пределами<br><em>Обычного</em>",
+    "hero.sub": "Эксклюзивные маршруты для тех, кто ищет нечто исключительное.",
+    "hero.cta1": "Направления","hero.cta2": "Путешествия","hero.scroll": "Листать",
+    "features.label": "Отличие Lumina","features.title.html": "Создано для<br><em>Истинного Путешественника</em>",
+    "features.b1.tag": "Знаковый опыт","features.b1.title.html": "Частные<br>Островные Виллы","features.b1.text": "Эксклюзивный доступ к самым уединённым курортам мира.",
+    "features.b2.tag": "Сервис высшего класса","features.b2.title": "Консьерж 24/7","features.b2.text": "Персональный куратор путешествий.",
+    "features.b3.tag": "Отборные объекты","features.b3.title": "Элитная Недвижимость","features.b3.text": "Более 2 400 пятизвёздочных отелей в 80 странах.",
+    "features.b4.tag": "Культурное погружение","features.b4.title": "Глубокое Единение",
+    "features.b5.tag": "Устойчивость","features.b5.title": "Осознанная Роскошь","features.b5.text": "Углерод-нейтральные маршруты.",
+    "features.b6.tag": "Индивидуальный подход","features.b6.title": "Каждое Путешествие — Только Ваше","features.b6.text": "Никакие два маршрута Lumina не повторяются.",
+    "features.b7.tag": "Эксклюзивный доступ","features.b7.title": "Частные Виллы и Поместья",
+    "dest.label": "Куда дальше","dest.title.html": "Самые<br><em>Желанные</em> Направления","dest.viewall": "Все направления →",
+    "dest.1.country": "Греция","dest.1.from": "От $4 200","dest.1.nights": "7–14 ночей",
+    "dest.2.country": "Мальдивы","dest.2.name": "Атолл Северный Мале","dest.2.from": "От $6 800",
+    "dest.3.country": "Япония","dest.3.name": "Киото и Хаконэ","dest.3.from": "От $5 500",
+    "dest.4.country": "Италия","dest.4.name": "Амальфитанское побережье","dest.4.from": "От $3 900","dest.4.nights": "5–10 ночей",
+    "exp.label": "Авторские Маршруты","exp.title.html": "Уникальные <em>Впечатления</em><br>Ни на что не похожие",
+    "exp.1.title": "Священный Бали<br>Ретрит","exp.1.dur": "10 ночей · Частная вилла","exp.1.price": "От $7 200 с человека",
+    "exp.2.title": "Сафари в Кении<br>Одиссея","exp.2.dur": "8 ночей · Люкс-кемп","exp.2.price": "От $9 500 с человека",
+    "exp.3.title": "Норвежские<br>Фьорды","exp.3.dur": "12 ночей · Частная яхта","exp.3.price": "От $14 800 с человека",
+    "exp.4.title": "Императорское<br>Марокко","exp.4.dur": "9 ночей · Коллекция риадов","exp.4.price": "От $5 900 с человека",
+    "exp.5.title": "Исландское<br>Северное Сияние","exp.5.dur": "7 ночей · Стеклянный домик","exp.5.price": "От $8 400 с человека",
+    "stats.1": "Люксовых Объектов","stats.2": "Стран","stats.3": "Маршрутов","stats.4": "Удовлетворённость",
+    "testi.label": "Истории Путешественников","testi.title.html": "Слова Наших<br><em>Гостей</em>",
+    "testi.1.text": "Lumina превратила отпуск в незабываемое путешествие.","testi.1.from": "Путешествие в Киото",
+    "testi.2.text": "Частный сафари-лагерь превзошёл все ожидания.","testi.2.from": "Сафари в Кении",
+    "testi.3.text": "Наша годовщина на Мальдивах была спланирована с такой личной теплотой.","testi.3.from": "Частный остров на Мальдивах",
     "cta.title.html": "Начните Своё<br><em>Исключительное</em><br>Путешествие",
-    "cta.sub": "Поговорите с куратором Lumina и позвольте нам создать опыт, который будет полностью и неповторимо вашим.",
-    "cta.btn1": "Начать планирование", "cta.btn2": "Записаться на звонок",
-    "footer.tagline": "Создаём исключительные путешествия для тех, кто не готов мириться с обычным. Мир — это ваш холст.",
-    "footer.col1.title": "Направления", "footer.col1.1": "Европа", "footer.col1.2": "Азиатско-Тихоокеанский регион", "footer.col1.3": "Ближний Восток", "footer.col1.4": "Африка и Сафари", "footer.col1.5": "Америка",
-    "footer.col2.title": "Путешествия", "footer.col2.1": "Частные яхты", "footer.col2.2": "Велнес-ретриты", "footer.col2.3": "Культурное погружение", "footer.col2.4": "Приключенческая роскошь", "footer.col2.5": "Медовый месяц",
-    "footer.col3.title": "Компания", "footer.col3.1": "О Lumina", "footer.col3.2": "Наша команда", "footer.col3.3": "Устойчивость", "footer.col3.4": "Пресса", "footer.col3.5": "Контакты",
-    "footer.copy": "© 2026 Lumina Voyages. Все права защищены. Роскошь — персонально.",
-    "footer.privacy": "Конфиденциальность", "footer.terms": "Условия использования",
-    "marquee": ["Санторини","·","Мальдивы","·","Киото","·","Амальфи","·","Норвежские фьорды","·","Бали","·","Марокко","·","Сафари в Кении","·","Северное сияние","·","Швейцарские Альпы","·"]
+    "cta.sub": "Поговорите с куратором Lumina.",
+    "cta.btn1": "Начать планирование","cta.btn2": "Записаться на звонок",
+    "footer.tagline": "Создаём исключительные путешествия.",
+    "footer.col1.title": "Направления","footer.col1.1": "Европа","footer.col1.2": "Азия","footer.col1.3": "Ближний Восток","footer.col1.4": "Африка","footer.col1.5": "Америка",
+    "footer.col2.title": "Путешествия","footer.col2.1": "Яхты","footer.col2.2": "Ретриты","footer.col2.3": "Культура","footer.col2.4": "Приключения","footer.col2.5": "Медовый месяц",
+    "footer.col3.title": "Компания","footer.col3.1": "О Lumina","footer.col3.2": "Команда","footer.col3.3": "Устойчивость","footer.col3.4": "Пресса","footer.col3.5": "Контакты",
+    "footer.copy": "© 2026 Lumina Voyages.","footer.privacy": "Конфиденциальность","footer.terms": "Условия",
+    "marquee": ["Санторини","·","Мальдивы","·","Киото","·","Амальфи","·","Норвежские фьорды","·","Бали","·","Марокко","·","Кения","·","Северное сияние","·"]
   },
-
   uz: {
-    "nav.destinations": "Yo'nalishlar",
-    "nav.experiences": "Sayohatlar",
-    "nav.about": "Biz haqimizda",
-    "nav.stories": "Hikoyalar",
-    "nav.cta": "Bron qilish",
-    "hero.eyebrow": "Tash. 2019 · Hashamatli Sayohat",
-    "hero.title.html": "<em>Oddiy</em> Chegaralardan<br>Uzoqda",
-    "hero.sub": "Noodatiylikni izlaganlar uchun maxsus tayyorlangan sayohatlar. Har bir tafsilot, har bir lahza — mukammal tarzda tanlangan.",
-    "hero.cta1": "Yo'nalishlarni Ko'rish",
-    "hero.cta2": "Sayohatlarni Ko'rish",
-    "hero.scroll": "Pastga",
-    "features.label": "Lumina Farqi",
-    "features.title.html": "Haqiqiy <em>Sayohatchiga</em><br>Yaratilgan",
-    "features.b1.tag": "Alohida Tajriba",
-    "features.b1.title.html": "Xususiy Orol<br>Villalari",
-    "features.b1.text": "Dunyoning eng yashirin kurortlariga eksklyuziv kirish imkoni — mutlaq maxfiylik va hashamat uchun.",
-    "features.b2.tag": "Yuqori Darajali Xizmat",
-    "features.b2.title": "24/7 Shaxsiy Konsyerj",
-    "features.b2.text": "Har bir ehtiyojingizni siz aytishdan oldin sezadigan shaxsiy sayohat kuratoringiz doimo yoningizda.",
-    "features.b3.tag": "Tanlab Olingan",
-    "features.b3.title": "Elite Mulklar",
-    "features.b3.text": "80 mamlakatdagi 2 400+ besh yulduzli mehmonxonalar va xususiy villaлarga kirish.",
-    "features.b4.tag": "Madaniy",
-    "features.b4.title": "Chuqur Singib Ketish",
-    "features.b5.tag": "Barqarorlik",
-    "features.b5.title": "Ongli Hashamat",
-    "features.b5.text": "Mahalliy jamoalar va ekotizimlarni qo'llab-quvvatlaydigan karbon-neytral sayohatlar.",
-    "features.b6.tag": "Individual Yondashuv",
-    "features.b6.title": "Har Sayohat Faqat Sizniki",
-    "features.b6.text": "Hech qanday ikki Lumina marshrutlari bir xil emas. Biz sizning hikoyangizdan boshlaymiz va atrofida tajriba yaratamiz — mayda-chuydalarga ega e'tibor bilan.",
-    "features.b7.tag": "Eksklyuziv Kirish",
-    "features.b7.title": "Xususiy Villalar va Mulklar",
-    "dest.label": "Keyingi Manzil",
-    "dest.title.html": "Dunyoning Eng<br><em>Istakli</em> Yo'nalishlari",
-    "dest.viewall": "Barchasini Ko'rish →",
-    "dest.1.country": "Gretsiya", "dest.1.from": "$4 200 dan", "dest.1.nights": "7–14 kecha",
-    "dest.2.country": "Maldiv orollari", "dest.2.name": "Shimoliy Male Atoll", "dest.2.from": "$6 800 dan",
-    "dest.3.country": "Yaponiya", "dest.3.name": "Kioto va Xakone", "dest.3.from": "$5 500 dan",
-    "dest.4.country": "Italiya", "dest.4.name": "Amalfi qirg'og'i", "dest.4.from": "$3 900 dan", "dest.4.nights": "5–10 kecha",
-    "exp.label": "Maxsus Marshrutlar",
-    "exp.title.html": "Boshqacha <em>Tajribalar</em><br>Noyob va Unutilmas",
-    "exp.1.title": "Muqaddas Bali<br>Retreti", "exp.1.dur": "10 kecha · Xususiy villa", "exp.1.price": "Kishi boshiga $7 200 dan",
-    "exp.2.title": "Keniya Safari<br>Odisseyasi", "exp.2.dur": "8 kecha · Hashamatli lager", "exp.2.price": "Kishi boshiga $9 500 dan",
-    "exp.3.title": "Norvegiya<br>Fyordlari", "exp.3.dur": "12 kecha · Xususiy yaxta", "exp.3.price": "Kishi boshiga $14 800 dan",
-    "exp.4.title": "Imperator<br>Marokash", "exp.4.dur": "9 kecha · Riad koleksiyasi", "exp.4.price": "Kishi boshiga $5 900 dan",
-    "exp.5.title": "Islandiya<br>Shimoliy Nuri", "exp.5.dur": "7 kecha · Shisha kabina", "exp.5.price": "Kishi boshiga $8 400 dan",
-    "stats.1": "Hashamatli Mulklar", "stats.2": "Davlat", "stats.3": "Yaratilgan Marshrutlar", "stats.4": "Mijoz Mamnuniyati",
-    "testi.label": "Sayohatchilar Hikoyalari",
-    "testi.title.html": "Mehmonlarimizning<br><em>So'zlari</em>",
-    "testi.1.text": "Lumina oddiy ta'tilni sayohatning ma'nosini qaytadan belgilab bergan tajribaga aylantirdi. Har bir lahza maqsadli, har bir tafsilot mukammal edi.",
-    "testi.1.from": "Kioto va Tokio Sayohati",
-    "testi.2.text": "Ular tashkil etgan xususiy safari lager xayolimga ham kelmagan narsa edi. Chodirdan tashqarida sherlar ovozi bilan uyg'onish, tong shafag'ida shampan — haqiqiy hashamat shu.",
-    "testi.2.from": "Keniya Safari Odisseyasi",
-    "testi.3.text": "Maldivlardagi yillik sayohatimiz shunchalik shaxsiy tarzda tashkil etildiki, ular bizni o'zimizdan yaxshiroq bilishadi degan his tug'ildi. Endi har yili qaytib kelamiz.",
-    "testi.3.from": "Maldiv Xususiy Oroli",
+    "nav.destinations": "Yo'nalishlar","nav.experiences": "Sayohatlar","nav.about": "Biz haqimizda","nav.stories": "Hikoyalar","nav.cta": "Bron qilish",
+    "hero.eyebrow": "Tash. 2019 · Hashamatli Sayohat","hero.title.html": "<em>Oddiy</em> Chegaralardan<br>Uzoqda",
+    "hero.sub": "Noodatiylikni izlaganlar uchun maxsus tayyorlangan sayohatlar.",
+    "hero.cta1": "Yo'nalishlarni Ko'rish","hero.cta2": "Sayohatlarni Ko'rish","hero.scroll": "Pastga",
+    "features.label": "Lumina Farqi","features.title.html": "Haqiqiy <em>Sayohatchiga</em><br>Yaratilgan",
+    "features.b1.tag": "Alohida Tajriba","features.b1.title.html": "Xususiy Orol<br>Villalari","features.b1.text": "Dunyoning eng yashirin kurortlariga eksklyuziv kirish.",
+    "features.b2.tag": "Yuqori Darajali Xizmat","features.b2.title": "24/7 Shaxsiy Konsyerj","features.b2.text": "Har bir ehtiyojingizni sezadigan kurator.",
+    "features.b3.tag": "Tanlab Olingan","features.b3.title": "Elite Mulklar","features.b3.text": "80 mamlakatdagi 2 400+ besh yulduzli ob'ektlar.",
+    "features.b4.tag": "Madaniy","features.b4.title": "Chuqur Singib Ketish",
+    "features.b5.tag": "Barqarorlik","features.b5.title": "Ongli Hashamat","features.b5.text": "Karbon-neytral sayohatlar.",
+    "features.b6.tag": "Individual","features.b6.title": "Har Sayohat Faqat Sizniki","features.b6.text": "Hech qanday ikki Lumina marshrutlari bir xil emas.",
+    "features.b7.tag": "Eksklyuziv","features.b7.title": "Xususiy Villalar va Mulklar",
+    "dest.label": "Keyingi Manzil","dest.title.html": "Dunyoning Eng<br><em>Istakli</em> Yo'nalishlari","dest.viewall": "Barchasini Ko'rish →",
+    "dest.1.country": "Gretsiya","dest.1.from": "$4 200 dan","dest.1.nights": "7–14 kecha",
+    "dest.2.country": "Maldiv orollari","dest.2.name": "Shimoliy Male Atoll","dest.2.from": "$6 800 dan",
+    "dest.3.country": "Yaponiya","dest.3.name": "Kioto va Xakone","dest.3.from": "$5 500 dan",
+    "dest.4.country": "Italiya","dest.4.name": "Amalfi qirg'og'i","dest.4.from": "$3 900 dan","dest.4.nights": "5–10 kecha",
+    "exp.label": "Maxsus Marshrutlar","exp.title.html": "Boshqacha <em>Tajribalar</em><br>Noyob va Unutilmas",
+    "exp.1.title": "Muqaddas Bali<br>Retreti","exp.1.dur": "10 kecha · Xususiy villa","exp.1.price": "Kishi boshiga $7 200 dan",
+    "exp.2.title": "Keniya Safari<br>Odisseyasi","exp.2.dur": "8 kecha · Hashamatli lager","exp.2.price": "Kishi boshiga $9 500 dan",
+    "exp.3.title": "Norvegiya<br>Fyordlari","exp.3.dur": "12 kecha · Xususiy yaxta","exp.3.price": "Kishi boshiga $14 800 dan",
+    "exp.4.title": "Imperator<br>Marokash","exp.4.dur": "9 kecha · Riad koleksiyasi","exp.4.price": "Kishi boshiga $5 900 dan",
+    "exp.5.title": "Islandiya<br>Shimoliy Nuri","exp.5.dur": "7 kecha · Shisha kabina","exp.5.price": "Kishi boshiga $8 400 dan",
+    "stats.1": "Hashamatli Mulklar","stats.2": "Davlat","stats.3": "Yaratilgan Marshrutlar","stats.4": "Mijoz Mamnuniyati",
+    "testi.label": "Sayohatchilar Hikoyalari","testi.title.html": "Mehmonlarimizning<br><em>So'zlari</em>",
+    "testi.1.text": "Lumina oddiy ta'tilni unutilmas tajribaga aylantirdi.","testi.1.from": "Kioto va Tokio Sayohati",
+    "testi.2.text": "Xususiy safari lager xayolimga ham kelmagan narsa edi.","testi.2.from": "Keniya Safari Odisseyasi",
+    "testi.3.text": "Maldivlardagi sayohatimiz shunchalik shaxsiy tashkil etildi. Endi har yili qaytib kelamiz.","testi.3.from": "Maldiv Xususiy Oroli",
     "cta.title.html": "O'zingizning<br><em>Noyob</em><br>Sayohatingizni Boshlang",
-    "cta.sub": "Lumina kuratori bilan gaplashing va butunlay sizniki bo'lgan tajribani birga loyihalaylik.",
-    "cta.btn1": "Rejalashtirish", "cta.btn2": "Qo'ng'iroq Belgilash",
-    "footer.tagline": "Oddiy narsalar bilan qanoatlanmaydigan odamlar uchun ajoyib sayohatlar. Dunyo — sizning kanvasingiz.",
-    "footer.col1.title": "Yo'nalishlar", "footer.col1.1": "Yevropa", "footer.col1.2": "Osiyo-Tinch Okeani", "footer.col1.3": "Yaqin Sharq", "footer.col1.4": "Afrika va Safari", "footer.col1.5": "Amerika",
-    "footer.col2.title": "Sayohatlar", "footer.col2.1": "Xususiy Yaxtalar", "footer.col2.2": "Wellness Retretar", "footer.col2.3": "Madaniy Sayohat", "footer.col2.4": "Sarguzasht Hashamati", "footer.col2.5": "Asal Oyi",
-    "footer.col3.title": "Kompaniya", "footer.col3.1": "Lumina Haqida", "footer.col3.2": "Jamoamiz", "footer.col3.3": "Barqarorlik", "footer.col3.4": "Matbuot", "footer.col3.5": "Aloqa",
-    "footer.copy": "© 2026 Lumina Voyages. Barcha huquqlar himoyalangan.",
-    "footer.privacy": "Maxfiylik Siyosati", "footer.terms": "Foydalanish Shartlari",
-    "marquee": ["Santorini","·","Maldiv","·","Kioto","·","Amalfi","·","Norvegiya Fyordlari","·","Bali","·","Marokash","·","Keniya Safarisi","·","Shimoliy Nur","·","Shveytsariya Alplar","·"]
+    "cta.sub": "Lumina kuratori bilan gaplashing.",
+    "cta.btn1": "Rejalashtirish","cta.btn2": "Qo'ng'iroq Belgilash",
+    "footer.tagline": "Oddiy narsalar bilan qanoatlanmaydigan odamlar uchun ajoyib sayohatlar.",
+    "footer.col1.title": "Yo'nalishlar","footer.col1.1": "Yevropa","footer.col1.2": "Osiyo","footer.col1.3": "Yaqin Sharq","footer.col1.4": "Afrika","footer.col1.5": "Amerika",
+    "footer.col2.title": "Sayohatlar","footer.col2.1": "Yaxtalar","footer.col2.2": "Wellness","footer.col2.3": "Madaniy","footer.col2.4": "Sarguzasht","footer.col2.5": "Asal Oyi",
+    "footer.col3.title": "Kompaniya","footer.col3.1": "Lumina Haqida","footer.col3.2": "Jamoa","footer.col3.3": "Barqarorlik","footer.col3.4": "Matbuot","footer.col3.5": "Aloqa",
+    "footer.copy": "© 2026 Lumina Voyages.","footer.privacy": "Maxfiylik","footer.terms": "Shartlar",
+    "marquee": ["Santorini","·","Maldiv","·","Kioto","·","Amalfi","·","Norvegiya Fyordlari","·","Bali","·","Marokash","·","Keniya","·","Shimoliy Nur","·"]
   }
 };
 
-/* ════════════════════════════════════════════
-   LANGUAGE SWITCHER
-════════════════════════════════════════════ */
 let currentLang = 'en';
 
 function applyLang(lang) {
   const t = i18n[lang];
   const elements = document.querySelectorAll('[data-i18n]');
-
-  // Fade out
   elements.forEach(el => el.classList.add('lang-fade'));
-
   setTimeout(() => {
     elements.forEach(el => {
       const key = el.dataset.i18n;
       if (!t[key]) return;
-      if (key.endsWith('.html')) {
-        el.innerHTML = t[key];
-      } else {
-        el.textContent = t[key];
-      }
+      if (key.endsWith('.html')) el.innerHTML = t[key];
+      else el.textContent = t[key];
     });
-
-    // Update marquee
     updateMarquee(lang);
-
-    // Fade in
-    setTimeout(() => {
-      elements.forEach(el => el.classList.remove('lang-fade'));
-    }, 30);
+    setTimeout(() => elements.forEach(el => el.classList.remove('lang-fade')), 30);
   }, 280);
-
-  // Update lang buttons
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === lang);
-  });
-
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
   document.documentElement.lang = lang;
   currentLang = lang;
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (btn.dataset.lang !== currentLang) applyLang(btn.dataset.lang);
-  });
+  btn.addEventListener('click', () => { if (btn.dataset.lang !== currentLang) applyLang(btn.dataset.lang); });
 });
 
 function updateMarquee(lang) {
@@ -825,41 +832,22 @@ function updateMarquee(lang) {
   ).join('');
 }
 
-/* ════════════════════════════════════════════
-   LOADER
-════════════════════════════════════════════ */
-// Fix: don't wait for slow fonts/images — hide loader on DOMContentLoaded with a short delay
-// Fallback: force hide after 3s no matter what
 function hideLoader() {
   updateMarquee('en');
-  setTimeout(() => {
-    const loader = document.getElementById('loader');
-    if (loader) loader.classList.add('hide');
-  }, 800);
+  setTimeout(() => { const l = document.getElementById('loader'); if (l) l.classList.add('hide'); }, 800);
 }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hideLoader);
+else hideLoader();
+setTimeout(() => { const l = document.getElementById('loader'); if (l) l.classList.add('hide'); }, 3000);
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', hideLoader);
-} else {
-  hideLoader();
-}
-// Absolute fallback — force hide after 3s even if fonts/images are still loading
-setTimeout(() => {
-  const loader = document.getElementById('loader');
-  if (loader) loader.classList.add('hide');
-}, 3000);
-
-/* ════════════════════════════════════════════
-   CUSTOM CURSOR
-════════════════════════════════════════════ */
 const dot = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
 let mx=0, my=0, rx=0, ry=0;
 document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 function animCursor() {
-  dot.style.left = mx+'px'; dot.style.top = my+'px';
-  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
-  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
   requestAnimationFrame(animCursor);
 }
 animCursor();
@@ -868,23 +856,14 @@ document.querySelectorAll('a,button,.dest-card,.exp-card,.bento-card,.testi-card
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-expand'));
 });
 
-/* ════════════════════════════════════════════
-   NAVBAR SCROLL
-════════════════════════════════════════════ */
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
 
-/* ════════════════════════════════════════════
-   SCROLL REVEAL
-════════════════════════════════════════════ */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-/* ════════════════════════════════════════════
-   ANIMATED COUNTERS
-════════════════════════════════════════════ */
 function animateCount(el, target, duration=1800) {
   let start = null;
   const step = ts => {
@@ -899,17 +878,11 @@ function animateCount(el, target, duration=1800) {
 }
 const statsObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
-      animateCount(e.target, parseInt(e.target.dataset.target));
-      statsObs.unobserve(e.target);
-    }
+    if (e.isIntersecting) { animateCount(e.target, parseInt(e.target.dataset.target)); statsObs.unobserve(e.target); }
   });
 }, { threshold: 0.5 });
 document.querySelectorAll('.stat-num').forEach(el => statsObs.observe(el));
 
-/* ════════════════════════════════════════════
-   BENTO MOUSE GLOW
-════════════════════════════════════════════ */
 document.querySelectorAll('.bento-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
@@ -918,9 +891,6 @@ document.querySelectorAll('.bento-card').forEach(card => {
   });
 });
 
-/* ════════════════════════════════════════════
-   PARTICLES
-════════════════════════════════════════════ */
 const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
 let particles=[], W, H;
@@ -944,38 +914,142 @@ function drawParticles() {
 }
 drawParticles();
 
-/* ════════════════════════════════════════════
-   PARALLAX HERO
-════════════════════════════════════════════ */
 window.addEventListener('scroll', () => {
   const heroBg = document.querySelector('.hero-bg');
   if (heroBg) heroBg.style.transform = `scale(1.0) translateY(${window.scrollY*0.3}px)`;
 });
 
-/* ════════════════════════════════════════════
-   HORIZONTAL SCROLL DRAG
-════════════════════════════════════════════ */
 const track = document.querySelector('.hscroll-wrapper');
 if (track) {
   let isDown=false, startX, scrollLeft;
   track.addEventListener('mousedown', e => { isDown=true; track.style.cursor='grabbing'; startX=e.pageX-track.offsetLeft; scrollLeft=track.scrollLeft; });
   track.addEventListener('mouseleave', () => { isDown=false; track.style.cursor=''; });
   track.addEventListener('mouseup', () => { isDown=false; track.style.cursor=''; });
-  track.addEventListener('mousemove', e => {
-    if (!isDown) return; e.preventDefault();
-    track.scrollLeft = scrollLeft - (e.pageX-track.offsetLeft-startX)*1.4;
-  });
+  track.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); track.scrollLeft=scrollLeft-(e.pageX-track.offsetLeft-startX)*1.4; });
 }
 
-/* ════════════════════════════════════════════
-   SMOOTH SCROLL
-════════════════════════════════════════════ */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const t = document.querySelector(a.getAttribute('href'));
     if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
   });
 });
+
+/* ── MODAL ── */
+let currentStep = 0;
+
+function openModal(dest = '') {
+  const ov = document.getElementById('modal-overlay');
+  ov.style.opacity = '1'; ov.style.visibility = 'visible';
+  document.body.style.overflow = 'hidden';
+  showStep(0);
+  if (dest) {
+    const sel = document.getElementById('f-dest');
+    for (const opt of sel.options) {
+      if (opt.text.toLowerCase().includes(dest.toLowerCase())) { sel.value = opt.value; break; }
+    }
+  }
+}
+
+function closeModal() {
+  const ov = document.getElementById('modal-overlay');
+  ov.style.opacity = '0'; ov.style.visibility = 'hidden';
+  document.body.style.overflow = '';
+  setTimeout(() => { showStep(0); resetForm(); }, 400);
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function showStep(n) {
+  ['step-0','step-1','step-2','step-success'].forEach((id, i) => {
+    document.getElementById(id).style.display = i === n ? 'block' : 'none';
+  });
+  const dots = ['sdot-0','sdot-1','sdot-2'];
+  const lines = ['sline-0','sline-1'];
+  dots.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.style.background = i <= n ? 'var(--gold)' : 'rgba(255,255,255,0.08)';
+  });
+  lines.forEach((id, i) => {
+    document.getElementById(id).style.background = i < n ? 'rgba(201,169,110,0.4)' : 'rgba(255,255,255,0.08)';
+  });
+  document.getElementById('step-indicator').style.display = n >= 3 ? 'none' : 'flex';
+  currentStep = n;
+}
+
+function goStep(n) {
+  if (n === 1 && currentStep === 0) {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    let ok = true;
+    document.getElementById('err-name').textContent = '';
+    document.getElementById('err-email').textContent = '';
+    if (!name) { document.getElementById('err-name').textContent = 'Please enter your name'; ok = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('err-email').textContent = 'Please enter a valid email'; ok = false; }
+    if (!ok) return;
+  }
+  showStep(n);
+}
+
+function resetForm() {
+  ['f-name','f-email','f-phone','f-message'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-dest').selectedIndex = 0;
+  document.getElementById('f-guests').selectedIndex = 1;
+  document.getElementById('f-budget').selectedIndex = 0;
+  document.getElementById('f-date-from').value = '';
+  document.getElementById('f-date-to').value = '';
+  document.getElementById('err-name').textContent = '';
+  document.getElementById('err-email').textContent = '';
+  document.getElementById('modal-form-msg').textContent = '';
+}
+
+async function submitInquiry() {
+  const btn = document.getElementById('modal-submit-btn');
+  const msg = document.getElementById('modal-form-msg');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/inquiries', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: document.getElementById('f-name').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        phone: document.getElementById('f-phone').value.trim() || undefined,
+        dest: document.getElementById('f-dest').value || undefined,
+        guests: parseInt(document.getElementById('f-guests').value),
+        date_from: document.getElementById('f-date-from').value || undefined,
+        date_to: document.getElementById('f-date-to').value || undefined,
+        budget: document.getElementById('f-budget').value || undefined,
+        message: document.getElementById('f-message').value.trim() || undefined,
+        lang: currentLang
+      })
+    });
+    if (res.ok) { showStep(3); }
+    else { const d = await res.json(); msg.style.color='#f87171'; msg.textContent = d.errors?.[0]?.msg || 'Something went wrong.'; }
+  } catch { msg.style.color='#f87171'; msg.textContent = 'Network error. Please try again.'; }
+  finally { btn.disabled = false; }
+}
+
+async function submitNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('nl-email').value.trim();
+  const btn = document.getElementById('nl-btn');
+  const msg = document.getElementById('nl-msg');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/newsletter', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, lang: currentLang })
+    });
+    msg.style.color = res.ok || res.status===409 ? '#4ade80' : '#f87171';
+    msg.textContent = res.ok || res.status===409 ? "You're on the list. Expect the extraordinary." : 'Something went wrong.';
+    if (res.ok) document.getElementById('nl-email').value = '';
+  } catch { msg.style.color='#f87171'; msg.textContent='Network error.'; }
+  finally { btn.disabled = false; }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
