@@ -257,7 +257,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       <button class="lang-btn" data-lang="ru">RU</button>
       <button class="lang-btn" data-lang="uz">UZ</button>
     </div>
-    <a href="#cta-band" class="nav-cta"><span data-i18n="nav.cta">Book Journey</span></a>
+    <button class="nav-cta" onclick="openModal()"><span data-i18n="nav.cta">Book Journey</span></button>
   </div>
 </nav>
 
@@ -496,6 +496,20 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
   </div>
 </section>
 
+<!-- NEWSLETTER -->
+<section id="newsletter" style="background:#0e0e0e;border-top:1px solid rgba(255,255,255,0.08);padding:clamp(5rem,10vh,9rem) clamp(1.5rem,6vw,6rem)">
+  <div style="max-width:600px;margin:0 auto;text-align:center" class="reveal">
+    <span class="section-label" data-i18n="news.label">Stay Inspired</span>
+    <h2 class="section-title" style="margin-top:0.5rem" data-i18n="news.title.html">Rare <em>Destinations</em>,<br>Delivered to You</h2>
+    <p style="margin-top:1rem;color:var(--white-dim);font-size:0.9rem;line-height:1.7" data-i18n="news.sub">Subscribe for curated travel inspiration, exclusive offers, and first access to new journeys.</p>
+    <form id="newsletter-form" onsubmit="submitNewsletter(event)" style="margin-top:2.5rem;display:flex;gap:0.8rem;max-width:480px;margin-inline:auto;flex-wrap:wrap">
+      <input type="email" id="nl-email" required placeholder="your@email.com" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:0.85rem 1.6rem;font-size:0.85rem;color:var(--white);outline:none;font-family:var(--font-body);min-width:200px"/>
+      <button type="submit" id="nl-btn" style="padding:0.85rem 1.8rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap" data-i18n="news.btn">Subscribe</button>
+    </form>
+    <div id="nl-msg" style="margin-top:1rem;font-size:0.8rem;min-height:1.2em"></div>
+  </div>
+</section>
+
 <!-- CTA BAND -->
 <section id="cta-band">
   <div class="cta-bg"></div>
@@ -559,6 +573,110 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
     </div>
   </div>
 </footer>
+
+<!-- BOOKING MODAL -->
+<div id="modal-overlay" onclick="handleOverlayClick(event)" style="position:fixed;inset:0;z-index:1000;background:rgba(5,5,5,0.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:opacity 0.4s,visibility 0.4s">
+  <div id="modal" style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);border-radius:24px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;position:relative">
+    <div style="padding:2.5rem 2.5rem 0;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+      <h2 style="font-family:var(--font-display);font-size:2rem;font-weight:300">Begin Your <em style="font-style:italic;color:var(--gold)">Journey</em></h2>
+      <button onclick="closeModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;color:var(--white-dim);font-size:1.1rem;cursor:pointer;flex-shrink:0;background:none">✕</button>
+    </div>
+    <div style="padding:1.5rem 2.5rem 2.5rem">
+      <div id="step-indicator" style="display:flex;align-items:center;margin-bottom:2rem">
+        <div id="sdot-0" style="width:8px;height:8px;border-radius:50%;background:var(--gold);transition:all 0.4s"></div>
+        <div id="sline-0" style="flex:1;height:1px;background:rgba(255,255,255,0.08);margin:0 8px"></div>
+        <div id="sdot-1" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all 0.4s"></div>
+        <div id="sline-1" style="flex:1;height:1px;background:rgba(255,255,255,0.08);margin:0 8px"></div>
+        <div id="sdot-2" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all 0.4s"></div>
+      </div>
+      <div id="step-0" style="display:block">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Full Name</label>
+            <input id="f-name" type="text" placeholder="Alexandra Voss" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%"/>
+            <span id="err-name" style="font-size:0.72rem;color:#f87171;min-height:1em"></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Email Address</label>
+            <input id="f-email" type="email" placeholder="you@example.com" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%"/>
+            <span id="err-email" style="font-size:0.72rem;color:#f87171;min-height:1em"></span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+          <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Phone (optional)</label>
+          <input id="f-phone" type="tel" placeholder="+1 555 000 0000" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%"/>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+          <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Destination</label>
+          <select id="f-dest" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;appearance:none">
+            <option value="">— Select a destination —</option>
+            <option>Santorini, Greece</option><option>North Malé Atoll, Maldives</option>
+            <option>Kyoto &amp; Hakone, Japan</option><option>Amalfi Coast, Italy</option>
+            <option>Sacred Bali Retreat</option><option>Kenya Safari Odyssey</option>
+            <option>Norwegian Fjords</option><option>Imperial Morocco</option>
+            <option>Iceland Aurora</option><option>Custom / Other</option>
+          </select>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem">
+          <span style="font-size:0.72rem;color:rgba(245,240,235,0.15)">Step 1 of 3</span>
+          <button onclick="goStep(1)" style="padding:0.75rem 2rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer">Continue →</button>
+        </div>
+      </div>
+      <div id="step-1" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Arrival Date</label>
+            <input id="f-date-from" type="date" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;color-scheme:dark"/>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Departure Date</label>
+            <input id="f-date-to" type="date" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;color-scheme:dark"/>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Guests</label>
+            <select id="f-guests" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;appearance:none">
+              <option value="1">1 Guest</option><option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option><option value="4">4 Guests</option><option value="5">5+ Guests</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem">
+            <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Budget</label>
+            <select id="f-budget" style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;appearance:none">
+              <option value="">— Select budget —</option>
+              <option value="$5k–$10k">$5,000 – $10,000</option><option value="$10k–$20k">$10,000 – $20,000</option>
+              <option value="$20k–$50k">$20,000 – $50,000</option><option value="$50k+">$50,000+</option>
+              <option value="No limit">No limit</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem">
+          <button onclick="goStep(0)" style="padding:0.75rem 1.6rem;border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white-dim);cursor:pointer;background:none">← Back</button>
+          <button onclick="goStep(2)" style="padding:0.75rem 2rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer">Continue →</button>
+        </div>
+      </div>
+      <div id="step-2" style="display:none">
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+          <label style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white-dim)">Tell Us Your Dream Journey</label>
+          <textarea id="f-message" rows="5" placeholder="Describe your ideal experience..." style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:0.85rem 1.1rem;font-size:0.88rem;color:var(--white);outline:none;font-family:var(--font-body);width:100%;resize:vertical;min-height:120px"></textarea>
+        </div>
+        <p style="font-size:0.75rem;color:rgba(245,240,235,0.2);line-height:1.6;margin-bottom:1rem">Your details are kept strictly confidential.</p>
+        <div id="modal-form-msg" style="font-size:0.8rem;min-height:1.2em;margin-bottom:0.5rem"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem">
+          <button onclick="goStep(1)" style="padding:0.75rem 1.6rem;border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white-dim);cursor:pointer;background:none">← Back</button>
+          <button id="modal-submit-btn" onclick="submitInquiry()" style="padding:0.75rem 2rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;cursor:pointer">Send Inquiry ✦</button>
+        </div>
+      </div>
+      <div id="step-success" style="display:none;text-align:center;padding:3rem 1rem">
+        <div style="font-size:3rem;margin-bottom:1.5rem">✦</div>
+        <h3 style="font-family:var(--font-display);font-size:2rem;font-weight:300;margin-bottom:1rem">Thank <em style="font-style:italic;color:var(--gold)">You</em></h3>
+        <p style="color:var(--white-dim);line-height:1.7;font-size:0.9rem">Your inquiry has been received. A Lumina curator will be in touch within 24 hours.</p>
+        <button onclick="closeModal()" style="margin-top:2rem;padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 const i18n = {
@@ -816,6 +934,122 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
   });
 });
+
+/* ── MODAL ── */
+let currentStep = 0;
+
+function openModal(dest = '') {
+  const ov = document.getElementById('modal-overlay');
+  ov.style.opacity = '1'; ov.style.visibility = 'visible';
+  document.body.style.overflow = 'hidden';
+  showStep(0);
+  if (dest) {
+    const sel = document.getElementById('f-dest');
+    for (const opt of sel.options) {
+      if (opt.text.toLowerCase().includes(dest.toLowerCase())) { sel.value = opt.value; break; }
+    }
+  }
+}
+
+function closeModal() {
+  const ov = document.getElementById('modal-overlay');
+  ov.style.opacity = '0'; ov.style.visibility = 'hidden';
+  document.body.style.overflow = '';
+  setTimeout(() => { showStep(0); resetForm(); }, 400);
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function showStep(n) {
+  ['step-0','step-1','step-2','step-success'].forEach((id, i) => {
+    document.getElementById(id).style.display = i === n ? 'block' : 'none';
+  });
+  const dots = ['sdot-0','sdot-1','sdot-2'];
+  const lines = ['sline-0','sline-1'];
+  dots.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.style.background = i <= n ? 'var(--gold)' : 'rgba(255,255,255,0.08)';
+  });
+  lines.forEach((id, i) => {
+    document.getElementById(id).style.background = i < n ? 'rgba(201,169,110,0.4)' : 'rgba(255,255,255,0.08)';
+  });
+  document.getElementById('step-indicator').style.display = n >= 3 ? 'none' : 'flex';
+  currentStep = n;
+}
+
+function goStep(n) {
+  if (n === 1 && currentStep === 0) {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    let ok = true;
+    document.getElementById('err-name').textContent = '';
+    document.getElementById('err-email').textContent = '';
+    if (!name) { document.getElementById('err-name').textContent = 'Please enter your name'; ok = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('err-email').textContent = 'Please enter a valid email'; ok = false; }
+    if (!ok) return;
+  }
+  showStep(n);
+}
+
+function resetForm() {
+  ['f-name','f-email','f-phone','f-message'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-dest').selectedIndex = 0;
+  document.getElementById('f-guests').selectedIndex = 1;
+  document.getElementById('f-budget').selectedIndex = 0;
+  document.getElementById('f-date-from').value = '';
+  document.getElementById('f-date-to').value = '';
+  document.getElementById('err-name').textContent = '';
+  document.getElementById('err-email').textContent = '';
+  document.getElementById('modal-form-msg').textContent = '';
+}
+
+async function submitInquiry() {
+  const btn = document.getElementById('modal-submit-btn');
+  const msg = document.getElementById('modal-form-msg');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/inquiries', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: document.getElementById('f-name').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        phone: document.getElementById('f-phone').value.trim() || undefined,
+        dest: document.getElementById('f-dest').value || undefined,
+        guests: parseInt(document.getElementById('f-guests').value),
+        date_from: document.getElementById('f-date-from').value || undefined,
+        date_to: document.getElementById('f-date-to').value || undefined,
+        budget: document.getElementById('f-budget').value || undefined,
+        message: document.getElementById('f-message').value.trim() || undefined,
+        lang: currentLang
+      })
+    });
+    if (res.ok) { showStep(3); }
+    else { const d = await res.json(); msg.style.color='#f87171'; msg.textContent = d.errors?.[0]?.msg || 'Something went wrong.'; }
+  } catch { msg.style.color='#f87171'; msg.textContent = 'Network error. Please try again.'; }
+  finally { btn.disabled = false; }
+}
+
+async function submitNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('nl-email').value.trim();
+  const btn = document.getElementById('nl-btn');
+  const msg = document.getElementById('nl-msg');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/newsletter', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, lang: currentLang })
+    });
+    msg.style.color = res.ok || res.status===409 ? '#4ade80' : '#f87171';
+    msg.textContent = res.ok || res.status===409 ? "You're on the list. Expect the extraordinary." : 'Something went wrong.';
+    if (res.ok) document.getElementById('nl-email').value = '';
+  } catch { msg.style.color='#f87171'; msg.textContent='Network error.'; }
+  finally { btn.disabled = false; }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
