@@ -71,7 +71,7 @@ nav.scrolled{background:rgba(5,5,5,0.75);backdrop-filter:blur(20px) saturate(180
 .hero-title em{font-style:italic;color:var(--gold)}
 .hero-sub{margin-top:1.5rem;font-size:clamp(0.9rem,1.5vw,1.05rem);font-weight:300;color:var(--white-dim);line-height:1.7;max-width:500px;margin-inline:auto;opacity:0;animation:fade-up 1s 2.3s ease forwards}
 .hero-actions{margin-top:3rem;display:flex;gap:1.2rem;align-items:center;justify-content:center;opacity:0;animation:fade-up 1s 2.6s ease forwards}
-.btn-primary{padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);box-shadow:0 0 40px rgba(201,169,110,0.3)}
+.btn-primary{padding:1rem 2.6rem;background:var(--gold);color:var(--bg);border-radius:100px;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);box-shadow:0 0 40px rgba(201,169,110,0.3);font-family:var(--font-body)}
 .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 50px rgba(201,169,110,0.45)}
 .btn-ghost{padding:1rem 2.6rem;border-radius:100px;border:1px solid var(--white-faint);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:300;color:var(--white-dim);transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--white);transform:translateY(-2px)}
@@ -348,10 +348,10 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
   <div class="reveal"><span class="section-label" data-i18n="dest.label">Where to Next</span></div>
   <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0.5rem">
     <h2 class="section-title reveal reveal-delay-1" data-i18n="dest.title.html">World's Most<br><em>Coveted</em> Destinations</h2>
-    <a href="#" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem" data-i18n="dest.viewall">View All →</a>
+    <a href="#destinations" class="btn-ghost reveal reveal-delay-2" style="white-space:nowrap;padding:0.7rem 1.6rem;font-size:0.72rem" data-i18n="dest.viewall">View All →</a>
   </div>
   <div class="destinations-grid">
-    <div class="dest-card reveal">
+    <div class="dest-card reveal" onclick="openModal('Santorini')" style="cursor:pointer">
       <img src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=600&q=80" alt="Santorini"/>
       <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
       <div class="dest-info">
@@ -361,7 +361,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:20px">
-      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1">
+      <div class="dest-card reveal reveal-delay-1" style="aspect-ratio:auto;flex:1;cursor:pointer" onclick="openModal('Maldives')">
         <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Maldives" style="height:100%"/>
         <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
         <div class="dest-info">
@@ -370,7 +370,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
           <div class="dest-meta"><span class="dest-badge" data-i18n="dest.2.from">From $6,800</span></div>
         </div>
       </div>
-      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1">
+      <div class="dest-card reveal reveal-delay-2" style="aspect-ratio:auto;flex:1;cursor:pointer" onclick="openModal('Kyoto')">
         <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=600&q=80" alt="Kyoto" style="height:100%"/>
         <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
         <div class="dest-info">
@@ -380,7 +380,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
         </div>
       </div>
     </div>
-    <div class="dest-card reveal reveal-delay-3">
+    <div class="dest-card reveal reveal-delay-3" onclick="openModal('Amalfi')" style="cursor:pointer">
       <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Amalfi" style="height:100%"/>
       <div class="dest-overlay"></div><div class="dest-hover-cta">→</div>
       <div class="dest-info">
@@ -517,8 +517,8 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
     <h2 class="cta-title" data-i18n="cta.title.html">Begin Your<br><em>Extraordinary</em><br>Journey</h2>
     <p class="cta-sub" data-i18n="cta.sub">Speak with a Lumina travel curator and let us design an experience that is entirely, unmistakably yours.</p>
     <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
-      <a href="#" class="btn-primary" data-i18n="cta.btn1">Start Planning</a>
-      <a href="#" class="btn-ghost" data-i18n="cta.btn2">Schedule a Call</a>
+      <button onclick="openModal()" class="btn-primary" data-i18n="cta.btn1">Start Planning</button>
+      <button onclick="openModal()" class="btn-ghost" data-i18n="cta.btn2">Schedule a Call</button>
     </div>
   </div>
 </section>
@@ -561,7 +561,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:5r
         <li><a href="#" data-i18n="footer.col3.2">Our Team</a></li>
         <li><a href="#" data-i18n="footer.col3.3">Sustainability</a></li>
         <li><a href="#" data-i18n="footer.col3.4">Press</a></li>
-        <li><a href="#" data-i18n="footer.col3.5">Contact</a></li>
+        <li><a href="#" onclick="openModal();return false;" data-i18n="footer.col3.5">Contact</a></li>
       </ul>
     </div>
   </div>
